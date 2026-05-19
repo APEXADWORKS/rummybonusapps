@@ -641,7 +641,7 @@ function AppCard({ app }: { app: RummyApp }) {
       </div>
 
       <Link 
-        to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+        to={`/${encodeURIComponent(app.name)}`}
         target="_blank"
         className="w-full bg-gradient-to-b from-brand-primary-light to-brand-primary text-black font-black py-3 rounded-lg shadow-lg shadow-brand-primary/20 uppercase tracking-wide text-xs text-center hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
       >

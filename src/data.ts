@@ -262,7 +262,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '470K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=deccan',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=deccan',
     category: 'High Bonus',
   },
   {
@@ -322,7 +322,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=glee',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=glee',
     category: 'Top',
   },
   {
@@ -362,7 +362,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '440K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=soft',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=soft',
     category: 'Top',
   },
   {
@@ -432,7 +432,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '270K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=tour',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=tour',
     category: 'New',
   },
   {
@@ -462,7 +462,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '110K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=master',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=master',
     category: 'Top',
   },
   {
@@ -492,7 +492,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=joy',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=joy',
     category: 'High Bonus',
   },
   {
@@ -512,7 +512,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=loot',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=loot',
     category: 'Top',
   },
   {
@@ -592,7 +592,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '110K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=meet',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=meet',
     category: 'Top',
   },
   {
@@ -612,7 +612,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=bharat',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=bharat',
     category: 'Top',
   },
   {
@@ -662,7 +662,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '230K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=perfect',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=perfect',
     category: 'New',
   },
   {
@@ -722,7 +722,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '250K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=villa',
+    iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=villa',
     category: 'Top',
   },
   {

@@ -641,7 +641,7 @@ export const RUMMY_APPS: RummyApp[] = [
     bonus: 'Rs.20',
     downloads: '200K+',
     minWithdrawal: '₹50',
-    downloadLink: '#',
+    downloadLink: '/uttam1',
     iconUrl: 'https://api.dicebear.com/7.x/shapes/svg?seed=apple',
     category: 'New',
   },

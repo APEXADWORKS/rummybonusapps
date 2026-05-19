@@ -9,17 +9,19 @@ export default function DynamicUttamPage({ idOverride }: { idOverride?: string }
   const { pathname } = useLocation();
   const app = RUMMY_APPS.find(a => a.id === 'jungle-haan');
   
-  // Extract number from path (e.g., /uttam1600 -> 1600, /uttam1 -> 1)
-  const pathMatch = pathname.match(/\/uttam(\d+)/);
-  const idValue = idOverride || (pathMatch ? pathMatch[1] : null);
+  // Use idOverride if provided, otherwise extract from pathname
+  let idValue = idOverride;
+  if (!idValue) {
+    const pathMatch = pathname.match(/\/uttam(\d+)/);
+    idValue = pathMatch ? pathMatch[1] : null;
+  }
   
-  let redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538"; // Default
+  let redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538"; // Default for /uttam1
   
   if (idValue) {
-    if (idValue === "1") {
+    if (idValue === "1" || idValue === "1538") {
       redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538";
     } else {
-      // The user wants /uttam1600 to go to ...=1600
       redirectUrl = `https://www.junglehaan.vip/share/6IOe3xy=${idValue}`;
     }
   }

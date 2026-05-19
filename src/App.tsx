@@ -12,21 +12,23 @@ import {
   Phone,
   Mail,
   ShieldCheck,
-  X
+  X,
+  Send
 } from 'lucide-react';
 import { RUMMY_APPS, RummyApp } from './data';
 import AppDetailPage from './components/AppDetailPage';
 import DynamicUttamPage from './components/DynamicUttamPage';
-
-import mahaLootBanner from './assets/images/maha_loot_banner_1779179081106.png';
-import rozRummyBanner from './assets/images/roz_rummy_banner_1779179099457.png';
-import withdrawalProofBanner from './assets/images/withdrawal_proof_banner_1779179116289.png';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'All' | 'Top' | 'New' | 'High Bonus'>('All');
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
+  const mahaLootBanner = "/images/maha_loot_banner_1779179081106.png";
+  const rozRummyBanner = "/images/roz_rummy_banner_1779179099457.png";
+  const withdrawalProofBanner = "/images/withdrawal_proof_banner_1779179116289.png";
 
   const filteredApps = useMemo(() => {
     return RUMMY_APPS.filter(app => {
@@ -50,7 +52,7 @@ function HomePage() {
         <nav className="bg-bg-secondary border-b border-brand-primary/30 py-1.5">
           <Link to="/" className="max-w-7xl mx-auto px-4 text-center flex justify-center items-center gap-3 hover:opacity-90 transition-opacity">
             <img 
-              src="/src/assets/images/rummy_app_icon_1_1779106072119.png" 
+              src="/images/rummy_app_icon_1_1779106072119.png" 
               alt="Bonus Rummy Apps Logo" 
               className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
             />
@@ -83,7 +85,15 @@ function HomePage() {
               >
                 About
               </button>
-              <a href="#contact" className="hover:text-brand-primary transition-colors">Contact</a>
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsContactOpen(true);
+                }} 
+                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold"
+              >
+                Contact
+              </button>
             </div>
 
             {/* Search Bar in Header */}
@@ -315,12 +325,19 @@ function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black/50 py-4 px-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">
+      <footer id="contact" className="bg-black/50 py-4 px-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">
         <span>© 2024 rummyBonusapps.com. All Rights Reserved.</span>
         <div className="flex flex-wrap justify-center gap-6">
           <span className="hover:text-brand-primary cursor-pointer transition-colors">T&C Apply</span>
           <span className="hover:text-brand-primary cursor-pointer transition-colors">18+ Responsible Gaming</span>
-          <span className="hover:text-brand-primary cursor-pointer transition-colors">support@rummybonus.com</span>
+          <a href="mailto:support@rummybonus.com" className="hover:text-brand-primary transition-colors lowercase">support@rummybonus.com</a>
+          <button 
+            onClick={() => setIsContactOpen(true)} 
+            className="flex items-center gap-1 hover:text-brand-primary transition-colors uppercase font-bold cursor-pointer"
+          >
+            <Send className="w-3 h-3" />
+            Telegram: @tech_apex
+          </button>
         </div>
       </footer>
 
@@ -426,6 +443,61 @@ function HomePage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Contact Modal */}
+      <AnimatePresence>
+        {isContactOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsContactOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md bg-[#1e293b] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            >
+              <div className="flex items-center justify-between p-4 border-b border-white/5">
+                <h2 className="text-xl font-black uppercase italic text-brand-primary">Contact Support</h2>
+                <button 
+                  onClick={() => setIsContactOpen(false)}
+                  className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/40 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-8 text-center">
+                <div className="w-20 h-20 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-brand-primary/20">
+                  <Send className="w-10 h-10 text-brand-primary" />
+                </div>
+                <h3 className="text-2xl font-black uppercase italic mb-2">Telegram Support</h3>
+                <div className="mb-8 flex flex-col gap-2">
+                  <p className="text-white/40 text-xs uppercase tracking-widest font-bold">Fastest response for queries</p>
+                  <p className="text-brand-primary text-[10px] uppercase font-black tracking-[0.2em] border border-brand-primary/20 bg-brand-primary/5 py-1 px-3 rounded-full self-center">FOR BRANDS ONLY</p>
+                </div>
+                
+                <a 
+                  href="https://t.me/tech_apex" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3 w-full bg-brand-primary text-black font-black py-4 rounded-xl shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-sm hover:scale-[1.05] transition-all"
+                >
+                  <Send className="w-5 h-5" />
+                  Message @tech_apex
+                </a>
+                
+                <p className="mt-6 text-white/20 text-[10px] font-bold uppercase tracking-[0.2em]">
+                  Available 24/7 for you
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -436,8 +508,60 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* Handle all uttam* paths (uttam1, uttam1600, etc.) */}
-          <Route path="/uttam*" element={<DynamicUttamPage />} />
+          {/* Explicitly defined separate pages as requested */}
+          <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
+          <Route path="/uttam1600" element={<DynamicUttamPage idOverride="1600" />} />
+          <Route path="/uttam1601" element={<DynamicUttamPage idOverride="1601" />} />
+          <Route path="/uttam1602" element={<DynamicUttamPage idOverride="1602" />} />
+          <Route path="/uttam1603" element={<DynamicUttamPage idOverride="1603" />} />
+          <Route path="/uttam1604" element={<DynamicUttamPage idOverride="1604" />} />
+          <Route path="/uttam1605" element={<DynamicUttamPage idOverride="1605" />} />
+          <Route path="/uttam1606" element={<DynamicUttamPage idOverride="1606" />} />
+          <Route path="/uttam1607" element={<DynamicUttamPage idOverride="1607" />} />
+          <Route path="/uttam1608" element={<DynamicUttamPage idOverride="1608" />} />
+          <Route path="/uttam1609" element={<DynamicUttamPage idOverride="1609" />} />
+          <Route path="/uttam1610" element={<DynamicUttamPage idOverride="1610" />} />
+          <Route path="/uttam1611" element={<DynamicUttamPage idOverride="1611" />} />
+          <Route path="/uttam1612" element={<DynamicUttamPage idOverride="1612" />} />
+          <Route path="/uttam1613" element={<DynamicUttamPage idOverride="1613" />} />
+          <Route path="/uttam1614" element={<DynamicUttamPage idOverride="1614" />} />
+          <Route path="/uttam1615" element={<DynamicUttamPage idOverride="1615" />} />
+          <Route path="/uttam1616" element={<DynamicUttamPage idOverride="1616" />} />
+          <Route path="/uttam1617" element={<DynamicUttamPage idOverride="1617" />} />
+          <Route path="/uttam1618" element={<DynamicUttamPage idOverride="1618" />} />
+          <Route path="/uttam1619" element={<DynamicUttamPage idOverride="1619" />} />
+          <Route path="/uttam1620" element={<DynamicUttamPage idOverride="1620" />} />
+          <Route path="/uttam1621" element={<DynamicUttamPage idOverride="1621" />} />
+          <Route path="/uttam1622" element={<DynamicUttamPage idOverride="1622" />} />
+          <Route path="/uttam1623" element={<DynamicUttamPage idOverride="1623" />} />
+          <Route path="/uttam1624" element={<DynamicUttamPage idOverride="1624" />} />
+          <Route path="/uttam1625" element={<DynamicUttamPage idOverride="1625" />} />
+          <Route path="/uttam1626" element={<DynamicUttamPage idOverride="1626" />} />
+          <Route path="/uttam1627" element={<DynamicUttamPage idOverride="1627" />} />
+          <Route path="/uttam1628" element={<DynamicUttamPage idOverride="1628" />} />
+          <Route path="/uttam1629" element={<DynamicUttamPage idOverride="1629" />} />
+          <Route path="/uttam1630" element={<DynamicUttamPage idOverride="1630" />} />
+          <Route path="/uttam1631" element={<DynamicUttamPage idOverride="1631" />} />
+          <Route path="/uttam1632" element={<DynamicUttamPage idOverride="1632" />} />
+          <Route path="/uttam1633" element={<DynamicUttamPage idOverride="1633" />} />
+          <Route path="/uttam1634" element={<DynamicUttamPage idOverride="1634" />} />
+          <Route path="/uttam1635" element={<DynamicUttamPage idOverride="1635" />} />
+          <Route path="/uttam1636" element={<DynamicUttamPage idOverride="1636" />} />
+          <Route path="/uttam1637" element={<DynamicUttamPage idOverride="1637" />} />
+          <Route path="/uttam1638" element={<DynamicUttamPage idOverride="1638" />} />
+          <Route path="/uttam1639" element={<DynamicUttamPage idOverride="1639" />} />
+          <Route path="/uttam1640" element={<DynamicUttamPage idOverride="1640" />} />
+          <Route path="/uttam1641" element={<DynamicUttamPage idOverride="1641" />} />
+          <Route path="/uttam1642" element={<DynamicUttamPage idOverride="1642" />} />
+          <Route path="/uttam1643" element={<DynamicUttamPage idOverride="1643" />} />
+          <Route path="/uttam1644" element={<DynamicUttamPage idOverride="1644" />} />
+          <Route path="/uttam1645" element={<DynamicUttamPage idOverride="1645" />} />
+          <Route path="/uttam1646" element={<DynamicUttamPage idOverride="1646" />} />
+          <Route path="/uttam1647" element={<DynamicUttamPage idOverride="1647" />} />
+          <Route path="/uttam1648" element={<DynamicUttamPage idOverride="1648" />} />
+          <Route path="/uttam1649" element={<DynamicUttamPage idOverride="1649" />} />
+          <Route path="/uttam1650" element={<DynamicUttamPage idOverride="1650" />} />
+          
           <Route path="/:appName" element={<AppDetailPage />} />
         </Routes>
       </Router>

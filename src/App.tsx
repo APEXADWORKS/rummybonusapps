@@ -18,6 +18,12 @@ import {
 import { RUMMY_APPS, RummyApp } from './data';
 import AppDetailPage from './components/AppDetailPage';
 import DynamicUttamPage from './components/DynamicUttamPage';
+import RummyBlogPage from './components/RummyBlogPage';
+import RummyBlog2 from './components/RummyBlog2';
+import RummyBlog3 from './components/RummyBlog3';
+import RummyBlog4 from './components/RummyBlog4';
+import RummyBlog5 from './components/RummyBlog5';
+import RummyBlog6 from './components/RummyBlog6';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -294,6 +300,36 @@ function HomePage() {
         {/* SEO Keywords section */}
         <section className="py-12 bg-bg-dark border-t border-white/5">
           <div className="max-w-7xl mx-auto px-4">
+            <div className="bg-[#1e293b]/50 rounded-3xl p-8 border border-white/5 mb-8">
+              <h2 className="text-2xl font-black uppercase italic italic mb-6 text-brand-primary">Latest News & Rummy Tips</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Link to="/rummyblog1" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">The Ultimate Rummy Guide 2026</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">Complete list of all rummy apps and how to claim bonuses safely.</p>
+                </Link>
+                <Link to="/rummyblog2" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">New Rummy App Today Update</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">Daily updated list of the newest rummy and teen patti apps.</p>
+                </Link>
+                <Link to="/rummyblog3" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">Rummy 51 Bonus Secrets</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">How to claim and withdraw the ₹51 sign-up bonus from all apps.</p>
+                </Link>
+                <Link to="/rummyblog4" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">Dragon vs Tiger Tricks</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">Master the 3x investment rule and win big in Dragon vs Tiger.</p>
+                </Link>
+                <Link to="/rummyblog5" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">Teen Patti Kings Guide</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">Top variations and winning strategies for Teen Patti in 2026.</p>
+                </Link>
+                <Link to="/rummyblog6" className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-brand-primary/50 transition-all group">
+                  <h3 className="text-sm font-black uppercase italic group-hover:text-brand-primary mb-2">Yono Rummy Evolution</h3>
+                  <p className="text-[10px] text-white/40 leading-relaxed line-clamp-2">Why Yono Rummy is the most trusted series in the market today.</p>
+                </Link>
+              </div>
+            </div>
+
             <div className="bg-[#1e293b]/50 rounded-3xl p-8 border border-white/5">
               <h2 className="text-2xl font-black uppercase italic italic mb-6 text-brand-primary">Search All Rummy Apps & Rummy All Apk Download</h2>
               <div className="prose prose-invert max-w-none text-white/40 text-xs leading-loose space-y-4">
@@ -562,6 +598,12 @@ export default function App() {
           <Route path="/uttam1649" element={<DynamicUttamPage idOverride="1649" />} />
           <Route path="/uttam1650" element={<DynamicUttamPage idOverride="1650" />} />
           
+          <Route path="/rummyblog1" element={<RummyBlogPage />} />
+          <Route path="/rummyblog2" element={<RummyBlog2 />} />
+          <Route path="/rummyblog3" element={<RummyBlog3 />} />
+          <Route path="/rummyblog4" element={<RummyBlog4 />} />
+          <Route path="/rummyblog5" element={<RummyBlog5 />} />
+          <Route path="/rummyblog6" element={<RummyBlog6 />} />
           <Route path="/:appName" element={<AppDetailPage />} />
         </Routes>
       </Router>

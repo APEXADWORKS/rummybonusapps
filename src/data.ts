@@ -636,16 +636,6 @@ export const RUMMY_APPS: RummyApp[] = [
     category: 'New',
   },
   {
-    id: 'rummy-apple',
-    name: 'Rummy Apple',
-    bonus: 'Rs.20',
-    downloads: '200K+',
-    minWithdrawal: '₹50',
-    downloadLink: '/uttam1',
-    iconUrl: 'https:/api.dicebear.com/7.x/shapes/svg?seed=apple',
-    category: 'New',
-  },
-  {
     id: 'jaiho-rummy',
     name: 'Jaiho Rummy',
     bonus: 'Rs.51',

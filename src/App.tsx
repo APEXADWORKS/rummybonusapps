@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { RUMMY_APPS, RummyApp } from './data';
 import AppDetailPage from './components/AppDetailPage';
-import Uttam1Page from './components/Uttam1Page';
+import DynamicUttamPage from './components/DynamicUttamPage';
 
 import mahaLootBanner from './assets/images/maha_loot_banner_1779179081106.png';
 import rozRummyBanner from './assets/images/roz_rummy_banner_1779179099457.png';
@@ -436,7 +436,8 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/uttam1" element={<Uttam1Page />} />
+          {/* Handle all uttam* paths (uttam1, uttam1600, etc.) */}
+          <Route path="/uttam*" element={<DynamicUttamPage />} />
           <Route path="/:appName" element={<AppDetailPage />} />
         </Routes>
       </Router>

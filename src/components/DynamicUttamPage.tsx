@@ -1,27 +1,33 @@
 import { useEffect } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
-import { 
-  Download, 
-  ArrowLeft, 
-  ShieldCheck, 
-  Zap, 
-  Trophy, 
-  Smartphone,
-  Star
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Download, ArrowLeft } from 'lucide-react';
 import { RUMMY_APPS } from '../data';
 
-export default function Uttam1Page() {
+export default function DynamicUttamPage({ idOverride }: { idOverride?: string }) {
+  const { pathname } = useLocation();
   const app = RUMMY_APPS.find(a => a.id === 'jungle-haan');
-  const redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538";
+  
+  // Extract number from path (e.g., /uttam1600 -> 1600, /uttam1 -> 1)
+  const pathMatch = pathname.match(/\/uttam(\d+)/);
+  const idValue = idOverride || (pathMatch ? pathMatch[1] : null);
+  
+  let redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538"; // Default
+  
+  if (idValue) {
+    if (idValue === "1") {
+      redirectUrl = "https://www.junglehaan.vip/share/6IOe3xy=1538";
+    } else {
+      // The user wants /uttam1600 to go to ...=1600
+      redirectUrl = `https://www.junglehaan.vip/share/6IOe3xy=${idValue}`;
+    }
+  }
 
   useEffect(() => {
-    // Small delay to allow analytics or page load if needed, but user said "as soon as page opens"
-    // We'll do it immediately
+    // Immediate redirect
     window.location.href = redirectUrl;
-  }, []);
+  }, [redirectUrl]);
 
   if (!app) return null;
 

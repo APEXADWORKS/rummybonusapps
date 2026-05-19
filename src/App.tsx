@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -13,7 +13,10 @@ import {
   Mail,
   ShieldCheck,
   X,
-  Send
+  Send,
+  Coins,
+  ChevronRight,
+  Sparkles
 } from 'lucide-react';
 import { RUMMY_APPS, RummyApp } from './data';
 import AppDetailPage from './components/AppDetailPage';
@@ -25,10 +28,11 @@ import RummyBlog4 from './components/RummyBlog4';
 import RummyBlog5 from './components/RummyBlog5';
 import RummyBlog6 from './components/RummyBlog6';
 import ApexdinLandingPage from './components/ApexdinLandingPage';
+import AllRummyAppsPage from './components/AllRummyAppsPage';
+import Rummy51BonusPage from './components/Rummy51BonusPage';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'All' | 'Top' | 'New' | 'High Bonus'>('All');
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -37,21 +41,19 @@ function HomePage() {
   const rozRummyBanner = "/images/roz_rummy_banner_1779179099457.png";
   const withdrawalProofBanner = "/images/withdrawal_proof_banner_1779179116289.png";
 
-  const filteredApps = useMemo(() => {
-    return RUMMY_APPS.filter(app => {
-      const matchesSearch = app.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesTab = activeTab === 'All' || app.category === activeTab;
-      return matchesSearch && matchesTab;
-    });
-  }, [searchQuery, activeTab]);
+  const topRecommendedApps = useMemo(() => {
+    const list = RUMMY_APPS.slice(0, 10);
+    if (!searchQuery) return list;
+    return list.filter(app => app.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
-        <title>All Rummy Apps - Download Rummy All Apk & Get Free Bonus 2026</title>
-        <meta name="description" content="Looking for the complete All Rummy App List? Download Rummy All Apk today! Get Rummy Bonus Apps, Rummy 51 Bonus, and New Rummy App Today with live withdrawal proof." />
-        <meta name="keywords" content="All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games" />
-        <link rel="canonical" href="https:///allrummybonus.com/" />
+        <title>Rummy Bonus Apps - Top 10 Recommended Rummy All Apk List 2026</title>
+        <meta name="description" content="Welcome to RummyBonusApps.com, the premier structured Rummy Silo Hub. Download the Top 10 Recommended Rummy All Apk, check out our 100+ master directory list, or claim ₹51 rewards." />
+        <meta name="keywords" content="Rummy Bonus Apps, Top 10 Rummy apps, Rummy All Apk download, Best Rummy bonuses 2026, ₹51 bonus rummy links, complete master rummy directory" />
+        <link rel="canonical" href="https://rummybonusapps.com/" />
       </Helmet>
       {/* Sticky Header with two bars */}
       <header className="sticky top-0 z-50 shadow-2xl">
@@ -65,7 +67,7 @@ function HomePage() {
               referrerPolicy="no-referrer"
             />
             <h1 className="text-[10px] sm:text-lg font-black uppercase italic tracking-wider text-white">
-              All Rummy Bonus Apps - <span className="text-brand-primary">Download</span> & Get <span className="text-brand-primary-light">Free Bonus</span>
+              All Rummy Apps List: <span className="text-brand-primary">Download Apk</span> & Get <span className="text-brand-primary-light">Free Bonus 2026</span>
             </h1>
           </Link>
         </nav>
@@ -74,31 +76,23 @@ function HomePage() {
         <nav className="bg-bg-dark border-b border-white/5 py-2">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">
-              <Link to="/" className="hover:text-brand-primary transition-colors">Home</Link>
+              <Link to="/" className="hover:text-brand-primary transition-colors text-brand-primary font-black">Home</Link>
+              <Link to="/rummy-51-bonus" className="hover:text-brand-primary transition-colors font-black text-white">₹51 BONUS</Link>
               <button 
                 onClick={(e) => {
                   e.preventDefault();
                   setIsDisclaimerOpen(true);
                 }} 
-                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold"
+                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold font-black"
               >
                 Disclaimer
               </button>
               <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  setIsAboutOpen(true);
-                }} 
-                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold"
-              >
-                About
-              </button>
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
                   setIsContactOpen(true);
                 }} 
-                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold"
+                className="hover:text-brand-primary transition-colors cursor-pointer uppercase font-bold font-black"
               >
                 Contact
               </button>
@@ -109,7 +103,7 @@ function HomePage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-brand-primary transition-colors" />
               <input 
                 type="text" 
-                placeholder="Search apps..." 
+                placeholder="Search recommended..." 
                 className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-9 pr-3 text-[10px] font-bold uppercase tracking-widest focus:outline-none focus:border-brand-primary/50 transition-all focus:bg-white/10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -187,65 +181,265 @@ function HomePage() {
           </div>
         </section>
 
-        {/* App Grid Section */}
-        <section id="apps" className="py-8 sm:py-12 bg-[#0f172a]">
+        {/* Dynamic Matrix Table section with responsive views */}
+        <section id="apps" className="py-12 sm:py-16 bg-[#0f172a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-[min(4vw,1rem)] sm:text-xl font-black uppercase italic text-center mb-10 text-white tracking-tight whitespace-nowrap">
-              🔥 Top Rummy Bonus Apps in India 🔥
-            </h2>
-            {/* Filter Tabs - High Density Style with Horizontal Scroll on Mobile */}
-            <div className="flex overflow-x-auto no-scrollbar pb-2 mb-10 w-full justify-start sm:justify-center">
-              <div className="flex gap-1 p-1 bg-white/5 rounded-xl border border-white/5 whitespace-nowrap">
-                {(['All', 'Top', 'New', 'High Bonus'] as const).map(tab => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-5 sm:px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all min-w-[80px] ${
-                      activeTab === tab 
-                        ? 'bg-brand-primary text-black shadow-lg shadow-brand-primary/20' 
-                        : 'hover:bg-white/5 text-slate-500 hover:text-white'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-4xl font-black uppercase italic text-white tracking-tight">
+                TOP 10 RUMMY APPS
+              </h2>
             </div>
 
-            {/* App Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Matrix table for DESKTOP and TABLET devices */}
+            <div className="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl bg-[#131b2e] hidden md:block">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-[#1e293b]/55 border-b border-white/10 text-[10px] uppercase tracking-wider text-slate-400 font-extrabold select-none">
+                    <th className="py-4 px-6 text-center w-16">Rank</th>
+                    <th className="py-4 px-6">App Master Profile</th>
+                    <th className="py-4 px-6 text-center w-36">Stars Rating</th>
+                    <th className="py-4 px-6 text-center w-36">SignUp Bonus</th>
+                    <th className="py-4 px-6 text-center w-36">Min. Cashout</th>
+                    <th className="py-4 px-6 text-center w-32">Downloads</th>
+                    <th className="py-4 px-6 text-center w-40">Safe Channel</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  <AnimatePresence mode="popLayout">
+                    {topRecommendedApps.map((app, index) => (
+                      <motion.tr 
+                        key={app.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2, delay: index * 0.02 }}
+                        className="hover:bg-[#1a253c] transition-colors group cursor-default"
+                      >
+                        {/* Rank index */}
+                        <td className="py-4 px-6 text-center font-mono text-sm font-black text-brand-primary">
+                          #{String(index + 1).padStart(2, '0')}
+                        </td>
+                        
+                        {/* App Profile */}
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3.5">
+                            <img 
+                              src={app.iconUrl} 
+                              alt={app.name} 
+                              className="w-11 h-11 rounded-xl object-contain border border-white/10 shadow-md transform group-hover:scale-105 transition-transform"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div>
+                              <div className="font-black uppercase italic text-white text-sm group-hover:text-brand-primary-light transition-colors flex items-center gap-1.5">
+                                {app.name}
+                                {app.isTrending && (
+                                  <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide animate-pulse">
+                                    HOT
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                                Client Approved Secure Link
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Stars Rating */}
+                        <td className="py-4 px-6 text-center">
+                          <div className="flex justify-center items-center gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                            ))}
+                          </div>
+                          <span className="text-[9px] text-green-400 uppercase font-black tracking-widest block mt-1">
+                            Verified Safe
+                          </span>
+                        </td>
+
+                        {/* Signup Bonus */}
+                        <td className="py-4 px-6 text-center">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-brand-primary/10 border border-brand-primary/20 rounded-md text-brand-primary text-xs font-black uppercase italic">
+                            <Coins className="w-3 h-3 text-brand-primary-light" />
+                            {app.bonus}
+                          </div>
+                        </td>
+
+                        {/* Minimum cashout */}
+                        <td className="py-4 px-6 text-center font-black text-white italic text-sm">
+                          {app.minWithdrawal}
+                        </td>
+
+                        {/* Active downloads */}
+                        <td className="py-4 px-6 text-center font-bold text-slate-400 text-xs">
+                          {app.downloads}
+                        </td>
+
+                        {/* Action Column */}
+                        <td className="py-4 px-6 text-center">
+                          <Link 
+                            to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                            className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black font-black py-2.5 px-3 rounded-lg text-[10px] uppercase tracking-wider text-center transition-all inline-flex items-center justify-center gap-1.5 font-sans shadow-md"
+                          >
+                            <Download className="w-3.5 h-3.5 stroke-[3]" />
+                            GET LINK
+                          </Link>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </AnimatePresence>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Matrix layout for MOBILE touch screens */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
               <AnimatePresence mode="popLayout">
-                {filteredApps.length > 0 ? (
-                  filteredApps.map((app, index) => (
-                    <motion.div
-                      key={app.id}
-                      layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.4, delay: index * 0.01 }}
-                    >
-                      <AppCard app={app} />
-                    </motion.div>
-                  ))
-                ) : (
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="col-span-full py-20 text-center"
+                {topRecommendedApps.map((app, index) => (
+                  <motion.div
+                    key={app.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="bg-[#131b2e] rounded-2xl border border-white/10 p-4 relative overflow-hidden flex flex-col justify-between"
                   >
-                    <Search className="w-12 h-12 text-white/10 mx-auto mb-4" />
-                    <h3 className="text-xl font-black uppercase italic text-white/40">No Apps Found</h3>
-                    <p className="text-white/20 text-sm mt-2 uppercase tracking-widest font-bold">Try searching for something else</p>
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="mt-6 text-brand-primary underline uppercase tracking-widest text-[10px] font-black"
+                    {/* Rank Indicator Corner */}
+                    <span className="absolute top-3 right-4 font-mono text-xs font-black text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20">
+                      RANK #{String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <div className="flex gap-3.5 items-center mb-4">
+                      <img 
+                        src={app.iconUrl} 
+                        alt={app.name} 
+                        className="w-12 h-12 rounded-xl object-contain border border-white/10"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div>
+                        <h3 className="font-black uppercase italic text-white text-base leading-tight">
+                          {app.name}
+                        </h3>
+                        <div className="flex items-center gap-1 mt-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 bg-black/20 rounded-xl p-3 border border-white/5 text-center mb-4 text-[10px] font-bold">
+                      <div>
+                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">BONUS</span>
+                        <span className="text-brand-primary-light font-black uppercase italic">{app.bonus}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">CASHOUT</span>
+                        <span className="text-white font-black italic">{app.minWithdrawal}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">USERS</span>
+                        <span className="text-slate-400 font-black">{app.downloads}</span>
+                      </div>
+                    </div>
+
+                    <Link 
+                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                      className="w-full bg-gradient-to-r from-brand-primary to-amber-500 text-black font-black py-3 rounded-xl uppercase tracking-widest text-[10px] text-center transition-all flex items-center justify-center gap-1.5"
                     >
-                      Clear Search
-                    </button>
+                      <Download className="w-4 h-4 stroke-[3]" />
+                      DOWNLOAD SECURE APK
+                    </Link>
                   </motion.div>
-                )}
+                ))}
               </AnimatePresence>
+            </div>
+
+            {/* In case of search miss, offer a direct deep bridge into alphabetical silo catalog */}
+            {topRecommendedApps.length === 0 && (
+              <div className="p-10 bg-[#131b2e] border border-white/10 rounded-2xl text-center max-w-lg mx-auto mt-6">
+                <Search className="w-10 h-10 text-slate-500 mx-auto mb-3" />
+                <h4 className="text-base font-black uppercase">Not listed in Top 10</h4>
+                <p className="text-xs text-slate-400 mt-2 font-semibold">
+                  We only showcase our top 10 recommended apps on the Home hub. However, your game may be cataloged inside our comprehensive directories!
+                </p>
+                
+                <Link 
+                  to={`/all-rummy-apps?q=${encodeURIComponent(searchQuery)}`}
+                  className="mt-5 inline-flex items-center gap-1 bg-brand-primary text-black font-black text-xs px-5 py-3 rounded-lg shadow-md uppercase hover:brightness-110 transition-all"
+                >
+                  Search master list directory for "{searchQuery}" <ArrowRight className="w-4 h-4 ml-1" />
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* STRUCTURAL SEO SILOS SECTION (Core Silo Navigation links) */}
+        {/* ========================================================= */}
+        <section className="py-16 bg-gradient-to-b from-[#0e1423] to-[#0c0f1a] border-t border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* SILO 1: Complete Master Directory */}
+              <div className="bg-[#141d30] border border-white/10 rounded-3xl p-6 sm:p-10 relative overflow-hidden group hover:border-brand-primary/40 transition-all flex flex-col justify-between">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-brand-primary/5 blur-[80px] rounded-full" />
+                
+                <div className="relative z-10 w-full">
+                  <span className="bg-brand-primary/10 border border-brand-primary/30 text-brand-primary text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full mb-4 inline-block">
+                    Silo Portal 01
+                  </span>
+                  
+                  <div className="my-4 rounded-2xl overflow-hidden border border-white/10 h-44 bg-[#0a0f1d] relative">
+                    <img 
+                      src="/images/rummy_hero_banner_1779106054279.png" 
+                      alt="Download All Rummy Apps" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent p-4 flex flex-col justify-end">
+                      <span className="bg-brand-primary text-black text-[9px] font-black uppercase px-2 py-0.5 rounded-md w-fit mb-1.5 font-sans">100+ Games Live</span>
+                      <h4 className="text-sm font-black uppercase italic text-white leading-tight">DOWNLOAD ALL RUMMY APPS TODAY</h4>
+                    </div>
+                  </div>
+                </div>
+
+                <Link 
+                  to="/all-rummy-apps"
+                  className="w-full bg-gradient-to-r from-brand-primary via-brand-primary-light to-yellow-400 hover:brightness-110 text-black font-black py-4 rounded-xl text-xs uppercase tracking-widest text-center transition-all inline-flex items-center justify-center gap-2 mt-4 shadow-lg shadow-brand-primary/25 hover:shadow-brand-primary/45 hover:scale-[1.02] active:scale-95 transform duration-300"
+                >
+                  ALL RUMMY APPS
+                  <ChevronRight className="w-4 h-4 text-black stroke-[3]" />
+                </Link>
+              </div>
+
+              {/* SILO 2: Highest ₹51 welcome rewards */}
+              <div className="bg-[#141d30] border border-white/10 rounded-3xl p-6 sm:p-10 relative overflow-hidden group hover:border-amber-500/40 transition-all flex flex-col justify-between">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 blur-[80px] rounded-full" />
+                
+                <div className="relative z-10">
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-500 text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full">
+                    Silo Portal 02
+                  </span>
+                  
+                  <h3 className="text-xl sm:text-2xl font-black uppercase italic text-white mt-4 mb-2 group-hover:text-brand-primary-light transition-colors">
+                    ₹51 Welcome Benefits Hub
+                  </h3>
+                  
+                  <p className="text-xs text-slate-400 font-semibold leading-relaxed mb-6">
+                    Filter by incentives size immediately! Jump directly to high-margin welcome apps that guarantee <strong>exactly ₹51 on mobile OTP binding</strong> with calculated totals estimator rules.
+                  </p>
+                </div>
+
+                <Link 
+                  to="/rummy-51-bonus"
+                  className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 text-black font-black py-4 rounded-xl text-xs uppercase tracking-widest text-center transition-all inline-flex items-center justify-center gap-2"
+                >
+                  Access ₹51 Bonus Apps
+                  <ArrowRight className="w-4 h-4 stroke-[3]" />
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -363,9 +557,24 @@ function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer id="contact" className="bg-black/50 py-4 px-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">
+      <footer id="contact" className="bg-black/50 py-6 px-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">
         <span>© 2024 rummyBonusapps.com. All Rights Reserved.</span>
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="flex flex-wrap justify-center items-center gap-6">
+          <Link to="/all-rummy-apps" className="hover:text-brand-primary text-slate-300 transition-colors font-black">RUMMY DIRECTORY</Link>
+          <button 
+            type="button"
+            onClick={() => setIsAboutOpen(true)} 
+            className="hover:text-brand-primary text-slate-300 transition-colors uppercase font-black cursor-pointer"
+          >
+            ABOUT
+          </button>
+          <button 
+            type="button"
+            onClick={() => setIsDisclaimerOpen(true)} 
+            className="hover:text-brand-primary text-slate-300 transition-colors uppercase font-black cursor-pointer"
+          >
+            DISCLAIMER
+          </button>
           <span className="hover:text-brand-primary cursor-pointer transition-colors">T&C Apply</span>
           <span className="hover:text-brand-primary cursor-pointer transition-colors">18+ Responsible Gaming</span>
           <a href="mailto:support@rummybonus.com" className="hover:text-brand-primary transition-colors lowercase">support@rummybonus.com</a>
@@ -554,12 +763,27 @@ function AppRouteHandler() {
   return <AppDetailPage />;
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <HelmetProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          {/* SEO Silo Directory Routes */}
+          <Route path="/all-rummy-apps" element={<AllRummyAppsPage />} />
+          <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
+
           {/* Explicitly defined separate pages as requested */}
           <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
           <Route path="/uttam1600" element={<DynamicUttamPage idOverride="1600" />} />

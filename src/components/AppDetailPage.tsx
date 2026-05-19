@@ -40,12 +40,12 @@ export default function AppDetailPage() {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": app.name,
-            "operatingSystem": "Android",
+            "operatingSystem": "Android, iOS",
             "applicationCategory": "GameApplication",
             "aggregateRating": {
               "@type": "AggregateRating",
-              "ratingValue": "5.0",
-              "ratingCount": app.downloads.replace(/[^0-9]/g, '') || "1000"
+              "ratingValue": app.name === "Rummy Gold" ? "4.7" : "4.8",
+              "ratingCount": app.name === "Rummy Gold" ? "18450" : (app.downloads.replace(/[^0-9]/g, '') || "18450")
             },
             "offers": {
               "@type": "Offer",

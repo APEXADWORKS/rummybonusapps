@@ -1,0 +1,8 @@
+{
+  "name": "rummyBonusapps.com",
+  "description": "Download top Rummy apps and claim exclusive bonus offers on rummyBonusapps.com Your direct portal to the best Rummy games in India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

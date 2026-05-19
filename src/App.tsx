@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -24,6 +24,7 @@ import RummyBlog3 from './components/RummyBlog3';
 import RummyBlog4 from './components/RummyBlog4';
 import RummyBlog5 from './components/RummyBlog5';
 import RummyBlog6 from './components/RummyBlog6';
+import ApexdinLandingPage from './components/ApexdinLandingPage';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,9 +33,9 @@ function HomePage() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const mahaLootBanner = "/static-images/maha_loot_banner_1779179081106.png";
-  const rozRummyBanner = "/static-images/roz_rummy_banner_1779179099457.png";
-  const withdrawalProofBanner = "/static-images/withdrawal_proof_banner_1779179116289.png";
+  const mahaLootBanner = "/images/maha_loot_banner_1779179081106.png";
+  const rozRummyBanner = "/images/roz_rummy_banner_1779179099457.png";
+  const withdrawalProofBanner = "/images/withdrawal_proof_banner_1779179116289.png";
 
   const filteredApps = useMemo(() => {
     return RUMMY_APPS.filter(app => {
@@ -58,9 +59,10 @@ function HomePage() {
         <nav className="bg-bg-secondary border-b border-brand-primary/30 py-1.5">
           <Link to="/" className="max-w-7xl mx-auto px-4 text-center flex justify-center items-center gap-3 hover:opacity-90 transition-opacity">
             <img 
-              src="/static-images/header_logo_1779187397600.png" 
+              src="/images/all_rummy_1to1_logo_1779225745385.png" 
               alt="Bonus Rummy Apps Logo" 
-              className="h-10 sm:h-16 w-auto object-contain"
+              className="h-10 sm:h-12 w-auto object-contain rounded-lg shadow-lg border border-brand-primary/20"
+              referrerPolicy="no-referrer"
             />
             <h1 className="text-[10px] sm:text-lg font-black uppercase italic tracking-wider text-white">
               All Rummy Bonus Apps - <span className="text-brand-primary">Download</span> & Get <span className="text-brand-primary-light">Free Bonus</span>
@@ -538,6 +540,20 @@ function HomePage() {
   );
 }
 
+function AppRouteHandler() {
+  const { appName } = useParams<{ appName: string }>();
+  
+  if (appName && appName.startsWith('apexdin')) {
+    const idStr = appName.replace('apexdin', '');
+    const idVal = parseInt(idStr, 10);
+    if (!isNaN(idVal) && idVal >= 1001 && idVal <= 1100) {
+      return <ApexdinLandingPage idOverride={idStr} />;
+    }
+  }
+  
+  return <AppDetailPage />;
+}
+
 export default function App() {
   return (
     <HelmetProvider>
@@ -604,7 +620,7 @@ export default function App() {
           <Route path="/rummyblog4" element={<RummyBlog4 />} />
           <Route path="/rummyblog5" element={<RummyBlog5 />} />
           <Route path="/rummyblog6" element={<RummyBlog6 />} />
-          <Route path="/:appName" element={<AppDetailPage />} />
+          <Route path="/:appName" element={<AppRouteHandler />} />
         </Routes>
       </Router>
     </HelmetProvider>
@@ -641,7 +657,7 @@ function AppCard({ app }: { app: RummyApp }) {
       </div>
 
       <Link 
-        to={`/${encodeURIComponent(app.name)}`}
+        to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
         target="_blank"
         className="w-full bg-gradient-to-b from-brand-primary-light to-brand-primary text-black font-black py-3 rounded-lg shadow-lg shadow-brand-primary/20 uppercase tracking-wide text-xs text-center hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
       >

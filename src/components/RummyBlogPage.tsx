@@ -10,24 +10,29 @@ import {
   Info
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { RUMMY_APPS } from '../data';
 
 const RummyBlogPage = () => {
+  // Select top 4 games for download section
+  const topGames = RUMMY_APPS.filter(app => ['jungle-haan', 'rummy-boss', 'rummy-wealth', 'rummy-noble'].includes(app.id));
+
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
         <title>All Rummy App List 2026 - Download Best Rummy All Apk & Get Bonus</title>
-        <meta name="description" content="Ultimate guide to All Rummy Apps 2026. Get the complete Rummy All Apk download list. Learn how to get Rummy 51 bonus, new rummy app today updates and more." />
+        <meta name="description" content="Ultimate extensive guide to All Rummy Apps 2026. Get the complete Rummy All Apk download list. Learn how to get Rummy 51 bonus, new rummy app today updates and more." />
         <meta name="keywords" content="All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list" />
         <link rel="canonical" href="https://allrummybonus.com/rummyblog1" />
       </Helmet>
 
-      {/* Header (Matching App.tsx style) */}
+      {/* Header */}
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">
         <Link to="/" className="max-w-7xl mx-auto px-4 flex justify-center items-center gap-3">
           <img 
-            src="/static-images/header_logo_1779187397600.png" 
+            src="/images/all_rummy_1to1_logo_1779225745385.png" 
             alt="Bonus Rummy Apps Logo" 
-            className="h-10 sm:h-12 w-auto object-contain"
+            className="h-10 w-auto object-contain rounded-lg shadow-md border border-brand-primary/20"
+            referrerPolicy="no-referrer"
           />
           <h1 className="text-sm sm:text-lg font-black uppercase italic tracking-wider text-white">
             All Rummy Bonus Apps
@@ -49,7 +54,7 @@ const RummyBlogPage = () => {
               <span className="bg-brand-primary text-black text-[10px] font-black uppercase px-3 py-1 rounded-full mb-4 inline-block">
                 Latest Guide 2026 - नई गाइड
               </span>
-              <h1 className="text-2xl sm:text-4xl font-black uppercase italic italic leading-tight text-white mb-4 drop-shadow-xl">
+              <h1 className="text-2xl sm:text-4xl font-black uppercase italic leading-tight text-white mb-4 drop-shadow-xl">
                 The Ultimate Guide to <span className="text-brand-primary">All Rummy Apps</span> List 2026: सभी रमी ऐप्स की लिस्ट
               </h1>
               <div className="flex items-center justify-center gap-4 text-xs text-white/60 font-bold uppercase tracking-widest">
@@ -64,21 +69,60 @@ const RummyBlogPage = () => {
           <div className="p-6 sm:p-10 prose prose-invert max-w-none prose-p:text-white/70 prose-p:leading-relaxed prose-headings:text-white prose-headings:font-black prose-headings:uppercase prose-headings:italic prose-a:text-brand-primary hover:prose-a:text-brand-primary-light prose-strong:text-brand-primary-light">
             
             <p className="text-lg font-medium text-white/90">
-              Kya aap sabse best <strong>All Rummy App List</strong> dhund rahe hain? Look no further! 2026 mein online Rummy ki duniya badal chuki hai. Naye apps, bade bonuses, aur fast withdrawals ke saath <strong>Rummy All Apk download</strong> ki complete list hum yahan provide kar rahe hain. 
+              Kya aap sabse best <strong>All Rummy App List</strong> dhund rahe hain? Look no further! 2026 mein online Rummy ki duniya badal chuki hai. Naye apps, bade bonuses, aur fast withdrawals ke saath <strong>Rummy All Apk download</strong> ki complete list hum yahan provide kar rahe hain. Is comprehensive guide mein hum rami khelne ke tarike, bonus claim karne ke rules, aur pure safe downloads details ke baare mein baat karenge. Humara maqsad aapko digital rummy ke sabhi pehluon se rubaru karana hai taaki aap safely khel sakein aur behtareen munafa kama sakein.
             </p>
 
-            <h2 id="history-rummy">History of Online Rummy in India - भारत में रमी का इतिहास</h2>
+            <h2 id="history-rummy">History of Online Rummy in India - भारत में रमी का इतिहास और विकास</h2>
             <p>
-              Rummy India ka ek bahut purana aur sanskritik game hai. Pehle log diwali ya family gatherings mein ise physically khelte thhe, lekin digital revolution ke baad, <strong>All Rummy Apps</strong> ne ise har ghar tak pahuncha diya hai. Aaj, online rummy sirf ek shauk nahi, balki ek professional skill game ban chuka hai jahan log millions mein paise jeet rahe hain.
+              Rummy India ka ek bahut purana aur sanskritik game hai. Pehle log diwali ya family gatherings mein ise physically cards ke saath khelte thhe, lekin digital revolution aur high-speed internet ke baad, <strong>All Rummy Apps</strong> ne ise har ghar tak pahuncha diya hai. Supreme Court of India ne online Rummy ko "Game of Skill" ka darja diya hai, jisse iski legality bilkul clear ho gayi hai. Online formats mein digital shuffling systems aur random number generators use kiye jaate hain, jiski wajah se online rummy aur bhi transparent aur fair ban gayi hai. Aaj kal log ise sirf doston ke sath hi nahi balki bade national tournaments mein professional stars ke taur par khelte hain jahan lakhs ke cash prize pools hote hain.
             </p>
 
             <h2 id="why-all-rummy-apps">Why People Love All Rummy Apps? - रमी ऐप्स क्यों पसंद हैं?</h2>
             <p>
-              India mein <strong>Rummy All Apps</strong> ka craze bahut badh gaya hai. Iska sabse bada reason hai ki aap apni skills dikha kar <strong>Real Cash</strong> jeet sakte hain. Local casinos jaane ki zaroorat nahi, ab aapke pocket mein hi pura game hai through <strong>Rummy All Apk</strong>. 
+              India mein <strong>Rummy All Apps</strong> ka craze bahut badh gaya hai. Iska sabse bada reason hai ki aap apni skills dikha kar <strong>Real Cash</strong> jeet sakte hain. Local clubs ya casinos jaane ki zaroorat nahi, ab aapke pocket mein hi pura game hai through <strong>Rummy All Apk</strong>. Iske sath hi, online apps par user interfaces itne advanced ho chuke hain ki aapko bilkul real-time table par baithne ka ehsaas hota hai.
             </p>
             <p>
-              Iske alawa, online platforms par aapko variant milte hain jaise Points Rummy, Pool Rummy aur Deals Rummy jo physical games mein possible nahi thhe. Aap kabhi bhi, kahin bhi (Travel karte waqt ya break mein) khel sakte hain.
+              Iske alawa, online platforms par aapko kayi tarah ke variants milte hain jaise Points Rummy, Pool Rummy, aur Deals Rummy jo offline physical card game mein possible nahi thhe. Aap kisi bhi samay, chahe travel karte waqt ho ya office break mein, seconds ke andar live matches shuru kar sakte hain aur fast payouts le sakte hain.
             </p>
+
+            {/* Embedded Top Games Download Segment */}
+            <div className="my-10 bg-gradient-to-br from-bg-secondary to-bg-dark rounded-3xl p-6 border border-brand-primary/20 shadow-xl">
+              <div className="flex items-center gap-3 mb-6">
+                <TrendingUp className="w-6 h-6 text-brand-primary" />
+                <h3 className="text-lg sm:text-xl font-black uppercase italic tracking-wider text-white m-0">
+                  🔥 Top Recommended Rummy Games to Download - बेहतरीन गेम्स लिस्ट
+                </h3>
+              </div>
+              <p className="text-xs text-white/60 mb-6">
+                Ye 2026 ke sabse zyada downloaded aur verify kiye hue and trusted Rummy applications hain. Inhe abhi download karke free sign-up bonus claim karein:
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-0 p-0 list-none">
+                {topGames.map((app) => (
+                  <div key={app.id} className="bg-bg-dark/80 rounded-2xl p-4 border border-white/5 flex gap-4 items-center justify-between hover:border-brand-primary/30 transition-all">
+                    <div className="flex gap-3 items-center">
+                      <img src={app.iconUrl} alt={app.name} className="w-14 h-14 rounded-xl object-cover border border-white/10" referrerPolicy="no-referrer" />
+                      <div>
+                        <h4 className="text-sm font-black text-white m-0 uppercase tracking-tight">{app.name}</h4>
+                        <div className="flex items-center gap-1.5 text-[10px] text-green-400 font-bold m-0 mt-1">
+                          Bonus: {app.bonus}
+                        </div>
+                        <div className="text-[9px] text-white/40 font-bold m-0">
+                          Min. Withdraw: {app.minWithdrawal}
+                        </div>
+                      </div>
+                    </div>
+                    <Link 
+                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                      className="bg-brand-primary text-black font-black uppercase text-[10px] px-3.5 py-2.5 rounded-lg tracking-widest flex items-center gap-1 hover:scale-105 active:scale-95 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      GET
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="bg-bg-dark/50 p-6 rounded-2xl border border-white/5 my-8">
               <h3 className="flex items-center gap-2 mt-0">
@@ -87,15 +131,15 @@ const RummyBlogPage = () => {
               </h3>
               <ul className="list-none p-0 space-y-3">
                 {[
-                  "Bada Signup Bonus (₹41 to ₹51 Free): Bina kisi deposit ke khelne ka mauka.",
-                  "Instant Withdrawal direct Bank/UPI mein: Aapka jeeta hua paisa 2 minute mein bank mein.",
-                  "Multiple Games (Dragon vs Tiger, Teen Patti, etc.): Ek hi app mein 20+ games.",
-                  "24/7 Telegram Customer Support: Koi bhi issue ho, solution turant milega.",
-                  "100% Safe and Secure Payment: Trusted gateways like Razorpay aur Paytm connectivity.",
-                  "Refer and Earn: Doston ko invite karke lifetime commission kamaein."
+                  "Bada Signup Bonus (₹41 to ₹51 Free): Bina kisi deposit ke khelne ka mauka directly.",
+                  "Instant Withdrawal direct Bank/UPI mein: Aapka jeeta hua paisa 2 minute mein bank account mein transfer.",
+                  "Multiple Games (Dragon vs Tiger, Teen Patti, etc.): Ek hi app ke andar 20+ exciting variations.",
+                  "24/7 Dedicated Customer Support: Koi bhi balance issue ho, solution turant Telegram ya Whatsapp par.",
+                  "100% Safe and Secure Payment Method: Fully encrypted gateway support.",
+                  "Refer and Earn Scheme: Doston ko link refer karke lifetime commissions aur referral cash kamaein."
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3 text-sm text-white/70">
-                    <ChevronRight className="w-4 h-4 text-brand-primary mt-0.5" />
+                    <ChevronRight className="w-4 h-4 text-brand-primary mt-0.5 shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -104,21 +148,21 @@ const RummyBlogPage = () => {
 
             <h2 id="rummy-51-bonus">Understanding the Rummy 51 Bonus - ₹51 बोनस कैसे मिलेगा?</h2>
             <p>
-              Aaj kal har koi <strong>Rummy 51 Bonus</strong> ke baare mein search kar raha hai. Rummy Wealth, Rummy Noble, aur Rummy Ares jaise apps aapko mobile number bind karte hi ₹51 ka free cash dete hain. Humari <strong>all rummy app list</strong> check karein aur dekhen kaunsa app sabse zyada bonus de raha hai.
+              Aaj kal online gaming landscape mein har user <strong>Rummy 51 Bonus</strong> ke baare mein search kar raha hai. Rummy Wealth, Rummy Noble, aur Rummy Ares jaise iconic apps aapko mobile number bind karte hi ₹51 ka guaranteed free cash dete hain. Is free bonus se aap real cash tables par cash games khel sakte hain. 
             </p>
             <p>
-              Lekin yaad rakhein, ye bonus hamesha withdrawable nahi hota. Iske liye aapko 'Wagers' poore karne hote hain. For example, agar aapko ₹51 bonus milta hai, toh aapko kam se kam ₹500 ya ₹1000 ki game play dikhani hogi withdraw karne se pehle. Isliye hamesha app ke 'Terms and Conditions' padhein.
+              Lekin humesha dhyan rakhein, ye signup bonus directly withdrawable nahi hota. Iske badle aapko game play ke rules ke certain wagering bounds clear karne hote hain. For example, agar aapko registration par ₹51 bonus mila hai, toh aapko lagbhag half or equal wagering turnover levels poore karne honge. Isliye hamesha play button dabane se pehle game app ke legal conditions padh len.
             </p>
 
             <h2 id="how-to-download">How to Safely Download? - सुरक्षित डाउनलोड कैसे करें?</h2>
             <p>
-              Real money apps download karte waqt safety ka dhyan rakhna zaroori hai. In steps ko follow karein:
+              Real money skill apps download karte waqt aur personal profile set up karte waqt humesha safety maintain karni chahiye. In security measures ko carefully follow karein:
             </p>
             <ol>
-              <li>Hamesha verified source jaise <strong>allrummybonus.com</strong> use karein. Google Play Store aksar in apps ko allow nahi karta policies ki wajah se.</li>
-              <li>Android settings mein "Install from Unknown Sources" enable karein.</li>
-              <li>Official logo verify karein (jaise Holy Rummy ya Royally Rummy). Duplicate apps se bachein kyunki wo aapka data chura sakte hain.</li>
-              <li>App size check karein—usually 30MB se 60MB ke beech hota hai. Agar app bahut chota hai (2-3MB), toh wo scam ho sakta hai.</li>
+              <li>Humesha trusted sources jaise <strong>allrummybonus.com</strong> use karein jo 100% organic verified links deliver karte hain. Play Store aksar in real cash gaming platforms ko host nahi karta security policies aur local legal system restrictions ki vajah se.</li>
+              <li>Sarf download complete karne ke baad, phone setting me jaakar "Install from Unknown Sources" option activate karein.</li>
+              <li>Direct downloading page par official identity verify karein. Duplicate phishing software se safe rahein kyunki wo user transactions exploit kar sakte hain.</li>
+              <li>Size verify karein, ideal apps hamesha 30 to 70 MB size scale parameters ke standard bounds me hi build hote hain.</li>
             </ol>
 
             <div className="my-12 text-center">
@@ -127,46 +171,43 @@ const RummyBlogPage = () => {
                 className="inline-flex items-center gap-3 bg-brand-primary text-black font-black px-10 py-5 rounded-full shadow-2xl shadow-brand-primary/20 hover:scale-105 active:scale-95 transition-all text-sm uppercase tracking-widest"
               >
                 <Download className="w-5 h-5" />
-                Download All Rummy Apps - अभी डाउनलोड करें
+                Go to Main List - सभी रमी ऐप्स देखें
               </Link>
             </div>
 
-            <h2 id="advanced-strategies">Professional Rummy Strategies - जीतने के सीक्रेट्स</h2>
+            <h2 id="advanced-strategies">Professional Rummy Strategies - जीतने के बेहतरीन गुप्त सीक्रेट्स</h2>
             <p>
-              Rummy sirf naseeb ka khel nahi hai. Agar aapko <strong>All Rummy App List</strong> mein top par rehna hai, toh aapko ye strategies seekhni hongi:
+              Indian Rummy sirf luck ya kismat ke bharose nahi kheli jati, ye purely ek mental skills ki skill warfare hai. Agar aap All Rummy apps list me topper banna chahte hain, toh ye tips follow karein:
             </p>
             <ul>
-              <li><strong>Pure Sequence First:</strong> Bina pure sequence ke (Raja, Rani, Gulam ek hi color ke), aap winning declaration nahi kar sakte. Ise sabse pehle banayein.</li>
-              <li><strong>Middle Card Value:</strong> 5, 6, 7 jaise cards bahut kaam ke hote hain kyunki ye dono taraf se sequence bana sakte hain.</li>
-              <li><strong>Watching Opponents:</strong> Opponent kaunsa card discard kar raha hai aur kaunsa utha raha hai, is par nazar rakhein. Isse aap unka set guess kar sakte hain.</li>
-              <li><strong>Bluffing:</strong> Kabhi-kabhi high card discard karke opponent ko confuse karna bhi ek art hai.</li>
+              <li><strong>Prioritize Pure Sequence:</strong> Ek proper pure sequence ke bina (same brand color suits sequence, e.g., 5-6-7 of club), aap valid and winning declaration nahi kar sakte. Match shuru hote hi ispe focus karein.</li>
+              <li><strong>Discard High Value Cards:</strong> Kings, Queens, Aces aur Jacks high points carry karte hain. Agar ye sets me form nahi ho rahe, to inhein early discard karein taaki loss points low rahein.</li>
+              <li><strong>Observe Opponent Moves:</strong> Dusra player pile se kaunse card select kar raha hai aur kaunse discard, ispe close and strict monitoring lagayein taaki unki strategy counter ki ja sake.</li>
+              <li><strong>Smart Joker Usage:</strong> Joker cards are lifesavers. Inhein long value sequence setups complete karne ya blocks join karne me efficiently use karein.</li>
             </ul>
 
-            <h2 id="faq">Frequent Asked Questions (FAQ) - सामान्य सवाल</h2>
+            <h2 id="faq">Frequent Asked Questions (FAQ) - सामान्य बुनियादी सवाल</h2>
             <div className="space-y-6">
               <div className="border-b border-white/10 pb-4">
-                <h4 className="text-brand-primary text-base mb-2 italic">1. Kya online rummy apps legal hain?</h4>
-                <p className="text-sm">Haan, Supreme Court of India ne rami ko "Game of Skill" maana hai, isliye ye legal hai. Halaanki, Odisha aur Andhra Pradesh jaise states mein local laws alag ho sakte hain.</p>
+                <h4 className="text-brand-primary text-base mb-2 italic">1. Kya online real cash rummy legal hai India mein?</h4>
+                <p className="text-sm">Haan, Honourable Supreme Court of India ke legal parameters ke anusar, rummy pure mathematical logic aur mental precision pe based skill activity hai, jisse iska status legal consider hota hai. Halanki, Telangana, Andhra Pradesh aur Assam jaise states me limits ho sakti hain.</p>
               </div>
               <div className="border-b border-white/10 pb-4">
-                <h4 className="text-brand-primary text-base mb-2 italic">2. ₹51 bonus withdrawal kaise hota hai?</h4>
-                <p className="text-sm">Bonus se bazi jeetne ke baad jab aapka balance ₹100 se upar ho jata hai, tab aap use redeem kar sakte hain. Kuch apps mein ₹100 deposit karna zaroori hota hai pehli baar withdraw karne ke liye.</p>
+                <h4 className="text-brand-primary text-base mb-2 italic">2. Rummy 51 signing bonus directly transfer kiya ja sakta hai?</h4>
+                <p className="text-sm">Nahi, registration ke immediately baad milne wala bonus matches play karne ke liye diya jata hai. Jab aap matches jeet kar threshold clear kar lete hain tab balance pay out safe ho jata hai.</p>
               </div>
               <div className="border-b border-white/10 pb-4">
-                <h4 className="text-brand-primary text-base mb-2 italic">3. Sabse fast withdrawal kaun deta hai?</h4>
-                <p className="text-sm">Humare test ke mutabik, Rummy Modern aur Holy Rummy currently 2 to 5 minutes mein withdrawal complete kar rahe hain.</p>
+                <h4 className="text-brand-primary text-base mb-2 italic">3. Deposits handle karne ka sabse safe option kya hai?</h4>
+                <p className="text-sm">UPI (Unified Payments Interface) payments integration is instant, safe, aur lightning-fast, isliye iska processing experience smooth hai aur direct payment updates ho jate hain.</p>
               </div>
             </div>
 
-            <h2 id="conclusion">Final Thoughts - आखिरी बात</h2>
+            <h2 id="conclusion">Concluding Thoughts - फाइनल वर्ड</h2>
             <p>
-              <strong>All Rummy Apps</strong> ka market har hafte naya hota hai. Humari team har <strong>Rummy All Apk</strong> ko test karti hai—withdrawal speed aur customer support check karne ke baad hi list mein add karti hai. 
+              2026 gaming community ke mutabik <strong>All Rummy Apps</strong> ka market kaafi robust aur dynamic ho gaya hai. Humari experts team har ek <strong>Rummy All Apk</strong> ki safety, testing performance parameters, checkout speeds aur genuine customer interaction status verify karti hai, tabhi use list me update karti hai.
             </p>
             <p>
-              Yaad rakhein, gaming limit mein hi achi hoti hai. Kabhi bhi gusse mein aakar ya loan lekar game na khelein. Rummy ko ek entertainment ke taur par dekhein.
-            </p>
-            <p>
-              Toh intezar kis baat ka? Abhi koi bhi verified app download karein aur apna <strong>free signup bonus rummy</strong> claim karein. Good luck for your next big win!
+              Lekin humesha strictly guidelines keep karein: gaming ko as an entertainment and hobby scale hi design karein. Gusse me aakar, pressure me aakar ya udhaar lekar balance load na karein. Play and win with absolute logic and wisdom. Claim your signup incentives safely today!
             </p>
 
           </div>
@@ -194,7 +235,7 @@ const RummyBlogPage = () => {
                 18+ Warning
              </div>
           </div>
-          <p className="text-white/40 text-xs italic leading-relaxed">
+          <p className="text-white/40 text-xs italic leading-relaxed font-bold">
             These games involve an element of financial risk and may be addictive. Please play responsibly and at your own risk. This article is for informational purposes only.
           </p>
         </section>

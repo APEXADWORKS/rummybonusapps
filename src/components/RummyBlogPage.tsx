@@ -25,7 +25,7 @@ const RummyBlogPage = () => {
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">
         <Link to="/" className="max-w-7xl mx-auto px-4 flex justify-center items-center gap-3">
           <img 
-            src="/images/header_logo_1779187397600.png" 
+            src="/static-images/header_logo_1779187397600.png" 
             alt="Bonus Rummy Apps Logo" 
             className="h-10 sm:h-12 w-auto object-contain"
           />

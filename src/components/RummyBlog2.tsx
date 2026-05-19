@@ -22,7 +22,7 @@ const RummyBlog2 = () => {
 
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">
         <Link to="/" className="max-w-7xl mx-auto px-4 flex justify-center items-center gap-3">
-          <img src="/images/header_logo_1779187397600.png" alt="Logo" className="h-10 sm:h-12 w-auto object-contain" />
+          <img src="/static-images/header_logo_1779187397600.png" alt="Logo" className="h-10 sm:h-12 w-auto object-contain" />
           <h1 className="text-sm sm:text-lg font-black uppercase italic tracking-wider text-white">All Rummy Bonus Apps</h1>
         </Link>
       </header>
@@ -31,7 +31,7 @@ const RummyBlog2 = () => {
         <motion.article initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1e293b] rounded-3xl border border-white/5 overflow-hidden shadow-2xl">
           <div className="relative h-64 sm:h-80 overflow-hidden">
             <img 
-              src="/images/rummy_hero_banner_1779106054279.png" 
+              src="/static-images/rummy_hero_banner_1779106054279.png" 
               alt="New Rummy App Today" 
               className="w-full h-full object-cover opacity-60"
             />

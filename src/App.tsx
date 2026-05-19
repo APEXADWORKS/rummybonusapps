@@ -32,9 +32,9 @@ function HomePage() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const mahaLootBanner = "/images/maha_loot_banner_1779179081106.png";
-  const rozRummyBanner = "/images/roz_rummy_banner_1779179099457.png";
-  const withdrawalProofBanner = "/images/withdrawal_proof_banner_1779179116289.png";
+  const mahaLootBanner = "/static-images/maha_loot_banner_1779179081106.png";
+  const rozRummyBanner = "/static-images/roz_rummy_banner_1779179099457.png";
+  const withdrawalProofBanner = "/static-images/withdrawal_proof_banner_1779179116289.png";
 
   const filteredApps = useMemo(() => {
     return RUMMY_APPS.filter(app => {
@@ -58,7 +58,7 @@ function HomePage() {
         <nav className="bg-bg-secondary border-b border-brand-primary/30 py-1.5">
           <Link to="/" className="max-w-7xl mx-auto px-4 text-center flex justify-center items-center gap-3 hover:opacity-90 transition-opacity">
             <img 
-              src="/images/header_logo_1779187397600.png" 
+              src="/static-images/header_logo_1779187397600.png" 
               alt="Bonus Rummy Apps Logo" 
               className="h-10 sm:h-16 w-auto object-contain"
             />

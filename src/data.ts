@@ -18,7 +18,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '150K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/jungle_haan_logo_png_1779114514699.png',
+    iconUrl: '/static-images/jungle_haan_logo_png_1779114514699.png',
     category: 'Top',
     isTrending: true,
   },
@@ -29,7 +29,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '380K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/boss_rummy_logo_final_1779114701840.png',
+    iconUrl: '/static-images/boss_rummy_logo_final_1779114701840.png',
     category: 'Top',
     isTrending: true,
   },
@@ -40,7 +40,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_wealth_logo_v2_1779115748787.png',
+    iconUrl: '/static-images/rummy_wealth_logo_v2_1779115748787.png',
     category: 'Top',
   },
   {
@@ -50,7 +50,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '350K+',
     minWithdrawal: '₹75',
     downloadLink: '#',
-    iconUrl: '/images/rummy_noble_logo_1779114643526.png',
+    iconUrl: '/static-images/rummy_noble_logo_1779114643526.png',
     category: 'High Bonus',
     isTrending: true,
   },
@@ -61,7 +61,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '170K+',
     minWithdrawal: '₹85',
     downloadLink: '#',
-    iconUrl: '/images/rummy_mars_logo_1779115945155.png',
+    iconUrl: '/static-images/rummy_mars_logo_1779115945155.png',
     category: 'Top',
   },
   {
@@ -71,7 +71,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '250K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_leader.webp',
+    iconUrl: '/static-images/rummy_leader.webp',
     category: 'New',
   },
   {
@@ -81,7 +81,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '184K+',
     minWithdrawal: 'Rs.80',
     downloadLink: '#',
-    iconUrl: '/images/Game_Rummy.webp',
+    iconUrl: '/static-images/Game_Rummy.webp',
     category: 'New',
   },
   {
@@ -91,7 +91,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/yono_rummy.webp',
+    iconUrl: '/static-images/yono_rummy.webp',
     category: 'High Bonus',
     isTrending: true,
   },
@@ -102,7 +102,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '250K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/msm_bet.webp',
+    iconUrl: '/static-images/msm_bet.webp',
     category: 'New',
   },
   {
@@ -112,7 +112,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '390K+',
     minWithdrawal: '₹85',
     downloadLink: '#',
-    iconUrl: '/images/rummy_patola.webp',
+    iconUrl: '/static-images/rummy_patola.webp',
     category: 'Top',
   },
   {
@@ -122,7 +122,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '250K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Rummy_Blast.webp',
+    iconUrl: '/static-images/Rummy_Blast.webp',
     category: 'New',
   },
   {
@@ -132,7 +132,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '280K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Holy_Rummy.webp',
+    iconUrl: '/static-images/Holy_Rummy.webp',
     category: 'High Bonus',
   },
   {
@@ -142,7 +142,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '450K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Rummy_Pride.jpg',
+    iconUrl: '/static-images/Rummy_Pride.jpg',
     category: 'High Bonus',
   },
   {
@@ -152,7 +152,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '255K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/MQM_BET.webp',
+    iconUrl: '/static-images/MQM_BET.webp',
     category: 'New',
   },
   {
@@ -162,7 +162,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '450K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/hello_rummy.webp',
+    iconUrl: '/static-images/hello_rummy.webp',
     category: 'High Bonus',
   },
   {
@@ -172,7 +172,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '460K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Love_Rummy.webp',
+    iconUrl: '/static-images/Love_Rummy.webp',
     category: 'Top',
   },
   {
@@ -182,7 +182,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '410K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Dash_Rummy.webp',
+    iconUrl: '/static-images/Dash_Rummy.webp',
     category: 'New',
   },
   {
@@ -192,7 +192,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '430K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_apna.PNG',
+    iconUrl: '/static-images/rummy_apna.PNG',
     category: 'Top',
   },
   {
@@ -202,7 +202,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '190K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_buddy.webp',
+    iconUrl: '/static-images/rummy_buddy.webp',
     category: 'New',
   },
   {
@@ -212,7 +212,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/Roz_Rummy.webp',
+    iconUrl: '/static-images/Roz_Rummy.webp',
     category: 'Top',
   },
   {
@@ -222,7 +222,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '168K+',
     minWithdrawal: '₹75',
     downloadLink: '#',
-    iconUrl: '/images/Rummy_Gold.webp',
+    iconUrl: '/static-images/Rummy_Gold.webp',
     category: 'High Bonus',
   },
   {
@@ -242,7 +242,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '10K',
     minWithdrawal: '₹85',
     downloadLink: '#',
-    iconUrl: '/images/Rummy_Guru.webp',
+    iconUrl: '/static-images/Rummy_Guru.webp',
     category: 'Top',
   },
   {
@@ -252,7 +252,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '390K+',
     minWithdrawal: '₹75',
     downloadLink: '#',
-    iconUrl: '/images/rummy_alliance.PNG',
+    iconUrl: '/static-images/rummy_alliance.PNG',
     category: 'Top',
   },
   {
@@ -272,7 +272,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '500K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/666e_rummy_logo_v2_1779121399166.png',
+    iconUrl: '/static-images/666e_rummy_logo_v2_1779121399166.png',
     category: 'High Bonus',
   },
   {
@@ -282,7 +282,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/gogo_rummy_logo_v2_1779121381572.png',
+    iconUrl: '/static-images/gogo_rummy_logo_v2_1779121381572.png',
     category: 'New',
   },
   {
@@ -292,7 +292,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/66_rummy_logo_v2_1779121365053.png',
+    iconUrl: '/static-images/66_rummy_logo_v2_1779121365053.png',
     category: 'Top',
   },
   {
@@ -302,7 +302,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '170K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/9ipl_game_logo_v2_1779121347560.png',
+    iconUrl: '/static-images/9ipl_game_logo_v2_1779121347560.png',
     category: 'New',
   },
   {
@@ -312,7 +312,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '510K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/abc_rummy_logo_v2_1779121330769.png',
+    iconUrl: '/static-images/abc_rummy_logo_v2_1779121330769.png',
     category: 'Top',
   },
   {
@@ -332,7 +332,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_prime_logo_v2_1779121314774.png',
+    iconUrl: '/static-images/rummy_prime_logo_v2_1779121314774.png',
     category: 'New',
   },
   {
@@ -342,7 +342,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/good_slots_logo_v2_1779121298165.png',
+    iconUrl: '/static-images/good_slots_logo_v2_1779121298165.png',
     category: 'Top',
   },
   {
@@ -352,7 +352,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '240K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_league_logo_v2_1779121282114.png',
+    iconUrl: '/static-images/rummy_league_logo_v2_1779121282114.png',
     category: 'New',
   },
   {
@@ -372,7 +372,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '480K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/yes_rummy_logo_1779121189385.png',
+    iconUrl: '/static-images/yes_rummy_logo_1779121189385.png',
     category: 'High Bonus',
   },
   {
@@ -382,7 +382,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_time_logo_v2_1779121173100.png',
+    iconUrl: '/static-images/rummy_time_logo_v2_1779121173100.png',
     category: 'Top',
   },
   {
@@ -392,7 +392,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '385K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_ola.webp',
+    iconUrl: '/static-images/rummy_ola.webp',
     category: 'Top',
   },
   {
@@ -402,7 +402,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '150K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_deity_logo_1779121147807.png',
+    iconUrl: '/static-images/rummy_deity_logo_1779121147807.png',
     category: 'New',
   },
   {
@@ -412,7 +412,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_grand_logo_1779121130667.png',
+    iconUrl: '/static-images/rummy_grand_logo_1779121130667.png',
     category: 'New',
   },
   {
@@ -422,7 +422,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/ok_rummy_logo_1779121116767.png',
+    iconUrl: '/static-images/ok_rummy_logo_1779121116767.png',
     category: 'Top',
   },
   {
@@ -442,7 +442,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '360K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_east_logo_1779121095779.png',
+    iconUrl: '/static-images/rummy_east_logo_1779121095779.png',
     category: 'Top',
   },
   {
@@ -452,7 +452,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '360K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_best_logo_1779121077942.png',
+    iconUrl: '/static-images/rummy_best_logo_1779121077942.png',
     category: 'High Bonus',
   },
   {
@@ -472,7 +472,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '490K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_zone_logo_1779120854231.png',
+    iconUrl: '/static-images/rummy_zone_logo_1779120854231.png',
     category: 'Top',
   },
   {
@@ -482,7 +482,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '470K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/bappa_rummy_logo_1779120836917.png',
+    iconUrl: '/static-images/bappa_rummy_logo_1779120836917.png',
     category: 'New',
   },
   {
@@ -502,7 +502,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '362K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/bingo_101_logo_1779120819116.png',
+    iconUrl: '/static-images/bingo_101_logo_1779120819116.png',
     category: 'New',
   },
   {
@@ -522,7 +522,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '260K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_paisa_logo_1779120804020.png',
+    iconUrl: '/static-images/rummy_paisa_logo_1779120804020.png',
     category: 'New',
   },
   {
@@ -532,7 +532,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '430K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/ind_rummy_logo_1779120790697.png',
+    iconUrl: '/static-images/ind_rummy_logo_1779120790697.png',
     category: 'Top',
   },
   {
@@ -542,7 +542,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '450K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_regal_logo_1779120774021.png',
+    iconUrl: '/static-images/rummy_regal_logo_1779120774021.png',
     category: 'New',
   },
   {
@@ -552,7 +552,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '460K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rumble_rummy_logo_1779120755739.png',
+    iconUrl: '/static-images/rumble_rummy_logo_1779120755739.png',
     category: 'High Bonus',
   },
   {
@@ -562,7 +562,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '330K',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_nabob_logo_v2_1779120707636.png',
+    iconUrl: '/static-images/rummy_nabob_logo_v2_1779120707636.png',
     category: 'Top',
   },
   {
@@ -572,7 +572,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '500K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/lcg_bet_logo_1779120692189.png',
+    iconUrl: '/static-images/lcg_bet_logo_1779120692189.png',
     category: 'New',
   },
   {
@@ -582,7 +582,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '185K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/hlowin_logo_1779120674750.png',
+    iconUrl: '/static-images/hlowin_logo_1779120674750.png',
     category: 'New',
   },
   {
@@ -602,7 +602,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '365K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_a1_logo_1779120658063.png',
+    iconUrl: '/static-images/rummy_a1_logo_1779120658063.png',
     category: 'High Bonus',
   },
   {
@@ -622,7 +622,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/yoyo_slots_logo_1779120623218.png',
+    iconUrl: '/static-images/yoyo_slots_logo_1779120623218.png',
     category: 'New',
   },
   {
@@ -632,7 +632,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '200K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/ek_rummy_logo_v2_1779120605524.png',
+    iconUrl: '/static-images/ek_rummy_logo_v2_1779120605524.png',
     category: 'New',
   },
   {
@@ -642,7 +642,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/jaiho_rummy_logo_1779120588855.png',
+    iconUrl: '/static-images/jaiho_rummy_logo_1779120588855.png',
     category: 'High Bonus',
   },
   {
@@ -652,7 +652,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_bloc_logo_1779120551091.png',
+    iconUrl: '/static-images/rummy_bloc_logo_1779120551091.png',
     category: 'Top',
   },
   {
@@ -672,7 +672,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '420K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_palace_logo_1779120533653.png',
+    iconUrl: '/static-images/rummy_palace_logo_1779120533653.png',
     category: 'Top',
   },
   {
@@ -682,7 +682,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '160K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_king_logo_1779120520116.png',
+    iconUrl: '/static-images/rummy_king_logo_1779120520116.png',
     category: 'High Bonus',
   },
   {
@@ -692,7 +692,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '465K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/yoswin_logo_1779120502006.png',
+    iconUrl: '/static-images/yoswin_logo_1779120502006.png',
     category: 'New',
   },
   {
@@ -702,7 +702,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '120K+',
     minWithdrawal: '₹2000',
     downloadLink: '#',
-    iconUrl: '/images/rummy_se_logo_1779120485580.png',
+    iconUrl: '/static-images/rummy_se_logo_1779120485580.png',
     category: 'High Bonus',
   },
   {
@@ -712,7 +712,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '400K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_try_logo_1779120467687.png',
+    iconUrl: '/static-images/rummy_try_logo_1779120467687.png',
     category: 'High Bonus',
   },
   {
@@ -732,7 +732,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '480K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_modern_logo_1779120451387.png',
+    iconUrl: '/static-images/rummy_modern_logo_1779120451387.png',
     category: 'Top',
   },
   {
@@ -742,7 +742,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '290K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_good_logo_1779120433763.png',
+    iconUrl: '/static-images/rummy_good_logo_1779120433763.png',
     category: 'New',
   },
   {
@@ -752,7 +752,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '580K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_ares_logo_1779120397880.png',
+    iconUrl: '/static-images/rummy_ares_logo_1779120397880.png',
     category: 'Top',
   },
   {
@@ -762,7 +762,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '185K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_gems_logo_1779120380405.png',
+    iconUrl: '/static-images/rummy_gems_logo_1779120380405.png',
     category: 'New',
   },
   {
@@ -772,7 +772,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '185K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/royally_rummy_logo_1779120362517.png',
+    iconUrl: '/static-images/royally_rummy_logo_1779120362517.png',
     category: 'High Bonus',
   },
   {
@@ -782,7 +782,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '320K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/rummy_most_logo_1779120641223.png',
+    iconUrl: '/static-images/rummy_most_logo_1779120641223.png',
     category: 'Top',
   },
   {
@@ -792,7 +792,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '180K+',
     minWithdrawal: '₹50',
     downloadLink: '#',
-    iconUrl: '/images/mpl_rummy_logo_1779120345561.png',
+    iconUrl: '/static-images/mpl_rummy_logo_1779120345561.png',
     category: 'Top',
   },
   {
@@ -802,7 +802,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '210K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_adda_logo_1779120329702.png',
+    iconUrl: '/static-images/rummy_adda_logo_1779120329702.png',
     category: 'New',
   },
   {
@@ -812,7 +812,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '290K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/rummy_mate_logo_1779120312999.png',
+    iconUrl: '/static-images/rummy_mate_logo_1779120312999.png',
     category: 'Top',
   },
   {
@@ -822,7 +822,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '450K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/kash_rummy_logo_1779120295938.png',
+    iconUrl: '/static-images/kash_rummy_logo_1779120295938.png',
     category: 'Top',
   },
   {
@@ -832,7 +832,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '110K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/334_rummy_logo_1779120279038.png',
+    iconUrl: '/static-images/334_rummy_logo_1779120279038.png',
     category: 'New',
   },
 ];

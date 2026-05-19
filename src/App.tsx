@@ -44,7 +44,7 @@ function HomePage() {
         <title>All Rummy Apps - Download Rummy All Apk & Get Free Bonus 2026</title>
         <meta name="description" content="Looking for the complete All Rummy App List? Download Rummy All Apk today! Get Rummy Bonus Apps, Rummy 51 Bonus, and New Rummy App Today with live withdrawal proof." />
         <meta name="keywords" content="All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games" />
-        <link rel="canonical" href="https://allrummybonus.com/" />
+        <link rel="canonical" href="https:///allrummybonus.com/" />
       </Helmet>
       {/* Sticky Header with two bars */}
       <header className="sticky top-0 z-50 shadow-2xl">
@@ -52,9 +52,9 @@ function HomePage() {
         <nav className="bg-bg-secondary border-b border-brand-primary/30 py-1.5">
           <Link to="/" className="max-w-7xl mx-auto px-4 text-center flex justify-center items-center gap-3 hover:opacity-90 transition-opacity">
             <img 
-              src="/images/rummy_app_icon_1_1779106072119.png" 
+              src="/images/header_logo_1779187397600.png" 
               alt="Bonus Rummy Apps Logo" 
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+              className="h-10 sm:h-16 w-auto object-contain"
             />
             <h1 className="text-[10px] sm:text-lg font-black uppercase italic tracking-wider text-white">
               All Rummy Bonus Apps - <span className="text-brand-primary">Download</span> & Get <span className="text-brand-primary-light">Free Bonus</span>

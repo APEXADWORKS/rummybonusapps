@@ -702,7 +702,7 @@ export const RUMMY_APPS: RummyApp[] = [
     downloads: '465K+',
     minWithdrawal: '₹100',
     downloadLink: '#',
-    iconUrl: '/images/yoswin_logo_1779120502006.png',
+    iconUrl: '/images/main_brand_logo_v2_1779187517106.png', // TODO: replace with actual Yoswin logo when available
     category: 'New',
   },
   {

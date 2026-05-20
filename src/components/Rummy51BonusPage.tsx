@@ -37,12 +37,12 @@ export default function Rummy51BonusPage() {
             <span className="text-xs font-black uppercase tracking-wider">Back to Hub</span>
           </Link>
           
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <Gift className="w-5 h-5 text-brand-primary animate-pulse" />
             <span className="text-xs sm:text-sm font-black uppercase italic tracking-widest text-[#fbbf24]">
               RUMMY 51 BONUS PORTAL
             </span>
-          </div>
+          </Link>
 
           <div className="hidden sm:flex items-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow-500 animate-ping" />

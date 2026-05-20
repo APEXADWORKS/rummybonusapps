@@ -64,7 +64,7 @@ export default function AllRummyAppsPage() {
             <span className="text-xs font-black uppercase tracking-wider">Back to Hub</span>
           </Link>
           
-          <div className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
             <img 
               src="/images/all_rummy_1to1_logo_1779225745385.png" 
               alt="Brand Logo" 
@@ -74,7 +74,7 @@ export default function AllRummyAppsPage() {
             <span className="text-xs sm:text-sm font-black uppercase italic tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-amber-300">
               ALL RUMMY DIRECTORY
             </span>
-          </div>
+          </Link>
 
           <div className="hidden sm:flex items-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />

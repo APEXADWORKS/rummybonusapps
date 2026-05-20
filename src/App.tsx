@@ -393,7 +393,7 @@ function HomePage() {
                   
                   <div className="my-4 rounded-2xl overflow-hidden border border-white/10 h-44 bg-[#0a0f1d] relative">
                     <img 
-                      src="/images/rummy_hero_banner_1779106054279.png" 
+                      src="/images/rummy_hero_banner_1779265218620.png" 
                       alt="Download All Rummy Apps" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       referrerPolicy="no-referrer"

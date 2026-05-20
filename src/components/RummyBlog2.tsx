@@ -37,7 +37,7 @@ const RummyBlog2 = () => {
         <motion.article initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1e293b] rounded-3xl border border-white/5 overflow-hidden shadow-2xl">
           <div className="relative h-64 sm:h-80 overflow-hidden">
             <img 
-               src="/images/rummy_hero_banner_1779106054279.png" 
+               src="/images/rummy_hero_banner_1779265218620.png" 
                alt="New Rummy App Today" 
                className="w-full h-full object-cover opacity-60"
             />

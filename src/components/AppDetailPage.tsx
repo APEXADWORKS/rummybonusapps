@@ -61,9 +61,11 @@ export default function AppDetailPage() {
           <Link to="/" className="p-2 hover:bg-white/5 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
-          <h1 className="text-sm sm:text-lg font-black uppercase italic tracking-wider text-brand-primary truncate max-w-[200px] sm:max-w-none">
-            {app.name} - Download APK & Play
-          </h1>
+          <Link to="/" className="hover:opacity-90 transition-opacity">
+            <h1 className="text-sm sm:text-lg font-black uppercase italic tracking-wider text-brand-primary truncate max-w-[200px] sm:max-w-none m-0">
+              {app.name} - Download APK & Play
+            </h1>
+          </Link>
           <div className="w-10" /> {/* Spacer */}
         </div>
       </header>
@@ -151,10 +153,57 @@ export default function AppDetailPage() {
           ))}
         </div>
 
-        {/* Dynamic 2-column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Extensive Content (1000+ words) */}
-          <div className="lg:col-span-8 space-y-8">
+        {/* Top Recommended Apps Grid - Directly below size/security info */}
+        <div className="bg-[#1e293b] rounded-3xl p-6 sm:p-8 border border-white/5 shadow-xl mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <Trophy className="w-6 h-6 text-brand-primary animate-bounce shrink-0" />
+            <h3 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-white m-0">
+              Top Recommended Apps
+            </h3>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {RUMMY_APPS.filter(item => item.id !== app.id).slice(0, 8).map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-4 bg-black/20 rounded-2xl border border-white/5 hover:border-brand-primary/30 transition-all group">
+                <div className="flex items-center gap-3 min-w-0">
+                  <img 
+                    src={item.iconUrl} 
+                    alt={item.name} 
+                    className="w-12 h-12 rounded-xl object-cover border border-white/10 shrink-0" 
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-black uppercase tracking-tight text-white group-hover:text-brand-primary transition-colors truncate m-0">
+                      {item.name}
+                    </h4>
+                    <p className="text-[10px] font-bold text-slate-400 mt-0.5 whitespace-nowrap">
+                      Bonus: <span className="text-brand-primary-light font-black">{item.bonus}</span>
+                    </p>
+                    <p className="text-[10px] font-bold text-slate-500 whitespace-nowrap">
+                      Min. Withdraw: <span className="text-white italic">{item.minWithdrawal}</span>
+                    </p>
+                  </div>
+                </div>
+                
+                <Link 
+                  to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name)}`}
+                  className="px-3 py-2 bg-brand-primary text-black text-[9px] font-black uppercase tracking-wider rounded-lg hover:scale-105 active:scale-95 transition-all shrink-0 text-center flex items-center gap-1 ml-2"
+                >
+                  <Download className="w-3 h-3 stroke-[2.5]" />
+                  Get
+                </Link>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-6 p-4 bg-brand-primary/5 rounded-2xl border border-brand-primary/10 text-center">
+            <p className="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">⚡ Instant Cashout ⚡</p>
+            <p className="text-[10px] text-white/55 font-semibold">All recommended apps are verified, secure, and offer direct UPI withdrawals.</p>
+          </div>
+        </div>
+
+        {/* Extensive Content (1000+ words) */}
+        <div className="space-y-8">
             
             {/* Section 1: Complete App Overview */}
             <section className="bg-[#1e293b] rounded-3xl p-6 sm:p-8 border border-white/5">
@@ -322,59 +371,7 @@ export default function AppDetailPage() {
             </section>
 
           </div>
-
-          {/* Right Column: Top Recommended Games Sidebar */}
-          <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-            <div className="bg-[#1e293b] rounded-3xl p-6 border border-white/5 shadow-xl">
-              <div className="flex items-center gap-2 mb-6">
-                <Trophy className="w-5 h-5 text-brand-primary animate-bounce shrink-0" />
-                <h3 className="text-lg font-black uppercase italic tracking-tight text-white m-0">
-                  Top Recommended Apps
-                </h3>
-              </div>
-              
-              <div className="space-y-4">
-                {RUMMY_APPS.filter(item => item.id !== app.id).slice(0, 8).map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-3 bg-black/20 rounded-2xl border border-white/5 hover:border-brand-primary/30 transition-all group">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <img 
-                        src={item.iconUrl} 
-                        alt={item.name} 
-                        className="w-12 h-12 rounded-xl object-cover border border-white/10 shrink-0" 
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="min-w-0">
-                        <h4 className="text-xs font-black uppercase tracking-tight text-white group-hover:text-brand-primary transition-colors truncate m-0">
-                          {item.name}
-                        </h4>
-                        <p className="text-[10px] font-bold text-slate-400 mt-0.5 whitespace-nowrap">
-                          Bonus: <span className="text-brand-primary-light font-black">{item.bonus}</span>
-                        </p>
-                        <p className="text-[10px] font-bold text-slate-500 whitespace-nowrap">
-                          Min. Withdraw: <span className="text-white italic">{item.minWithdrawal}</span>
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <Link 
-                      to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name)}`}
-                      className="px-3 py-2 bg-brand-primary text-black text-[9px] font-black uppercase tracking-wider rounded-lg hover:scale-105 active:scale-95 transition-all shrink-0 text-center flex items-center gap-1"
-                    >
-                      <Download className="w-3 h-3 stroke-[2.5]" />
-                      Get
-                    </Link>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-6 p-4 bg-brand-primary/5 rounded-2xl border border-brand-primary/10 text-center">
-                <p className="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">⚡ Instant Cashout ⚡</p>
-                <p className="text-[10px] text-white/55 font-semibold">All recommended apps are verified, secure, and offer direct UPI withdrawals.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+        </main>
 
       {/* Persistent Bottom Download Bar (Mobile Only) */}
       <div className="sm:hidden fixed bottom-6 left-4 right-4 z-50">

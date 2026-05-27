@@ -785,6 +785,7 @@ export default function App() {
           <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
 
           {/* Explicitly defined separate pages as requested */}
+          <Route path="/apex1" element={<ApexdinLandingPage idOverride="1" />} />
           <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
           <Route path="/uttam1600" element={<DynamicUttamPage idOverride="1600" />} />
           <Route path="/uttam1601" element={<DynamicUttamPage idOverride="1601" />} />

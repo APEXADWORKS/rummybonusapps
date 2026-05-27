@@ -26,7 +26,7 @@ export default function Rummy51BonusPage() {
         <title>Rummy 51 Bonus Apps List 2026 - Claim ₹51 Free SignUp Rewards</title>
         <meta name="description" content="Looking for Rummy 51 Bonus Apps? Get the active curated list of all rummy apps providing ₹51 signup incentives. Double check guides and secure instant mobile cashouts." />
         <meta name="keywords" content="Rummy 51 Bonus, Rummy 51 Bonus Apps, ₹51 Free Rummy bonus, Teen Patti 51 bonus games, All Rummy 51 bonus list" />
-        <link rel="canonical" href="https://allrummybonus.com/rummy-51-bonus" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/rummy-51-bonus" />
       </Helmet>
 
       {/* Glassmorphic Header */}

@@ -53,7 +53,7 @@ export default function AllRummyAppsPage() {
         <title>All Rummy Apps List & Directory - Download Rummy APKs</title>
         <meta name="description" content="Discover the complete master directory of All Rummy Apps released. Browse our comprehensive list, search bonuses, and download official, 100% verified rummy files securely." />
         <meta name="keywords" content="all rummy app directory, download all rummy games, real money rummy catalog, new rummy listing, verified rummy apk files" />
-        <link rel="canonical" href="https://allrummybonus.com/all-rummy-apps" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/all-rummy-apps" />
       </Helmet>
 
       {/* Header */}

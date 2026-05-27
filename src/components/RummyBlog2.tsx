@@ -120,7 +120,7 @@ const RummyBlog2 = () => {
                       </div>
                     </div>
                     <Link 
-                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
                       className="bg-brand-primary text-black font-black uppercase text-[10px] px-3.5 py-2.5 rounded-lg tracking-widest flex items-center gap-1 hover:scale-105 active:scale-95 transition-all"
                     >
                       <Download className="w-3.5 h-3.5" />

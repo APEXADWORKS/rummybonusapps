@@ -180,7 +180,7 @@ export default function AllRummyAppsPage() {
                   </div>
 
                   <Link 
-                    to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                    to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
                     className="flex items-center justify-center gap-1.5 px-4.5 py-3.5 bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-md shrink-0"
                   >
                     <Download className="w-3.5 h-3.5 stroke-[3]" />

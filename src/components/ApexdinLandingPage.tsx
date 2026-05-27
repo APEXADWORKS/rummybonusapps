@@ -532,7 +532,7 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
                     </div>
                     
                     <Link 
-                      to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name)}`}
+                      to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name.replace(/\s+/g, '-'))}`}
                       className="px-3 py-2.5 bg-gradient-to-r from-brand-primary to-brand-primary-light hover:brightness-110 active:scale-95 text-black text-[9px] font-black uppercase tracking-widest rounded-lg transition-all shrink-0 text-center flex items-center gap-0.5 shadow-md"
                     >
                       <Download className="w-2.5 h-2.5 stroke-[3]" />

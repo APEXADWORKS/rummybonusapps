@@ -34,7 +34,7 @@ export default function AppDetailPage() {
         <title>{app.name} Download APK - Get {app.bonus} Signup Bonus | All Rummy Apps 2026</title>
         <meta name="description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}. Part of our All Rummy App List with live withdrawal proof.`} />
         <meta name="keywords" content={`${app.name} download, ${app.name} apk, All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games`} />
-        <link rel="canonical" href={`https://allrummybonus.com/${encodeURIComponent(app.name)}`} />
+        <link rel="canonical" href={`https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -186,7 +186,7 @@ export default function AppDetailPage() {
                 </div>
                 
                 <Link 
-                  to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name)}`}
+                  to={item.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(item.name.replace(/\s+/g, '-'))}`}
                   className="px-3 py-2 bg-brand-primary text-black text-[9px] font-black uppercase tracking-wider rounded-lg hover:scale-105 active:scale-95 transition-all shrink-0 text-center flex items-center gap-1 ml-2"
                 >
                   <Download className="w-3 h-3 stroke-[2.5]" />

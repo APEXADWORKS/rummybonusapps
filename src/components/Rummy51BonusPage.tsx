@@ -128,7 +128,7 @@ export default function Rummy51BonusPage() {
                   </div>
 
                   <Link 
-                    to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                    to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
                     onClick={(e) => e.stopPropagation()} // Stop bubbling up click selection
                     className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black font-black py-3 rounded-xl uppercase tracking-widest text-[10px] text-center transition-all flex items-center justify-center gap-1.5 font-sans"
                   >

@@ -278,7 +278,7 @@ function HomePage() {
                         {/* Action Column */}
                         <td className="py-4 px-6 text-center">
                           <Link 
-                            to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                            to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
                             className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black font-black py-2.5 px-3 rounded-lg text-[10px] uppercase tracking-wider text-center transition-all inline-flex items-center justify-center gap-1.5 font-sans shadow-md"
                           >
                             <Download className="w-3.5 h-3.5 stroke-[3]" />
@@ -343,7 +343,7 @@ function HomePage() {
                     </div>
 
                     <Link 
-                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
                       className="w-full bg-gradient-to-r from-brand-primary to-amber-500 text-black font-black py-3 rounded-xl uppercase tracking-widest text-[10px] text-center transition-all flex items-center justify-center gap-1.5"
                     >
                       <Download className="w-4 h-4 stroke-[3]" />
@@ -881,7 +881,7 @@ function AppCard({ app }: { app: RummyApp }) {
       </div>
 
       <Link 
-        to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name)}`}
+        to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
         target="_blank"
         className="w-full bg-gradient-to-b from-brand-primary-light to-brand-primary text-black font-black py-3 rounded-lg shadow-lg shadow-brand-primary/20 uppercase tracking-wide text-xs text-center hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
       >

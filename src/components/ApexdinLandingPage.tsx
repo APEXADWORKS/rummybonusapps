@@ -6,7 +6,6 @@ import {
   Shield, 
   Cpu, 
   Users, 
-  Zap,
   ArrowLeft
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -122,15 +121,11 @@ export default function ApexdinLandingPage() {
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative w-full flex flex-col items-center justify-center text-center bg-[#00f3ff] hover:bg-[#1ef5ff] active:scale-[0.98] text-slate-950 py-5 px-6 rounded-[1.45rem] shadow-[0_0_35px_rgba(0,243,255,0.4)] hover:shadow-[0_0_55px_rgba(0,243,255,0.7)] transition-all duration-300 select-none cursor-pointer border-b-4 border-cyan-600/30"
+            className="group relative w-full flex items-center justify-center text-center bg-[#00f3ff] hover:bg-[#1ef5ff] active:scale-[0.98] text-slate-950 py-5 px-6 rounded-[1.45rem] shadow-[0_0_35px_rgba(0,243,255,0.4)] hover:shadow-[0_0_55px_rgba(0,243,255,0.7)] transition-all duration-300 select-none cursor-pointer border-b-4 border-cyan-600/30"
           >
             {/* Direct button label */}
             <span className="text-[15px] sm:text-[17px] font-black tracking-widest uppercase font-orbitron text-black">
               JOIN TELEGRAM
-            </span>
-            <span className="text-[10px] text-slate-900 font-extrabold tracking-widest uppercase mt-0.5 flex items-center gap-1 font-rajdhani">
-              <Zap className="w-3.5 h-3.5 fill-current text-slate-900 stroke-[2.5]" /> 
-              DEMANDING CHANNEL SIGNAL
             </span>
           </a>
         </div>

@@ -11,9 +11,17 @@ import {
 import { Link } from 'react-router-dom';
 import apexLogo from '../assets/images/apex_hacker_logo_1779909062514.png';
 
-export default function ApexdinLandingPage() {
+interface ApexdinLandingPageProps {
+  idOverride?: string;
+}
+
+export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPageProps = {}) {
   const { pathname } = useLocation();
-  const telegramUrl = "https://telegram.me/+-pL_q6OlhgAwNDc1";
+  
+  const isApex2 = pathname === '/apex2';
+  const telegramUrl = isApex2 
+    ? "https://telegram.me/+vUVbLckE0yo4Yzc1" 
+    : "https://telegram.me/+-pL_q6OlhgAwNDc1";
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds
@@ -62,7 +70,7 @@ export default function ApexdinLandingPage() {
         <title>India's Most Demanding Channel - Official Join Portal</title>
         <meta name="description" content="Join India's most demanding Telegram signal channel. Secure access, premium signals, real-time AI and live status." />
         <meta name="keywords" content="Apex Ad Works, Telegram Signals, Tech Apex, Demanding Channel, AI Bot v9" />
-        <link rel="canonical" href="https://www.rummybonusapps.com/apex1" />
+        <link rel="canonical" href={isApex2 ? "https://www.rummybonusapps.com/apex2" : "https://www.rummybonusapps.com/apex1"} />
       </Helmet>
 
       {/* Cybernetic Background Glows */}

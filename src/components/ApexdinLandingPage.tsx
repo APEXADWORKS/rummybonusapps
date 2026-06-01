@@ -16,29 +16,16 @@ interface ApexdinLandingPageProps {
 }
 
 export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPageProps = {}) {
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
   
   const isApex2 = pathname === '/apex2';
   const isApex3 = pathname === '/apex3';
   
-  const rawTelegramUrl = "https://telegram.me/FREEHACK_RECOVERYBOT";
-
-  // Check and append fbclid parameter as start parameter to telegram.me / t.me links
-  const getTelegramUrl = (basePropsUrl: string) => {
-    const searchParams = new URLSearchParams(location.search || window.location.search);
-    const fbclid = searchParams.get('fbclid');
-    if (!fbclid) return basePropsUrl;
-    
-    if (basePropsUrl.includes('?')) {
-      return `${basePropsUrl}&start=${fbclid}`;
-    } else {
-      return `${basePropsUrl}?start=${fbclid}`;
-    }
-  };
-
-  const telegramUrl = getTelegramUrl(rawTelegramUrl);
-  const footerUrl = getTelegramUrl("https://t.me/tech_apex");
+  const telegramUrl = isApex3
+    ? "https://telegram.me/+u3QaCKSQLQ80MzQ9"
+    : isApex2 
+      ? "https://telegram.me/+vUVbLckE0yo4Yzc1" 
+      : "https://telegram.me/FREEHACK_RECOVERYBOT";
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds
@@ -207,7 +194,7 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
       {/* Rounded Footer Pill (MANAGED BY - APEX AD WORKS) */}
       <footer className="w-full text-center pb-8 pt-4 px-4 z-10 select-none font-sans">
         <a 
-          href={footerUrl}
+          href="https://t.me/tech_apex"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block border border-teal-500/20 bg-slate-950/40 hover:border-[#00f3ff]/40 hover:bg-[#00f3ff]/5 hover:scale-105 active:scale-95 transition-all px-6 py-2.5 rounded-full shadow-inner cursor-pointer"

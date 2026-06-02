@@ -24,8 +24,8 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
   const telegramUrl = isApex3
     ? "https://telegram.me/+u3QaCKSQLQ80MzQ9"
     : isApex2 
-      ? "https://telegram.me/+vUVbLckE0yo4Yzc1" 
-      : "https://telegram.me/+u3QaCKSQLQ80MzQ9";
+      ? "https://telegram.me/+ua5sJGCExHU3ODY1" 
+      : "https://telegram.me/+-pL_q6OlhgAwNDc1";
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds

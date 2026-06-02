@@ -133,6 +133,10 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(telegramUrl, '_blank', 'noopener,noreferrer');
+            }}
             className="group relative w-full flex items-center justify-center text-center bg-[#00f3ff] hover:bg-[#1ef5ff] active:scale-[0.98] text-slate-950 py-5 px-6 rounded-[1.45rem] shadow-[0_0_35px_rgba(0,243,255,0.4)] hover:shadow-[0_0_55px_rgba(0,243,255,0.7)] transition-all duration-300 select-none cursor-pointer border-b-4 border-cyan-600/30"
           >
             {/* Direct button label */}

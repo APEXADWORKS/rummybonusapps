@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
@@ -68,6 +68,18 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
     return `${formattedMin}:${formattedSec}`;
   };
 
+  const handleTelegramClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(telegramUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleFooterClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open("https://t.me/tech_apex", '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="min-h-screen bg-[#07080a] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">
       <Helmet>
@@ -133,10 +145,7 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(telegramUrl, '_blank', 'noopener,noreferrer');
-            }}
+            onClick={handleTelegramClick}
             className="group relative w-full flex items-center justify-center text-center bg-[#00f3ff] hover:bg-[#1ef5ff] active:scale-[0.98] text-slate-950 py-5 px-6 rounded-[1.45rem] shadow-[0_0_35px_rgba(0,243,255,0.4)] hover:shadow-[0_0_55px_rgba(0,243,255,0.7)] transition-all duration-300 select-none cursor-pointer border-b-4 border-cyan-600/30"
           >
             {/* Direct button label */}
@@ -201,6 +210,7 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
           href="https://t.me/tech_apex"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleFooterClick}
           className="inline-block border border-teal-500/20 bg-slate-950/40 hover:border-[#00f3ff]/40 hover:bg-[#00f3ff]/5 hover:scale-105 active:scale-95 transition-all px-6 py-2.5 rounded-full shadow-inner cursor-pointer"
         >
           <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-cyan-400 font-black font-rajdhani block uppercase leading-none">

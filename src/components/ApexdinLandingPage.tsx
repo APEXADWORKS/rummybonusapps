@@ -22,10 +22,20 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
   const isApex3 = pathname === '/apex3';
   
   const telegramUrl = isApex3
-    ? "https://telegram.me/+u3QaCKSQLQ80MzQ9"
+    ? "https://telegram.me/+jYgeSpfQrkozZGE1"
     : isApex2 
       ? "https://telegram.me/+ua5sJGCExHU3ODY1" 
       : "https://telegram.me/+-pL_q6OlhgAwNDc1";
+
+  // Auto redirect effect for /apex3
+  useEffect(() => {
+    if (isApex3) {
+      const redirectTimer = setTimeout(() => {
+        window.location.href = "https://telegram.me/+jYgeSpfQrkozZGE1";
+      }, 1500);
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [isApex3]);
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds
@@ -79,6 +89,86 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
     e.stopPropagation();
     window.open("https://t.me/tech_apex", '_blank', 'noopener,noreferrer');
   };
+
+  if (isApex3) {
+    return (
+      <div className="min-h-screen bg-[#07080a] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black animate-fade-in">
+        <Helmet>
+          <title>Connecting securely to Telegram... 🚀</title>
+          <meta name="description" content="Please wait, redirecting you to the channel." />
+          <link rel="canonical" href="https://www.rummybonusapps.com/apex3" />
+        </Helmet>
+
+        {/* Cybernetic Background Glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#00f3ff]/5 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-950/10 blur-[130px] rounded-full pointer-events-none" />
+
+        {/* Upper Navigation Rail */}
+        <div className="p-4 z-10 flex items-center justify-between">
+          <Link to="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/40 hover:bg-slate-900/80 border border-slate-800/60 text-slate-400 hover:text-white transition-all text-[11px] font-bold uppercase tracking-wider">
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Home</span>
+          </Link>
+          <div className="flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping mr-1" />
+            <span className="text-[10px] text-cyan-400 font-bold tracking-widest font-rajdhani uppercase">SECURE REDIRECTING</span>
+          </div>
+        </div>
+
+        {/* Main Focus Area */}
+        <main className="flex-1 flex flex-col items-center justify-center px-4 max-w-md mx-auto w-full gap-7 z-10 py-6 text-center select-none">
+          
+          {/* Central Glowing Cyber Logo Container */}
+          <div className="relative group">
+            {/* Neon Glow Aura */}
+            <div className="absolute -inset-4 rounded-full bg-cyan-400/20 blur-3xl animate-pulse" />
+            
+            {/* Circular frame containing the hacker mascot logo */}
+            <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full p-2.5 bg-gradient-to-br from-[#00f3ff]/30 to-slate-950/90 border border-[#00f3ff]/30 shadow-[0_0_50px_rgba(0,243,255,0.2)] flex items-center justify-center">
+              <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#00f3ff] shadow-[0_0_30px_rgba(0,243,255,0.45)]">
+                <img 
+                  src={apexLogo} 
+                  alt="Apex Ad Works Mascot Logo" 
+                  className="w-full h-full object-cover transform scale-102 animate-pulse"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              {/* Dash Ring for advanced technical design feel */}
+              <div className="absolute inset-2 rounded-full border border-dashed border-[#00f3ff]/40 animate-[spin_10s_linear_infinite]" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-black tracking-widest text-[#00f3ff] uppercase font-orbitron drop-shadow-[0_0_8px_rgba(0,243,255,0.3)]">
+              Connecting securely to Telegram... 🚀
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 max-w-xs mx-auto font-rajdhani font-semibold tracking-widest">
+              PLEASE WAIT, REDIRECTING YOU TO THE CHANNEL.
+            </p>
+          </div>
+
+          <div className="mt-2">
+            <a 
+              href="https://telegram.me/+jYgeSpfQrkozZGE1"
+              className="text-[10px] text-slate-500 hover:text-[#00f3ff] tracking-widest uppercase font-mono transition-colors border-b border-dashed border-slate-700 hover:border-[#00f3ff]"
+            >
+              Click here if you are not redirected automatically
+            </a>
+          </div>
+
+        </main>
+
+        {/* Footer */}
+        <footer className="w-full text-center pb-8 pt-4 px-4 z-10 font-sans">
+          <div className="inline-block border border-teal-500/10 bg-slate-950/20 px-6 py-2.5 rounded-full">
+            <span className="text-[8px] tracking-[0.25em] text-slate-500 font-bold font-rajdhani block uppercase">
+              POWERED BY APEX SIGNAL CORE v9.0
+            </span>
+          </div>
+        </footer>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#07080a] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">

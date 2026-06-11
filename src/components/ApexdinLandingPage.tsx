@@ -20,22 +20,26 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
   
   const isApex2 = pathname === '/apex2';
   const isApex3 = pathname === '/apex3';
+  const isApex4 = pathname === '/apex4';
+  const isApex5 = pathname === '/apex5';
   
-  const telegramUrl = isApex3
-    ? "https://telegram.me/+jYgeSpfQrkozZGE1"
-    : isApex2 
-      ? "https://telegram.me/+ua5sJGCExHU3ODY1" 
-      : "https://telegram.me/+-pL_q6OlhgAwNDc1";
+  const telegramUrl = isApex5
+    ? "https://telegram.me/+D7EeM6klxvozYzk1"
+    : isApex3 || isApex4
+      ? "https://telegram.me/+jYgeSpfQrkozZGE1"
+      : isApex2 
+        ? "https://telegram.me/+ua5sJGCExHU3ODY1" 
+        : "https://telegram.me/+-pL_q6OlhgAwNDc1";
 
-  // Auto redirect effect for /apex3
+  // Auto redirect effect for /apex3 and /apex4
   useEffect(() => {
-    if (isApex3) {
+    if (isApex3 || isApex4) {
       const redirectTimer = setTimeout(() => {
         window.location.href = "https://telegram.me/+jYgeSpfQrkozZGE1";
       }, 1500);
       return () => clearTimeout(redirectTimer);
     }
-  }, [isApex3]);
+  }, [isApex3, isApex4]);
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds
@@ -90,13 +94,13 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
     window.open("https://t.me/tech_apex", '_blank', 'noopener,noreferrer');
   };
 
-  if (isApex3) {
+  if (isApex3 || isApex4) {
     return (
       <div className="min-h-screen bg-[#07080a] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black animate-fade-in">
         <Helmet>
           <title>Connecting securely to Telegram... 🚀</title>
           <meta name="description" content="Please wait, redirecting you to the channel." />
-          <link rel="canonical" href="https://www.rummybonusapps.com/apex3" />
+          <link rel="canonical" href={isApex4 ? "https://www.rummybonusapps.com/apex4" : "https://www.rummybonusapps.com/apex3"} />
         </Helmet>
 
         {/* Cybernetic Background Glows */}
@@ -176,7 +180,7 @@ export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPagePro
         <title>India's Most Demanding Channel - Official Join Portal</title>
         <meta name="description" content="Join India's most demanding Telegram signal channel. Secure access, premium signals, real-time AI and live status." />
         <meta name="keywords" content="Apex Ad Works, Telegram Signals, Tech Apex, Demanding Channel, AI Bot v9" />
-        <link rel="canonical" href={isApex3 ? "https://www.rummybonusapps.com/apex3" : isApex2 ? "https://www.rummybonusapps.com/apex2" : "https://www.rummybonusapps.com/apex1"} />
+        <link rel="canonical" href={isApex5 ? "https://www.rummybonusapps.com/apex5" : isApex4 ? "https://www.rummybonusapps.com/apex4" : isApex3 ? "https://www.rummybonusapps.com/apex3" : isApex2 ? "https://www.rummybonusapps.com/apex2" : "https://www.rummybonusapps.com/apex1"} />
       </Helmet>
 
       {/* Cybernetic Background Glows */}

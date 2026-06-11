@@ -788,6 +788,8 @@ export default function App() {
           <Route path="/apex1" element={<ApexdinLandingPage idOverride="1" />} />
           <Route path="/apex2" element={<ApexdinLandingPage idOverride="2" />} />
           <Route path="/apex3" element={<ApexdinLandingPage idOverride="3" />} />
+          <Route path="/apex4" element={<ApexdinLandingPage idOverride="4" />} />
+          <Route path="/apex5" element={<ApexdinLandingPage idOverride="5" />} />
           <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
           <Route path="/uttam1600" element={<DynamicUttamPage idOverride="1600" />} />
           <Route path="/uttam1601" element={<DynamicUttamPage idOverride="1601" />} />

@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { 
@@ -12,10 +12,23 @@ import {
 } from 'lucide-react';
 import { RUMMY_APPS } from '../data';
 
-export default function AppDetailPage() {
-  const { appName } = useParams<{ appName: string }>();
+export default function AppDetailPage({ 
+  appNameOverride,
+  downloadLinkOverride 
+}: { 
+  appNameOverride?: string;
+  downloadLinkOverride?: string;
+} = {}) {
+  const { appName: routeAppName } = useParams<{ appName: string }>();
+  const { pathname } = useLocation();
   
-  const app = RUMMY_APPS.find(a => a.name === appName || a.name.toLowerCase().replace(/\s+/g, '-') === appName?.toLowerCase());
+  const targetName = appNameOverride || routeAppName;
+  
+  const app = RUMMY_APPS.find(a => 
+    a.name === targetName || 
+    a.name.toLowerCase().replace(/\s+/g, '-') === targetName?.toLowerCase() ||
+    a.id === targetName?.toLowerCase()
+  );
 
   if (!app) {
     return (
@@ -28,18 +41,46 @@ export default function AppDetailPage() {
     );
   }
 
+  // Derive download link: prop override > uttamjungle path pattern > default app download link
+  let effectiveDownloadLink = downloadLinkOverride;
+  if (!effectiveDownloadLink) {
+    const uttamMatch = pathname.match(/\/uttamjungle(\d+)/i);
+    if (uttamMatch) {
+      const num = parseInt(uttamMatch[1], 10);
+      if (num >= 1 && num <= 11) {
+        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
+      } else if (num >= 1023 && num <= 1033) {
+        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${num}`;
+      } else {
+        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
+      }
+    }
+  }
+
+  if (!effectiveDownloadLink) {
+    effectiveDownloadLink = app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink;
+  }
+
+  const canonicalUrl = pathname.startsWith('/uttamjungle')
+    ? `https://www.rummybonusapps.com${pathname}`
+    : `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">
       <Helmet>
         <title>{app.name} Download APK - Get {app.bonus} Signup Bonus | All Rummy Apps 2026</title>
         <meta name="description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}. Part of our All Rummy App List with live withdrawal proof.`} />
         <meta name="keywords" content={`${app.name} download, ${app.name} apk, All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games`} />
-        <link rel="canonical" href={`https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content={`${app.name} Download APK - Get ${app.bonus} Signup Bonus | All Rummy Apps 2026`} />
+        <meta property="og:description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}.`} />
+        <meta property="og:url" content={canonicalUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": app.name,
+            "url": canonicalUrl,
             "operatingSystem": "Android, iOS",
             "applicationCategory": "GameApplication",
             "aggregateRating": {
@@ -123,7 +164,7 @@ export default function AppDetailPage() {
 
           <div className="mt-10">
             <a 
-              href={app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink}
+              href={effectiveDownloadLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 w-full bg-brand-primary text-black py-5 rounded-2xl font-black text-xl uppercase tracking-widest hover:scale-[1.01] active:scale-[0.99] transition-all shadow-[0_0_40px_rgba(251,191,36,0.3)]"
@@ -376,7 +417,7 @@ export default function AppDetailPage() {
       {/* Persistent Bottom Download Bar (Mobile Only) */}
       <div className="sm:hidden fixed bottom-6 left-4 right-4 z-50">
         <a 
-          href={app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink}
+          href={effectiveDownloadLink}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-3 w-full bg-brand-primary text-black py-4 rounded-xl font-black text-lg uppercase tracking-widest shadow-2xl"

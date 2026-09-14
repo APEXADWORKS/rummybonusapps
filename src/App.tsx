@@ -30,6 +30,7 @@ import RummyBlog6 from './components/RummyBlog6';
 import ApexdinLandingPage from './components/ApexdinLandingPage';
 import AllRummyAppsPage from './components/AllRummyAppsPage';
 import Rummy51BonusPage from './components/Rummy51BonusPage';
+import TopRummyAppsComparisonTable from './components/TopRummyAppsComparisonTable';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,6 +116,49 @@ function HomePage() {
 
       <main>
 
+        {/* Modern Hero Section */}
+        <section className="relative pt-6 sm:pt-10 pb-6 bg-gradient-to-b from-[#090d16] via-[#0f172a] to-[#0f172a] border-b border-white/5 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[260px] bg-brand-primary/10 blur-[140px] rounded-full pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>Verified 2026 Rummy Apps • Instant ₹51 & ₹41 Bonus</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase italic tracking-tight text-white leading-tight">
+              Best Rummy Bonus Apps <br className="hidden sm:inline" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-amber-400 to-yellow-300">
+                With Live Cashout Proof
+              </span>
+            </h1>
+
+            <p className="max-w-2xl mx-auto mt-2.5 text-xs sm:text-sm text-slate-300 font-medium">
+              Download tested Rummy & Teen Patti APKs with guaranteed signup bonuses and instant UPI withdrawals directly to your bank account.
+            </p>
+
+            {/* Quick Action Anchor Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
+              <a 
+                href="#comparison-table"
+                className="bg-brand-primary hover:bg-brand-primary-light text-black font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-lg shadow-brand-primary/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-black stroke-[3]" />
+                Top 5 Apps Comparison
+              </a>
+              <a 
+                href="https://www.junglehaan.vip/share/6IOe3xy=1538"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+              >
+                <Download className="w-3.5 h-3.5 stroke-[3]" />
+                Instant APK Download
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* Promotional Banners Section */}
         <section className="py-6 bg-[#0f172a] border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4">
@@ -180,6 +224,9 @@ function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* High-Converting Modern Top Rummy Apps Comparison Table */}
+        <TopRummyAppsComparisonTable />
 
         {/* Dynamic Matrix Table section with responsive views */}
         <section id="apps" className="py-12 sm:py-16 bg-[#0f172a]">

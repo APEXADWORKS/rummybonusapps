@@ -839,12 +839,13 @@ function ScrollToTop() {
   return null;
 }
 
-export function AppRoutes() {
+export default function App() {
   return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
+    <HelmetProvider>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
           {/* SEO Silo Directory Routes */}
           <Route path="/all-rummy-apps" element={<AllRummyAppsPage />} />
           <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
@@ -929,15 +930,6 @@ export function AppRoutes() {
           <Route path="/rummyblog6" element={<RummyBlog6 />} />
           <Route path="/:appName" element={<AppRouteHandler />} />
         </Routes>
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <HelmetProvider>
-      <Router>
-        <AppRoutes />
       </Router>
     </HelmetProvider>
   );

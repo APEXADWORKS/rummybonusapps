@@ -68,7 +68,7 @@ export default function AppDetailPage({
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">
       <Helmet>
-        <title>{`${app.name} Download APK - Get ${app.bonus} Signup Bonus | All Rummy Apps 2026`}</title>
+        <title>{app.name} Download APK - Get {app.bonus} Signup Bonus | All Rummy Apps 2026</title>
         <meta name="description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}. Part of our All Rummy App List with live withdrawal proof.`} />
         <meta name="keywords" content={`${app.name} download, ${app.name} apk, All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games`} />
         <link rel="canonical" href={canonicalUrl} />

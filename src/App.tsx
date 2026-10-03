@@ -857,57 +857,6 @@ export default function App() {
           <Route path="/apex4" element={<ApexdinLandingPage idOverride="4" />} />
           <Route path="/apex5" element={<ApexdinLandingPage idOverride="5" />} />
           <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
-          <Route path="/uttam1600" element={<DynamicUttamPage idOverride="1600" />} />
-          <Route path="/uttam1601" element={<DynamicUttamPage idOverride="1601" />} />
-          <Route path="/uttam1602" element={<DynamicUttamPage idOverride="1602" />} />
-          <Route path="/uttam1603" element={<DynamicUttamPage idOverride="1603" />} />
-          <Route path="/uttam1604" element={<DynamicUttamPage idOverride="1604" />} />
-          <Route path="/uttam1605" element={<DynamicUttamPage idOverride="1605" />} />
-          <Route path="/uttam1606" element={<DynamicUttamPage idOverride="1606" />} />
-          <Route path="/uttam1607" element={<DynamicUttamPage idOverride="1607" />} />
-          <Route path="/uttam1608" element={<DynamicUttamPage idOverride="1608" />} />
-          <Route path="/uttam1609" element={<DynamicUttamPage idOverride="1609" />} />
-          <Route path="/uttam1610" element={<DynamicUttamPage idOverride="1610" />} />
-          <Route path="/uttam1611" element={<DynamicUttamPage idOverride="1611" />} />
-          <Route path="/uttam1612" element={<DynamicUttamPage idOverride="1612" />} />
-          <Route path="/uttam1613" element={<DynamicUttamPage idOverride="1613" />} />
-          <Route path="/uttam1614" element={<DynamicUttamPage idOverride="1614" />} />
-          <Route path="/uttam1615" element={<DynamicUttamPage idOverride="1615" />} />
-          <Route path="/uttam1616" element={<DynamicUttamPage idOverride="1616" />} />
-          <Route path="/uttam1617" element={<DynamicUttamPage idOverride="1617" />} />
-          <Route path="/uttam1618" element={<DynamicUttamPage idOverride="1618" />} />
-          <Route path="/uttam1619" element={<DynamicUttamPage idOverride="1619" />} />
-          <Route path="/uttam1620" element={<DynamicUttamPage idOverride="1620" />} />
-          <Route path="/uttam1621" element={<DynamicUttamPage idOverride="1621" />} />
-          <Route path="/uttam1622" element={<DynamicUttamPage idOverride="1622" />} />
-          <Route path="/uttam1623" element={<DynamicUttamPage idOverride="1623" />} />
-          <Route path="/uttam1624" element={<DynamicUttamPage idOverride="1624" />} />
-          <Route path="/uttam1625" element={<DynamicUttamPage idOverride="1625" />} />
-          <Route path="/uttam1626" element={<DynamicUttamPage idOverride="1626" />} />
-          <Route path="/uttam1627" element={<DynamicUttamPage idOverride="1627" />} />
-          <Route path="/uttam1628" element={<DynamicUttamPage idOverride="1628" />} />
-          <Route path="/uttam1629" element={<DynamicUttamPage idOverride="1629" />} />
-          <Route path="/uttam1630" element={<DynamicUttamPage idOverride="1630" />} />
-          <Route path="/uttam1631" element={<DynamicUttamPage idOverride="1631" />} />
-          <Route path="/uttam1632" element={<DynamicUttamPage idOverride="1632" />} />
-          <Route path="/uttam1633" element={<DynamicUttamPage idOverride="1633" />} />
-          <Route path="/uttam1634" element={<DynamicUttamPage idOverride="1634" />} />
-          <Route path="/uttam1635" element={<DynamicUttamPage idOverride="1635" />} />
-          <Route path="/uttam1636" element={<DynamicUttamPage idOverride="1636" />} />
-          <Route path="/uttam1637" element={<DynamicUttamPage idOverride="1637" />} />
-          <Route path="/uttam1638" element={<DynamicUttamPage idOverride="1638" />} />
-          <Route path="/uttam1639" element={<DynamicUttamPage idOverride="1639" />} />
-          <Route path="/uttam1640" element={<DynamicUttamPage idOverride="1640" />} />
-          <Route path="/uttam1641" element={<DynamicUttamPage idOverride="1641" />} />
-          <Route path="/uttam1642" element={<DynamicUttamPage idOverride="1642" />} />
-          <Route path="/uttam1643" element={<DynamicUttamPage idOverride="1643" />} />
-          <Route path="/uttam1644" element={<DynamicUttamPage idOverride="1644" />} />
-          <Route path="/uttam1645" element={<DynamicUttamPage idOverride="1645" />} />
-          <Route path="/uttam1646" element={<DynamicUttamPage idOverride="1646" />} />
-          <Route path="/uttam1647" element={<DynamicUttamPage idOverride="1647" />} />
-          <Route path="/uttam1648" element={<DynamicUttamPage idOverride="1648" />} />
-          <Route path="/uttam1649" element={<DynamicUttamPage idOverride="1649" />} />
-          <Route path="/uttam1650" element={<DynamicUttamPage idOverride="1650" />} />
           
           {/* Explicitly defined uttamjungle1 to uttamjungle10 pages matching /Jungle-Haan with custom download links */}
           <Route path="/uttamjungle1" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1023" />} />

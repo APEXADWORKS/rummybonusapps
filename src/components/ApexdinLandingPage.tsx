@@ -9,7 +9,8 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apexLogo from '../assets/images/apex_hacker_logo_1779909062514.png';
+
+const apexLogo = "/images/apex_hacker_logo_1779909062514.png";
 
 interface ApexdinLandingPageProps {
   idOverride?: string;

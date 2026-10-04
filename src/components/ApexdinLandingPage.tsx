@@ -9,7 +9,8 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apexLogo from '../assets/images/apex_hacker_logo_1779909062514.png';
+
+const apexLogo = "/images/apex_hacker_logo_1779909062514.png";
 
 interface ApexdinLandingPageProps {
   idOverride?: string;
@@ -18,28 +19,7 @@ interface ApexdinLandingPageProps {
 export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPageProps = {}) {
   const { pathname } = useLocation();
   
-  const isApex2 = pathname === '/apex2';
-  const isApex3 = pathname === '/apex3';
-  const isApex4 = pathname === '/apex4';
-  const isApex5 = pathname === '/apex5';
-  
-  const telegramUrl = isApex5
-    ? "https://telegram.me/+D7EeM6klxvozYzk1"
-    : isApex3 || isApex4
-      ? "https://telegram.me/+jYgeSpfQrkozZGE1"
-      : isApex2 
-        ? "https://telegram.me/+ua5sJGCExHU3ODY1" 
-        : "https://telegram.me/+-pL_q6OlhgAwNDc1";
-
-  // Auto redirect effect for /apex3 and /apex4
-  useEffect(() => {
-    if (isApex3 || isApex4) {
-      const redirectTimer = setTimeout(() => {
-        window.location.href = "https://telegram.me/+jYgeSpfQrkozZGE1";
-      }, 1500);
-      return () => clearTimeout(redirectTimer);
-    }
-  }, [isApex3, isApex4]);
+  const telegramUrl = "https://telegram.me/+-pL_q6OlhgAwNDc1";
   
   // Real-time dynamic loops matching the exact screenshot metrics
   const [seconds, setSeconds] = useState(184); // 3 minutes 4 seconds = 184 seconds

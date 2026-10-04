@@ -1,11 +1,14 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import crypto from "crypto";
-import { createServer as createViteServer } from "vite";
+import { pathToFileURL } from "url";
+import { createServer as createViteServer, ViteDevServer } from "vite";
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+  const isProd = process.env.NODE_ENV === "production";
 
   // Middleware for parsing requests
   app.use(express.json());
@@ -26,7 +29,7 @@ async function startServer() {
           // Meta Configuration
           const pixel_id = "2098601020718503";
           const access_token = "EAAN1toqIhT4BRrLJJ9WTiFbbXGtONDZBEIUguy3s7ZBfeZBHuTJpXU3fIoah2EF6OcRRk5PGrAEsuQtZAw7cWjOGwE50bGk0Kd2jPJuZAnlcGHJL5Knzp2BY9RFOjvDj3GRGwDK83sZAwiCfRruHl2ZAgt5U3VNOfX5GY4SKkEc96DRb7IzIDGSR8jbAZAjyf2OWVQZDZD";
-          const event_source_url = "https://www.rummybonusapps.com/apex3";
+          const event_source_url = "https://www.rummybonusapps.com/";
 
           // Hashing function for security
           const fn_hash = crypto
@@ -87,20 +90,79 @@ async function startServer() {
     res.status(200).send("OK");
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+  let vite: ViteDevServer | undefined;
+  if (!isProd) {
+    vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: "custom",
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    const distClient = path.resolve(process.cwd(), "dist/client");
+    app.use(express.static(distClient, { index: false }));
   }
+
+  // Server-Side Rendering (SSR) handler for all incoming page requests
+  app.get("*", async (req, res, next) => {
+    const url = req.originalUrl;
+
+    // Ignore direct requests for static asset files with extensions (e.g. .png, .css, .js)
+    if (url.includes(".") && !url.endsWith(".html")) {
+      return next();
+    }
+
+    try {
+      let template: string;
+      let render: (url: string) => { html: string; headTags: string };
+
+      if (!isProd && vite) {
+        const rawTemplate = fs.readFileSync(path.resolve(process.cwd(), "index.html"), "utf-8");
+        template = await vite.transformIndexHtml(url, rawTemplate);
+        const serverModule = await vite.ssrLoadModule("/src/entry-server.tsx");
+        render = serverModule.render;
+      } else {
+        const templatePath = path.resolve(process.cwd(), "dist/client/index.html");
+        template = fs.readFileSync(templatePath, "utf-8");
+        const serverEntryPath = path.resolve(process.cwd(), "dist/server/entry-server.js");
+        const serverEntry = await import(pathToFileURL(serverEntryPath).href);
+        render = serverEntry.render;
+      }
+
+      const { html: appHtml, headTags } = render(url);
+
+      let fullHtml = template;
+      if (headTags) {
+        fullHtml = fullHtml.replace("</head>", `${headTags}\n</head>`);
+      }
+
+      if (fullHtml.includes("<!--ssr-outlet-->")) {
+        fullHtml = fullHtml.replace("<!--ssr-outlet-->", () => appHtml);
+      } else if (fullHtml.includes('<div id="root"></div>')) {
+        fullHtml = fullHtml.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
+      }
+
+      res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).end(fullHtml);
+    } catch (err: any) {
+      if (!isProd && vite) {
+        vite.ssrFixStacktrace(err);
+      }
+      console.error("SSR rendering error for URL:", url, err);
+
+      // Safe fallback to client-rendered HTML shell
+      try {
+        const fallbackPath = isProd
+          ? path.resolve(process.cwd(), "dist/client/index.html")
+          : path.resolve(process.cwd(), "index.html");
+        let fallbackHtml = fs.readFileSync(fallbackPath, "utf-8");
+        if (!isProd && vite) {
+          fallbackHtml = await vite.transformIndexHtml(url, fallbackHtml);
+        }
+        res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).end(fallbackHtml);
+      } catch (fallbackErr) {
+        next(err);
+      }
+    }
+  });
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);

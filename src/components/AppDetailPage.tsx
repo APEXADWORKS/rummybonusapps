@@ -41,34 +41,18 @@ export default function AppDetailPage({
     );
   }
 
-  // Derive download link: prop override > uttamjungle path pattern > default app download link
+  // Derive download link: prop override > default app download link
   let effectiveDownloadLink = downloadLinkOverride;
-  if (!effectiveDownloadLink) {
-    const uttamMatch = pathname.match(/\/uttamjungle(\d+)/i);
-    if (uttamMatch) {
-      const num = parseInt(uttamMatch[1], 10);
-      if (num >= 1 && num <= 11) {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
-      } else if (num >= 1023 && num <= 1033) {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${num}`;
-      } else {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
-      }
-    }
-  }
-
   if (!effectiveDownloadLink) {
     effectiveDownloadLink = app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink;
   }
 
-  const canonicalUrl = pathname.startsWith('/uttamjungle')
-    ? `https://www.rummybonusapps.com${pathname}`
-    : `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+  const canonicalUrl = `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">
       <Helmet>
-        <title>{app.name} Download APK - Get {app.bonus} Signup Bonus | All Rummy Apps 2026</title>
+        <title>{`${app.name} Download APK - Get ${app.bonus} Signup Bonus | All Rummy Apps 2026`}</title>
         <meta name="description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}. Part of our All Rummy App List with live withdrawal proof.`} />
         <meta name="keywords" content={`${app.name} download, ${app.name} apk, All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games`} />
         <link rel="canonical" href={canonicalUrl} />

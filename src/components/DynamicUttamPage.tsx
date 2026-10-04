@@ -36,7 +36,7 @@ export default function DynamicUttamPage({ idOverride }: { idOverride?: string }
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">
       <Helmet>
-        <title>{app.name} - Redirecting...</title>
+        <title>{`${app.name} - Redirecting...`}</title>
         <meta name="description" content={`Download ${app.name} APK officially. Redirecting to official site.`} />
       </Helmet>
       

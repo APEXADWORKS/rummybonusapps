@@ -29,7 +29,7 @@ async function startServer() {
           // Meta Configuration
           const pixel_id = "2098601020718503";
           const access_token = "EAAN1toqIhT4BRrLJJ9WTiFbbXGtONDZBEIUguy3s7ZBfeZBHuTJpXU3fIoah2EF6OcRRk5PGrAEsuQtZAw7cWjOGwE50bGk0Kd2jPJuZAnlcGHJL5Knzp2BY9RFOjvDj3GRGwDK83sZAwiCfRruHl2ZAgt5U3VNOfX5GY4SKkEc96DRb7IzIDGSR8jbAZAjyf2OWVQZDZD";
-          const event_source_url = "https://www.rummybonusapps.com/apex3";
+          const event_source_url = "https://www.rummybonusapps.com/";
 
           // Hashing function for security
           const fn_hash = crypto

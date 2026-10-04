@@ -807,25 +807,6 @@ function AppRouteHandler() {
     }
   }
 
-  if (appName) {
-    const ujMatch = appName.match(/^uttamjungle(\d+)$/i);
-    if (ujMatch) {
-      const num = parseInt(ujMatch[1], 10);
-      let linkId = 1023;
-      if (num >= 1 && num <= 11) {
-        linkId = 1023 + (num - 1);
-      } else if (num >= 1023 && num <= 1033) {
-        linkId = num;
-      }
-      return (
-        <AppDetailPage 
-          appNameOverride="Jungle Haan" 
-          downloadLinkOverride={`https://www.junglehaan101.com/share/6IOe3xy=${linkId}`}
-        />
-      );
-    }
-  }
-  
   return <AppDetailPage />;
 }
 
@@ -839,46 +820,41 @@ function ScrollToTop() {
   return null;
 }
 
+export function AppRoutes() {
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* SEO Silo Directory Routes */}
+        <Route path="/all-rummy-apps" element={<AllRummyAppsPage />} />
+        <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
+
+        {/* Explicitly defined separate pages as requested */}
+        <Route path="/apex1" element={<ApexdinLandingPage idOverride="1" />} />
+        <Route path="/apex2" element={<ApexdinLandingPage idOverride="2" />} />
+        <Route path="/apex3" element={<ApexdinLandingPage idOverride="3" />} />
+        <Route path="/apex4" element={<ApexdinLandingPage idOverride="4" />} />
+        <Route path="/apex5" element={<ApexdinLandingPage idOverride="5" />} />
+        <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
+        
+        <Route path="/rummyblog1" element={<RummyBlogPage />} />
+        <Route path="/rummyblog2" element={<RummyBlog2 />} />
+        <Route path="/rummyblog3" element={<RummyBlog3 />} />
+        <Route path="/rummyblog4" element={<RummyBlog4 />} />
+        <Route path="/rummyblog5" element={<RummyBlog5 />} />
+        <Route path="/rummyblog6" element={<RummyBlog6 />} />
+        <Route path="/:appName" element={<AppRouteHandler />} />
+      </Routes>
+    </>
+  );
+}
+
 export default function App() {
   return (
     <HelmetProvider>
       <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          {/* SEO Silo Directory Routes */}
-          <Route path="/all-rummy-apps" element={<AllRummyAppsPage />} />
-          <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
-
-          {/* Explicitly defined separate pages as requested */}
-          <Route path="/apex1" element={<ApexdinLandingPage idOverride="1" />} />
-          <Route path="/apex2" element={<ApexdinLandingPage idOverride="2" />} />
-          <Route path="/apex3" element={<ApexdinLandingPage idOverride="3" />} />
-          <Route path="/apex4" element={<ApexdinLandingPage idOverride="4" />} />
-          <Route path="/apex5" element={<ApexdinLandingPage idOverride="5" />} />
-          <Route path="/uttam1" element={<DynamicUttamPage idOverride="1538" />} />
-          
-          {/* Explicitly defined uttamjungle1 to uttamjungle10 pages matching /Jungle-Haan with custom download links */}
-          <Route path="/uttamjungle1" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1023" />} />
-          <Route path="/uttamjungle2" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1024" />} />
-          <Route path="/uttamjungle3" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1025" />} />
-          <Route path="/uttamjungle4" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1026" />} />
-          <Route path="/uttamjungle5" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1027" />} />
-          <Route path="/uttamjungle6" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1028" />} />
-          <Route path="/uttamjungle7" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1029" />} />
-          <Route path="/uttamjungle8" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1030" />} />
-          <Route path="/uttamjungle9" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1031" />} />
-          <Route path="/uttamjungle10" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1032" />} />
-          <Route path="/uttamjungle11" element={<AppDetailPage appNameOverride="Jungle Haan" downloadLinkOverride="https://www.junglehaan101.com/share/6IOe3xy=1033" />} />
-          
-          <Route path="/rummyblog1" element={<RummyBlogPage />} />
-          <Route path="/rummyblog2" element={<RummyBlog2 />} />
-          <Route path="/rummyblog3" element={<RummyBlog3 />} />
-          <Route path="/rummyblog4" element={<RummyBlog4 />} />
-          <Route path="/rummyblog5" element={<RummyBlog5 />} />
-          <Route path="/rummyblog6" element={<RummyBlog6 />} />
-          <Route path="/:appName" element={<AppRouteHandler />} />
-        </Routes>
+        <AppRoutes />
       </Router>
     </HelmetProvider>
   );

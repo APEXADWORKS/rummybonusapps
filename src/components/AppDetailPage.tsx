@@ -41,29 +41,13 @@ export default function AppDetailPage({
     );
   }
 
-  // Derive download link: prop override > uttamjungle path pattern > default app download link
+  // Derive download link: prop override > default app download link
   let effectiveDownloadLink = downloadLinkOverride;
-  if (!effectiveDownloadLink) {
-    const uttamMatch = pathname.match(/\/uttamjungle(\d+)/i);
-    if (uttamMatch) {
-      const num = parseInt(uttamMatch[1], 10);
-      if (num >= 1 && num <= 11) {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
-      } else if (num >= 1023 && num <= 1033) {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${num}`;
-      } else {
-        effectiveDownloadLink = `https://www.junglehaan101.com/share/6IOe3xy=${1023 + (num - 1)}`;
-      }
-    }
-  }
-
   if (!effectiveDownloadLink) {
     effectiveDownloadLink = app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink;
   }
 
-  const canonicalUrl = pathname.startsWith('/uttamjungle')
-    ? `https://www.rummybonusapps.com${pathname}`
-    : `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+  const canonicalUrl = `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">

@@ -18,6 +18,12 @@ interface ApexdinLandingPageProps {
 
 export default function ApexdinLandingPage({ idOverride }: ApexdinLandingPageProps = {}) {
   const { pathname } = useLocation();
+
+  const isApex1 = idOverride === '1' || pathname === '/apex1';
+  const isApex2 = idOverride === '2' || pathname === '/apex2';
+  const isApex3 = idOverride === '3' || pathname === '/apex3';
+  const isApex4 = idOverride === '4' || pathname === '/apex4';
+  const isApex5 = idOverride === '5' || pathname === '/apex5';
   
   const telegramUrl = "https://telegram.me/+-pL_q6OlhgAwNDc1";
   

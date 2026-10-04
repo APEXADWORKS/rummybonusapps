@@ -98,7 +98,9 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distClient = path.resolve(process.cwd(), "dist/client");
+    const distClient = fs.existsSync(path.resolve(process.cwd(), "dist/client"))
+      ? path.resolve(process.cwd(), "dist/client")
+      : path.resolve(process.cwd(), "dist");
     app.use(express.static(distClient, { index: false }));
   }
 
@@ -121,11 +123,17 @@ async function startServer() {
         const serverModule = await vite.ssrLoadModule("/src/entry-server.tsx");
         render = serverModule.render;
       } else {
-        const templatePath = path.resolve(process.cwd(), "dist/client/index.html");
+        const templatePath = fs.existsSync(path.resolve(process.cwd(), "dist/index.html"))
+          ? path.resolve(process.cwd(), "dist/index.html")
+          : path.resolve(process.cwd(), "dist/client/index.html");
         template = fs.readFileSync(templatePath, "utf-8");
         const serverEntryPath = path.resolve(process.cwd(), "dist/server/entry-server.js");
-        const serverEntry = await import(pathToFileURL(serverEntryPath).href);
-        render = serverEntry.render;
+        if (fs.existsSync(serverEntryPath)) {
+          const serverEntry = await import(pathToFileURL(serverEntryPath).href);
+          render = serverEntry.render;
+        } else {
+          render = () => ({ html: "", headTags: "" });
+        }
       }
 
       const { html: appHtml, headTags } = render(url);
@@ -151,7 +159,9 @@ async function startServer() {
       // Safe fallback to client-rendered HTML shell
       try {
         const fallbackPath = isProd
-          ? path.resolve(process.cwd(), "dist/client/index.html")
+          ? (fs.existsSync(path.resolve(process.cwd(), "dist/index.html"))
+              ? path.resolve(process.cwd(), "dist/index.html")
+              : path.resolve(process.cwd(), "dist/client/index.html"))
           : path.resolve(process.cwd(), "index.html");
         let fallbackHtml = fs.readFileSync(fallbackPath, "utf-8");
         if (!isProd && vite) {

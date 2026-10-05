@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#006642" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Circular Mint Green Background -->
+  <circle cx="256" cy="256" r="256" fill="#00c982" />
+
+  <!-- Stylized White "D" Emblem -->
+  <!-- Top horizontal bar, curved loop-around letter D with rounded caps -->
+  <g fill="#ffffff" filter="url(#subtleShadow)">
+    <path 
+      d="M 175 130 
+         L 320 130 
+         C 375 130 415 170 415 225 
+         C 415 280 375 320 320 320 
+         L 205 320 
+         C 188 320 175 307 175 290 
+         C 175 273 188 260 205 260 
+         L 315 260 
+         C 335 260 355 245 355 225 
+         C 355 205 335 190 315 190 
+         L 235 190 
+         L 235 250 
+         C 235 267 222 280 205 280 
+         C 188 280 175 267 175 250 
+         Z" 
+    />
+  </g>
+
+  <!-- "DIUWIN" Typography -->
+  <text 
+    x="256" 
+    y="420" 
+    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Montserrat', 'Arial Black', sans-serif" 
+    font-weight="900" 
+    font-size="78" 
+    fill="#ffffff" 
+    text-anchor="middle" 
+    letter-spacing="4"
+  >
+    DIUWIN
+  </text>
+</svg>

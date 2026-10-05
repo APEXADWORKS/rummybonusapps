@@ -4,15 +4,50 @@ import fs from "fs";
 import crypto from "crypto";
 import { pathToFileURL } from "url";
 import { createServer as createViteServer, ViteDevServer } from "vite";
+import { initDatabase } from "./server/db.js";
+import { apiRouter } from "./server/routes/api.js";
+import { generateSitemapXml } from "./server/services/sitemapService.js";
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
   const isProd = process.env.NODE_ENV === "production";
 
+  // Initialize MongoDB / Database service
+  await initDatabase();
+
   // Middleware for parsing requests
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // REST API router for managing 80+ apps and database health
+  app.use("/api", apiRouter);
+
+  // Dynamic XML Sitemap Generator
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      const xml = await generateSitemapXml();
+      res.header("Content-Type", "application/xml; charset=utf-8");
+      res.header("Cache-Control", "public, max-age=300, s-maxage=600");
+      res.status(200).send(xml);
+    } catch (err) {
+      console.error("Error generating dynamic sitemap:", err);
+      res.status(500).send("Error generating dynamic sitemap");
+    }
+  });
+
+  // Dynamic robots.txt pointing to the dynamic sitemap
+  app.get("/robots.txt", (req, res) => {
+    res.header("Content-Type", "text/plain; charset=utf-8");
+    res.send(`User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin-login
+Disallow: /admin
+
+Sitemap: https://www.rummybonusapps.com/sitemap.xml
+`);
+  });
 
   // Telegram webhook receiver page /tg_webhook (supporting POST)
   app.post("/tg_webhook", async (req, res) => {

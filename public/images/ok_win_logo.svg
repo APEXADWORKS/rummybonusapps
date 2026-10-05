@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Red Gradient -->
+    <radialGradient id="redBgGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="50%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#991b1b" />
+    </radialGradient>
+
+    <!-- Planet Red Gradient -->
+    <radialGradient id="planetGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ff334b" />
+      <stop offset="60%" stop-color="#e11d48" />
+      <stop offset="100%" stop-color="#9f1239" />
+    </radialGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="planetShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#4c0519" flood-opacity="0.6" />
+    </filter>
+
+    <filter id="ringShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#4c0519" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="512" height="512" rx="90" fill="url(#redBgGrad)" />
+
+  <!-- Ambient Chart Line Accents in Background -->
+  <path d="M 0 420 L 70 370 L 140 390 L 220 330" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" />
+  <path d="M 440 260 L 512 210" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" />
+
+  <!-- Floating Poker Chip: Top-Left -->
+  <g transform="translate(85, 110) rotate(-15)">
+    <circle cx="0" cy="0" r="30" fill="#dc2626" stroke="#ffffff" stroke-width="3" />
+    <circle cx="0" cy="0" r="24" fill="none" stroke="#ffffff" stroke-width="6" stroke-dasharray="10 10" />
+    <circle cx="0" cy="0" r="14" fill="#991b1b" />
+  </g>
+
+  <!-- Floating Poker Chip: Top-Right -->
+  <g transform="translate(440, 85) rotate(25)">
+    <circle cx="0" cy="0" r="22" fill="#dc2626" stroke="#ffffff" stroke-width="2.5" />
+    <circle cx="0" cy="0" r="17" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-dasharray="7 7" />
+    <circle cx="0" cy="0" r="10" fill="#991b1b" />
+  </g>
+
+  <!-- Floating 3D Dice: Bottom-Right -->
+  <g transform="translate(440, 420) rotate(15)">
+    <!-- Top Face -->
+    <polygon points="0,-30 25,-15 0,0 -25,-15" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5" />
+    <!-- Left Face -->
+    <polygon points="-25,-15 0,0 0,35 -25,20" fill="#e11d48" stroke="#ffffff" stroke-width="1.5" />
+    <!-- Right Face -->
+    <polygon points="0,0 25,-15 25,20 0,35" fill="#be123c" stroke="#ffffff" stroke-width="1.5" />
+
+    <!-- White Dots -->
+    <!-- Top Face Dot -->
+    <circle cx="0" cy="-15" r="2.5" fill="#ffffff" />
+    <!-- Left Face Dots -->
+    <circle cx="-14" cy="5" r="2.5" fill="#ffffff" />
+    <circle cx="-14" cy="22" r="2.5" fill="#ffffff" />
+    <!-- Right Face Dots -->
+    <circle cx="12" cy="5" r="2" fill="#ffffff" />
+    <circle cx="18" cy="18" r="2" fill="#ffffff" />
+    <circle cx="6" cy="24" r="2" fill="#ffffff" />
+  </g>
+
+  <!-- Back Half of Orbital White Ring (Behind Planet) -->
+  <path 
+    d="M 120 370 C 50 420 40 450 140 430 C 260 410 440 280 470 190 C 490 130 430 140 370 180" 
+    fill="none" 
+    stroke="#ffffff" 
+    stroke-width="14" 
+    stroke-linecap="round"
+  />
+
+  <!-- Main Red Circular Disc (Planet) -->
+  <circle cx="256" cy="265" r="175" fill="url(#planetGrad)" filter="url(#planetShadow)" />
+
+  <!-- Front Half of Orbital White Ring (In front of Planet) -->
+  <path 
+    d="M 85 390 C 40 420 120 430 220 380 C 340 320 455 200 480 160" 
+    fill="none" 
+    stroke="#ffffff" 
+    stroke-width="16" 
+    stroke-linecap="round"
+    filter="url(#ringShadow)"
+  />
+
+  <!-- Central "OK WIN" Bold Typography -->
+  <g text-anchor="middle">
+    <!-- "OK" Text -->
+    <text 
+      x="235" 
+      y="225" 
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Impact', 'Arial Black', sans-serif" 
+      font-weight="900" 
+      font-size="105" 
+      fill="#ffffff" 
+      letter-spacing="4"
+    >
+      OK
+    </text>
+    <!-- "WIN" Text -->
+    <text 
+      x="235" 
+      y="315" 
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Impact', 'Arial Black', sans-serif" 
+      font-weight="900" 
+      font-size="105" 
+      fill="#ffffff" 
+      letter-spacing="4"
+    >
+      WIN
+    </text>
+  </g>
+</svg>

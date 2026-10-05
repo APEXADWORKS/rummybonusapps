@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, FormEvent } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
@@ -16,9 +16,18 @@ import {
   Send,
   Coins,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Flame,
+  Palette,
+  Zap,
+  LogIn,
+  Database,
+  RefreshCw,
+  FileText,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
-import { RUMMY_APPS, RummyApp } from './data';
+import { RUMMY_APPS, COLOUR_APPS, RummyApp } from './data';
 import AppDetailPage from './components/AppDetailPage';
 import DynamicUttamPage from './components/DynamicUttamPage';
 import RummyBlogPage from './components/RummyBlogPage';
@@ -30,23 +39,67 @@ import RummyBlog6 from './components/RummyBlog6';
 import ApexdinLandingPage from './components/ApexdinLandingPage';
 import AllRummyAppsPage from './components/AllRummyAppsPage';
 import Rummy51BonusPage from './components/Rummy51BonusPage';
-import TopRummyAppsComparisonTable from './components/TopRummyAppsComparisonTable';
+import NinetyOneClubPage from './components/NinetyOneClubPage';
+import ColourTradingLandingPage from './components/ColourTradingLandingPage';
+import AdminLoginPage from './components/AdminLoginPage';
+
+export const getAppLink = (app: RummyApp) => {
+  if (app.id === '91-club') return '/91-club-login';
+  if (app.id === 'veer-game') return '/veer-game-login';
+  if (app.id === '82-lottery') return '/82-lottery-login';
+  if (app.id === 'maan-win') return '/maan-win-login';
+  if (app.id === 'ok-win') return '/ok-win-login';
+  if (app.id === 'diu-win' || app.id === 'du-win') return '/diu-win-login';
+  if (app.id === 'tiranga-game') return '/tiranga-game-login';
+  if (app.id === 'goa-game') return '/goa-game-login';
+  if (app.id === 'rummy-apple') return '/uttam1';
+  return `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+};
+
+export const isColourGame = (id: string) => [
+  '91-club', 'veer-game', '82-lottery', 'maan-win', 'ok-win', 'diu-win', 'du-win', 'tiranga-game', 'goa-game'
+].includes(id);
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState<'best' | 'colour' | 'new'>('best');
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [appsList, setAppsList] = useState<RummyApp[]>(RUMMY_APPS);
 
-  const mahaLootBanner = "/images/maha_loot_banner_1779179081106.png";
-  const rozRummyBanner = "/images/roz_rummy_banner_1779179099457.png";
-  const withdrawalProofBanner = "/images/withdrawal_proof_banner_1779179116289.png";
+  // Fetch real-time apps from Node.js (Express) & MongoDB API
+  useEffect(() => {
+    fetch('/api/apps')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.success && Array.isArray(data.apps) && data.apps.length > 0) {
+          setAppsList(data.apps);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
-  const topRecommendedApps = useMemo(() => {
-    const list = RUMMY_APPS.slice(0, 10);
+  // Filter 'New' apps for the NEW GAMES tab
+  const newGamesList = useMemo(() => appsList.filter(app => app.category === 'New'), [appsList]);
+
+  // 3 Tab Data:
+  // 1. 'best' -> ALL APPS (all 83+ apps from database)
+  // 2. 'colour' -> 91 CLUB & COLOUR TRADING APPS
+  // 3. 'new' -> SOME APPS (30 newly launched apps)
+  const displayedApps = useMemo(() => {
+    let list: RummyApp[] = [];
+    if (activeTab === 'best') {
+      list = appsList;
+    } else if (activeTab === 'new') {
+      list = newGamesList;
+    } else if (activeTab === 'colour') {
+      list = COLOUR_APPS;
+    }
+
     if (!searchQuery) return list;
     return list.filter(app => app.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  }, [searchQuery]);
+  }, [activeTab, searchQuery, appsList, newGamesList]);
 
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
@@ -78,6 +131,10 @@ function HomePage() {
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">
               <Link to="/" className="hover:text-brand-primary transition-colors text-brand-primary font-black">Home</Link>
+              <Link to="/91-club-login" className="hover:text-amber-400 transition-colors font-black text-amber-300 flex items-center gap-1">
+                <Flame className="w-3 h-3 text-amber-400 fill-amber-400" />
+                91 CLUB
+              </Link>
               <Link to="/rummy-51-bonus" className="hover:text-brand-primary transition-colors font-black text-white">₹51 BONUS</Link>
               <button 
                 onClick={(e) => {
@@ -115,307 +172,337 @@ function HomePage() {
       </header>
 
       <main>
-
-        {/* Modern Hero Section */}
-        <section className="relative pt-6 sm:pt-10 pb-6 bg-gradient-to-b from-[#090d16] via-[#0f172a] to-[#0f172a] border-b border-white/5 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[260px] bg-brand-primary/10 blur-[140px] rounded-full pointer-events-none" />
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>Verified 2026 Rummy Apps • Instant ₹51 & ₹41 Bonus</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase italic tracking-tight text-white leading-tight">
-              Best Rummy Bonus Apps <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-amber-400 to-yellow-300">
-                With Live Cashout Proof
-              </span>
-            </h1>
-
-            <p className="max-w-2xl mx-auto mt-2.5 text-xs sm:text-sm text-slate-300 font-medium">
-              Download tested Rummy & Teen Patti APKs with guaranteed signup bonuses and instant UPI withdrawals directly to your bank account.
-            </p>
-
-            {/* Quick Action Anchor Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
-              <a 
-                href="#comparison-table"
-                className="bg-brand-primary hover:bg-brand-primary-light text-black font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-lg shadow-brand-primary/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
-              >
-                <TrendingUp className="w-3.5 h-3.5 text-black stroke-[3]" />
-                Top 5 Apps Comparison
-              </a>
-              <a 
-                href="https://www.junglehaan.vip/share/6IOe3xy=1538"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
-              >
-                <Download className="w-3.5 h-3.5 stroke-[3]" />
-                Instant APK Download
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Promotional Banners Section */}
-        <section className="py-6 bg-[#0f172a] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-5 h-5 text-brand-primary" />
-              <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80">Hot Promotions</h2>
-            </div>
-            
-            <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar -mx-4 px-4">
-              {/* Banner 1 */}
-              <a 
-                href="https://www.junglehaan.vip/share/6IOe3xy=1538" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex-shrink-0 w-[280px] sm:w-[450px] aspect-[16/6] bg-gradient-to-br from-indigo-600 to-blue-800 rounded-2xl overflow-hidden relative border border-white/10 group cursor-pointer block"
-              >
-                <img 
-                  src={mahaLootBanner} 
-                  alt="Promotion 1" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent p-4 flex flex-col justify-end">
-                  <span className="bg-brand-primary text-black text-[8px] font-black uppercase px-2 py-0.5 rounded w-fit mb-1">Big Loot</span>
-                  <h3 className="text-sm sm:text-lg font-black uppercase italic leading-tight text-white drop-shadow-md">New Maha Loot Teen Patti App - Get ₹41</h3>
-                </div>
-              </a>
-
-              {/* Banner 2 */}
-              <a 
-                href="https://www.junglehaan.vip/share/6IOe3xy=1538" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex-shrink-0 w-[280px] sm:w-[450px] aspect-[16/6] bg-gradient-to-br from-purple-600 to-indigo-800 rounded-2xl overflow-hidden relative border border-white/10 group cursor-pointer block"
-              >
-                <img 
-                  src={rozRummyBanner} 
-                  alt="Promotion 2" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent p-4 flex flex-col justify-end">
-                  <span className="bg-white/20 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded w-fit mb-1">Free Bonus</span>
-                  <h3 className="text-sm sm:text-lg font-black uppercase italic leading-tight text-white drop-shadow-md">Roz Rummy - Free ₹25 SignUp Bonus</h3>
-                </div>
-              </a>
-
-              {/* Banner 3 */}
-              <a 
-                href="https://www.junglehaan.vip/share/6IOe3xy=1538" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex-shrink-0 w-[280px] sm:w-[450px] aspect-[16/6] bg-gradient-to-br from-emerald-600 to-teal-800 rounded-2xl overflow-hidden relative border border-white/10 group cursor-pointer block"
-              >
-                <img 
-                  src={withdrawalProofBanner} 
-                  alt="Promotion 3" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent p-4 flex flex-col justify-end">
-                  <span className="bg-white/20 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded w-fit mb-1">Verified</span>
-                  <h3 className="text-sm sm:text-lg font-black uppercase italic leading-tight text-white drop-shadow-md">₹51 Bonus with Live Withdrawal Proof</h3>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* High-Converting Modern Top Rummy Apps Comparison Table */}
-        <TopRummyAppsComparisonTable />
-
         {/* Dynamic Matrix Table section with responsive views */}
         <section id="apps" className="py-12 sm:py-16 bg-[#0f172a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
+            <div className="text-center mb-6">
               <h2 className="text-2xl sm:text-4xl font-black uppercase italic text-white tracking-tight">
-                TOP 10 RUMMY APPS
+                {activeTab === 'best' && 'BEST RUMMY APPS'}
+                {activeTab === 'colour' && '91 CLUB & COLOUR TRADING GAMES'}
+                {activeTab === 'new' && 'NEW RUMMY GAMES'}
               </h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-2 font-medium">
+                {activeTab === 'best' && 'Browse all verified Rummy apps with guaranteed bonuses & instant withdrawals'}
+                {activeTab === 'colour' && 'Play 91 Club Win Go Colour Prediction & Trading with 24/7 instant cashouts'}
+                {activeTab === 'new' && 'Newly launched Rummy apps with maximum signup incentives'}
+              </p>
             </div>
 
-            {/* Matrix table for DESKTOP and TABLET devices */}
-            <div className="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl bg-[#131b2e] hidden md:block">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#1e293b]/55 border-b border-white/10 text-[10px] uppercase tracking-wider text-slate-400 font-extrabold select-none">
-                    <th className="py-4 px-6 text-center w-16">Rank</th>
-                    <th className="py-4 px-6">App Master Profile</th>
-                    <th className="py-4 px-6 text-center w-36">Stars Rating</th>
-                    <th className="py-4 px-6 text-center w-36">SignUp Bonus</th>
-                    <th className="py-4 px-6 text-center w-36">Min. Cashout</th>
-                    <th className="py-4 px-6 text-center w-32">Downloads</th>
-                    <th className="py-4 px-6 text-center w-40">Safe Channel</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
+            {/* 3 Tab Options: BEST APPS, COLOUR GAMES, NEW GAMES */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 mb-10">
+              <button
+                type="button"
+                onClick={() => setActiveTab('best')}
+                className={`px-5 sm:px-7 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+                  activeTab === 'best'
+                    ? 'bg-gradient-to-r from-brand-primary via-amber-400 to-yellow-400 text-black shadow-brand-primary/25 scale-105 border-2 border-brand-primary'
+                    : 'bg-[#1e293b] text-slate-300 hover:text-white hover:bg-[#283850] border border-white/10'
+                }`}
+              >
+                <Flame className={`w-4 h-4 ${activeTab === 'best' ? 'text-black' : 'text-orange-500'}`} />
+                <span>BEST APPS</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'best' ? 'bg-black/20 text-black' : 'bg-white/10 text-brand-primary'
+                }`}>
+                  {RUMMY_APPS.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('colour')}
+                className={`px-5 sm:px-7 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+                  activeTab === 'colour'
+                    ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-pink-500/25 scale-105 border-2 border-pink-400'
+                    : 'bg-[#1e293b] text-slate-300 hover:text-white hover:bg-[#283850] border border-white/10'
+                }`}
+              >
+                <Palette className="w-4 h-4 text-pink-400" />
+                <span>COLOUR GAMES</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'colour' ? 'bg-white/20 text-white' : 'bg-white/10 text-rose-400'
+                }`}>
+                  {COLOUR_APPS.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('new')}
+                className={`px-5 sm:px-7 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+                  activeTab === 'new'
+                    ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-black shadow-emerald-400/25 scale-105 border-2 border-emerald-400'
+                    : 'bg-[#1e293b] text-slate-300 hover:text-white hover:bg-[#283850] border border-white/10'
+                }`}
+              >
+                <Sparkles className={`w-4 h-4 ${activeTab === 'new' ? 'text-black' : 'text-emerald-400'}`} />
+                <span>NEW GAMES</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'new' ? 'bg-black/20 text-black' : 'bg-white/10 text-emerald-400'
+                }`}>
+                  {newGamesList.length}
+                </span>
+              </button>
+            </div>
+
+            {/* TAB CONTENT: COLOUR GAMES SPOTLIGHT & QUICK CHIPS */}
+            {activeTab === 'colour' && (
+              <div className="mb-8 space-y-4">
+                <div className="p-6 sm:p-8 bg-gradient-to-r from-red-950 via-[#1a1429] to-[#121929] border border-rose-500/30 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-5">
+                    <img 
+                      src="/images/91_club_logo.jpg" 
+                      alt="91 Club Logo" 
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-400 shadow-xl"
+                    />
+                    <div>
+                      <span className="bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full inline-block mb-1">
+                        ⚡ Verified Colour Trading Platform
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-black uppercase italic text-white leading-tight">
+                        TOP COLOUR TRADING &amp; WIN GO GAMES
+                      </h3>
+                      <p className="text-xs text-slate-300 font-medium mt-1">
+                        Instant Login &amp; Registration for 91 Club, Tiranga Game, 82 Lottery, Veer Game, Goa Game, Ok Win, Maan Win &amp; Diu Win.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 w-full md:w-auto">
+                    <Link
+                      to="/91-club-login"
+                      className="w-full md:w-auto px-6 py-3.5 bg-gradient-to-r from-rose-600 to-amber-500 hover:brightness-110 active:scale-95 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/25 transition-all text-center flex items-center justify-center gap-2"
+                    >
+                      <LogIn className="w-4 h-4 text-white" />
+                      <span>Login 91 Club</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Quick Chips for all Colour Games */}
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {COLOUR_APPS.map((game) => (
+                    <Link
+                      key={game.id}
+                      to={getAppLink(game)}
+                      className="bg-[#141d30] hover:bg-[#1e2a45] border border-white/10 hover:border-amber-400/40 rounded-xl px-3.5 py-2 flex items-center gap-2 transition-all shadow-md group"
+                    >
+                      <img src={game.iconUrl} alt={game.name} className="w-6 h-6 rounded-md object-contain" />
+                      <span className="text-xs font-black uppercase text-slate-200 group-hover:text-amber-400">
+                        {game.name}
+                      </span>
+                      <span className="text-[9px] font-extrabold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                        Login
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB CONTENT: APPS LIST (TABLE & CARDS) */}
+            {displayedApps.length > 0 && (
+              <>
+                {/* Matrix table for DESKTOP and TABLET devices */}
+                <div className="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl bg-[#131b2e] hidden md:block">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#1e293b]/55 border-b border-white/10 text-[10px] uppercase tracking-wider text-slate-400 font-extrabold select-none">
+                        <th className="py-4 px-6 text-center w-16">Rank</th>
+                        <th className="py-4 px-6">App Master Profile</th>
+                        <th className="py-4 px-6 text-center w-36">Stars Rating</th>
+                        <th className="py-4 px-6 text-center w-36">SignUp Bonus</th>
+                        <th className="py-4 px-6 text-center w-36">Min. Cashout</th>
+                        <th className="py-4 px-6 text-center w-32">Downloads</th>
+                        <th className="py-4 px-6 text-center w-40">Safe Channel</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      <AnimatePresence mode="popLayout">
+                        {displayedApps.map((app, index) => (
+                          <motion.tr 
+                            key={app.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2, delay: Math.min(index * 0.015, 0.3) }}
+                            className="hover:bg-[#1a253c] transition-colors group cursor-default"
+                          >
+                            {/* Rank index */}
+                            <td className="py-4 px-6 text-center font-mono text-sm font-black text-brand-primary">
+                              #{String(index + 1).padStart(2, '0')}
+                            </td>
+                            
+                            {/* App Profile */}
+                            <td className="py-4 px-6">
+                              <div className="flex items-center gap-3.5">
+                                <img 
+                                  src={app.iconUrl} 
+                                  alt={app.name} 
+                                  className="w-11 h-11 rounded-xl object-contain border border-white/10 shadow-md transform group-hover:scale-105 transition-transform"
+                                  referrerPolicy="no-referrer"
+                                />
+                                <div>
+                                  <div className="font-black uppercase italic text-white text-sm group-hover:text-brand-primary-light transition-colors flex items-center gap-1.5">
+                                    {app.name}
+                                    {app.isTrending && (
+                                      <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide animate-pulse">
+                                        HOT
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                                    Client Approved Secure Link
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Stars Rating */}
+                            <td className="py-4 px-6 text-center">
+                              <div className="flex justify-center items-center gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                                ))}
+                              </div>
+                              <span className="text-[9px] text-green-400 uppercase font-black tracking-widest block mt-1">
+                                Verified Safe
+                              </span>
+                            </td>
+
+                            {/* Signup Bonus */}
+                            <td className="py-4 px-6 text-center">
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-brand-primary/10 border border-brand-primary/20 rounded-md text-brand-primary text-xs font-black uppercase italic">
+                                <Coins className="w-3 h-3 text-brand-primary-light" />
+                                {app.bonus}
+                              </div>
+                            </td>
+
+                            {/* Minimum cashout */}
+                            <td className="py-4 px-6 text-center font-black text-white italic text-sm">
+                              {app.minWithdrawal}
+                            </td>
+
+                            {/* Active downloads */}
+                            <td className="py-4 px-6 text-center font-bold text-slate-400 text-xs">
+                              {app.downloads}
+                            </td>
+
+                            {/* Action Column */}
+                            <td className="py-4 px-6 text-center">
+                              <Link 
+                                to={getAppLink(app)}
+                                className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black font-black py-2.5 px-3 rounded-lg text-[10px] uppercase tracking-wider text-center transition-all inline-flex items-center justify-center gap-1.5 font-sans shadow-md"
+                              >
+                                {isColourGame(app.id) ? (
+                                  <>
+                                    <LogIn className="w-3.5 h-3.5" />
+                                    LOGIN {app.name.toUpperCase()}
+                                  </>
+                                ) : (
+                                  <>
+                                    <Download className="w-3.5 h-3.5 stroke-[3]" />
+                                    GET LINK
+                                  </>
+                                )}
+                              </Link>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </AnimatePresence>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Matrix layout for MOBILE touch screens */}
+                <div className="grid grid-cols-1 gap-4 md:hidden">
                   <AnimatePresence mode="popLayout">
-                    {topRecommendedApps.map((app, index) => (
-                      <motion.tr 
+                    {displayedApps.map((app, index) => (
+                      <motion.div
                         key={app.id}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2, delay: index * 0.02 }}
-                        className="hover:bg-[#1a253c] transition-colors group cursor-default"
+                        className="bg-[#131b2e] rounded-2xl border border-white/10 p-4 relative overflow-hidden flex flex-col justify-between"
                       >
-                        {/* Rank index */}
-                        <td className="py-4 px-6 text-center font-mono text-sm font-black text-brand-primary">
-                          #{String(index + 1).padStart(2, '0')}
-                        </td>
-                        
-                        {/* App Profile */}
-                        <td className="py-4 px-6">
-                          <div className="flex items-center gap-3.5">
-                            <img 
-                              src={app.iconUrl} 
-                              alt={app.name} 
-                              className="w-11 h-11 rounded-xl object-contain border border-white/10 shadow-md transform group-hover:scale-105 transition-transform"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div>
-                              <div className="font-black uppercase italic text-white text-sm group-hover:text-brand-primary-light transition-colors flex items-center gap-1.5">
-                                {app.name}
-                                {app.isTrending && (
-                                  <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide animate-pulse">
-                                    HOT
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
-                                Client Approved Secure Link
-                              </span>
+                        {/* Rank Indicator Corner */}
+                        <span className="absolute top-3 right-4 font-mono text-xs font-black text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20">
+                          RANK #{String(index + 1).padStart(2, '0')}
+                        </span>
+
+                        <div className="flex gap-3.5 items-center mb-4">
+                          <img 
+                            src={app.iconUrl} 
+                            alt={app.name} 
+                            className="w-12 h-12 rounded-xl object-contain border border-white/10"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div>
+                            <h3 className="font-black uppercase italic text-white text-base leading-tight">
+                              {app.name}
+                            </h3>
+                            <div className="flex items-center gap-1 mt-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                              ))}
                             </div>
                           </div>
-                        </td>
+                        </div>
 
-                        {/* Stars Rating */}
-                        <td className="py-4 px-6 text-center">
-                          <div className="flex justify-center items-center gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                            ))}
+                        <div className="grid grid-cols-3 gap-2 bg-black/20 rounded-xl p-3 border border-white/5 text-center mb-4 text-[10px] font-bold">
+                          <div>
+                            <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">BONUS</span>
+                            <span className="text-brand-primary-light font-black uppercase italic">{app.bonus}</span>
                           </div>
-                          <span className="text-[9px] text-green-400 uppercase font-black tracking-widest block mt-1">
-                            Verified Safe
-                          </span>
-                        </td>
-
-                        {/* Signup Bonus */}
-                        <td className="py-4 px-6 text-center">
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-brand-primary/10 border border-brand-primary/20 rounded-md text-brand-primary text-xs font-black uppercase italic">
-                            <Coins className="w-3 h-3 text-brand-primary-light" />
-                            {app.bonus}
+                          <div>
+                            <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">CASHOUT</span>
+                            <span className="text-white font-black italic">{app.minWithdrawal}</span>
                           </div>
-                        </td>
+                          <div>
+                            <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">USERS</span>
+                            <span className="text-slate-400 font-black">{app.downloads}</span>
+                          </div>
+                        </div>
 
-                        {/* Minimum cashout */}
-                        <td className="py-4 px-6 text-center font-black text-white italic text-sm">
-                          {app.minWithdrawal}
-                        </td>
-
-                        {/* Active downloads */}
-                        <td className="py-4 px-6 text-center font-bold text-slate-400 text-xs">
-                          {app.downloads}
-                        </td>
-
-                        {/* Action Column */}
-                        <td className="py-4 px-6 text-center">
-                          <Link 
-                            to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
-                            className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:brightness-110 active:scale-95 text-black font-black py-2.5 px-3 rounded-lg text-[10px] uppercase tracking-wider text-center transition-all inline-flex items-center justify-center gap-1.5 font-sans shadow-md"
-                          >
-                            <Download className="w-3.5 h-3.5 stroke-[3]" />
-                            GET LINK
-                          </Link>
-                        </td>
-                      </motion.tr>
+                        <Link 
+                          to={getAppLink(app)}
+                          className="w-full bg-gradient-to-r from-brand-primary to-amber-500 text-black font-black py-3 rounded-xl uppercase tracking-widest text-[10px] text-center transition-all flex items-center justify-center gap-1.5"
+                        >
+                          {isColourGame(app.id) ? (
+                            <>
+                              <LogIn className="w-4 h-4" />
+                              LOGIN {app.name.toUpperCase()}
+                            </>
+                          ) : (
+                            <>
+                              <Download className="w-4 h-4 stroke-[3]" />
+                              DOWNLOAD SECURE APK
+                            </>
+                          )}
+                        </Link>
+                      </motion.div>
                     ))}
                   </AnimatePresence>
-                </tbody>
-              </table>
-            </div>
+                </div>
+              </>
+            )}
 
-            {/* Matrix layout for MOBILE touch screens */}
-            <div className="grid grid-cols-1 gap-4 md:hidden">
-              <AnimatePresence mode="popLayout">
-                {topRecommendedApps.map((app, index) => (
-                  <motion.div
-                    key={app.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="bg-[#131b2e] rounded-2xl border border-white/10 p-4 relative overflow-hidden flex flex-col justify-between"
-                  >
-                    {/* Rank Indicator Corner */}
-                    <span className="absolute top-3 right-4 font-mono text-xs font-black text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20">
-                      RANK #{String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    <div className="flex gap-3.5 items-center mb-4">
-                      <img 
-                        src={app.iconUrl} 
-                        alt={app.name} 
-                        className="w-12 h-12 rounded-xl object-contain border border-white/10"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div>
-                        <h3 className="font-black uppercase italic text-white text-base leading-tight">
-                          {app.name}
-                        </h3>
-                        <div className="flex items-center gap-1 mt-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 bg-black/20 rounded-xl p-3 border border-white/5 text-center mb-4 text-[10px] font-bold">
-                      <div>
-                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">BONUS</span>
-                        <span className="text-brand-primary-light font-black uppercase italic">{app.bonus}</span>
-                      </div>
-                      <div>
-                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">CASHOUT</span>
-                        <span className="text-white font-black italic">{app.minWithdrawal}</span>
-                      </div>
-                      <div>
-                        <span className="text-slate-500 font-extrabold uppercase text-[8px] block mb-0.5">USERS</span>
-                        <span className="text-slate-400 font-black">{app.downloads}</span>
-                      </div>
-                    </div>
-
-                    <Link 
-                      to={app.id === 'rummy-apple' ? '/uttam1' : `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`}
-                      className="w-full bg-gradient-to-r from-brand-primary to-amber-500 text-black font-black py-3 rounded-xl uppercase tracking-widest text-[10px] text-center transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <Download className="w-4 h-4 stroke-[3]" />
-                      DOWNLOAD SECURE APK
-                    </Link>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-
-            {/* In case of search miss, offer a direct deep bridge into alphabetical silo catalog */}
-            {topRecommendedApps.length === 0 && (
+            {/* In case of search miss */}
+            {displayedApps.length === 0 && (
               <div className="p-10 bg-[#131b2e] border border-white/10 rounded-2xl text-center max-w-lg mx-auto mt-6">
                 <Search className="w-10 h-10 text-slate-500 mx-auto mb-3" />
-                <h4 className="text-base font-black uppercase">Not listed in Top 10</h4>
+                <h4 className="text-base font-black uppercase">No games found</h4>
                 <p className="text-xs text-slate-400 mt-2 font-semibold">
-                  We only showcase our top 10 recommended apps on the Home hub. However, your game may be cataloged inside our comprehensive directories!
+                  No games in this section matched "{searchQuery}". Try a different keyword or reset your search.
                 </p>
                 
-                <Link 
-                  to={`/all-rummy-apps?q=${encodeURIComponent(searchQuery)}`}
-                  className="mt-5 inline-flex items-center gap-1 bg-brand-primary text-black font-black text-xs px-5 py-3 rounded-lg shadow-md uppercase hover:brightness-110 transition-all"
+                <button 
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="mt-5 inline-flex items-center gap-1 bg-brand-primary text-black font-black text-xs px-5 py-3 rounded-lg shadow-md uppercase hover:brightness-110 transition-all cursor-pointer"
                 >
-                  Search master list directory for "{searchQuery}" <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
+                  Clear Search Filter
+                </button>
               </div>
             )}
           </div>
@@ -625,6 +712,15 @@ function HomePage() {
           <span className="hover:text-brand-primary cursor-pointer transition-colors">T&C Apply</span>
           <span className="hover:text-brand-primary cursor-pointer transition-colors">18+ Responsible Gaming</span>
           <a href="mailto:support@rummybonus.com" className="hover:text-brand-primary transition-colors lowercase">support@rummybonus.com</a>
+          <a 
+            href="/sitemap.xml" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1 hover:text-brand-primary transition-colors uppercase font-bold"
+          >
+            <FileText className="w-3 h-3" />
+            /sitemap.xml
+          </a>
           <button 
             onClick={() => setIsContactOpen(true)} 
             className="flex items-center gap-1 hover:text-brand-primary transition-colors uppercase font-bold cursor-pointer"
@@ -830,6 +926,42 @@ export function AppRoutes() {
         <Route path="/all-rummy-apps" element={<AllRummyAppsPage />} />
         <Route path="/rummy-51-bonus" element={<Rummy51BonusPage />} />
 
+        {/* Colour Games: 91 Club Official Mirror (91-clubs.org) */}
+        <Route path="/91-club-login" element={<ColourTradingLandingPage gameId="91-club" />} />
+        <Route path="/91-club" element={<ColourTradingLandingPage gameId="91-club" />} />
+        <Route path="/91club" element={<ColourTradingLandingPage gameId="91-club" />} />
+        <Route path="/91-clubs" element={<ColourTradingLandingPage gameId="91-club" />} />
+
+        {/* Colour Games: Veer Game */}
+        <Route path="/veer-game-login" element={<ColourTradingLandingPage gameId="veer-game" />} />
+        <Route path="/veer-game" element={<ColourTradingLandingPage gameId="veer-game" />} />
+
+        {/* Colour Games: 82 Lottery */}
+        <Route path="/82-lottery-login" element={<ColourTradingLandingPage gameId="82-lottery" />} />
+        <Route path="/82-lottery" element={<ColourTradingLandingPage gameId="82-lottery" />} />
+
+        {/* Colour Games: Maan Win */}
+        <Route path="/maan-win-login" element={<ColourTradingLandingPage gameId="maan-win" />} />
+        <Route path="/maan-win" element={<ColourTradingLandingPage gameId="maan-win" />} />
+
+        {/* Colour Games: Ok Win */}
+        <Route path="/ok-win-login" element={<ColourTradingLandingPage gameId="ok-win" />} />
+        <Route path="/ok-win" element={<ColourTradingLandingPage gameId="ok-win" />} />
+
+        {/* Colour Games: Diu Win */}
+        <Route path="/diu-win-login" element={<ColourTradingLandingPage gameId="diu-win" />} />
+        <Route path="/diu-win" element={<ColourTradingLandingPage gameId="diu-win" />} />
+        <Route path="/du-win-login" element={<ColourTradingLandingPage gameId="diu-win" />} />
+        <Route path="/du-win" element={<ColourTradingLandingPage gameId="diu-win" />} />
+
+        {/* Colour Games: Tiranga Game */}
+        <Route path="/tiranga-game-login" element={<ColourTradingLandingPage gameId="tiranga-game" />} />
+        <Route path="/tiranga-game" element={<ColourTradingLandingPage gameId="tiranga-game" />} />
+
+        {/* Colour Games: Goa Game */}
+        <Route path="/goa-game-login" element={<ColourTradingLandingPage gameId="goa-game" />} />
+        <Route path="/goa-game" element={<ColourTradingLandingPage gameId="goa-game" />} />
+
         {/* Explicitly defined separate pages as requested */}
         <Route path="/apex1" element={<ApexdinLandingPage idOverride="1" />} />
         <Route path="/apex2" element={<ApexdinLandingPage idOverride="2" />} />
@@ -844,6 +976,11 @@ export function AppRoutes() {
         <Route path="/rummyblog4" element={<RummyBlog4 />} />
         <Route path="/rummyblog5" element={<RummyBlog5 />} />
         <Route path="/rummyblog6" element={<RummyBlog6 />} />
+
+        {/* Hidden Secure Admin Control Console */}
+        <Route path="/admin-login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={<AdminLoginPage />} />
+
         <Route path="/:appName" element={<AppRouteHandler />} />
       </Routes>
     </>

@@ -23,17 +23,54 @@ async function startServer() {
   // REST API router for managing 80+ apps and database health
   app.use("/api", apiRouter);
 
-  // Dynamic XML Sitemap Generator
+  // Pure Raw XML Sitemap Generator for Google Search Console
   app.get("/sitemap.xml", async (req, res) => {
     try {
       const xml = await generateSitemapXml();
-      res.type("application/xml");
       res.setHeader("Content-Type", "text/xml; charset=utf-8");
       res.setHeader("Cache-Control", "public, max-age=300, s-maxage=600");
       res.status(200).send(xml);
     } catch (err) {
       console.error("Error generating dynamic sitemap:", err);
-      res.status(500).type("text/plain").send("Error generating dynamic sitemap");
+      res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8").send("Error generating dynamic sitemap");
+    }
+  });
+
+  // Human-friendly HTML Sitemap viewer for users
+  app.get("/sitemap-html", async (req, res) => {
+    try {
+      const xml = await generateSitemapXml();
+      const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HTML Sitemap | Rummy Bonus Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: system-ui, sans-serif; background: #090d16; color: #e2e8f0; padding: 24px; margin: 0; }
+    .box { max-width: 900px; margin: 0 auto; background: #121929; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; }
+    h1 { color: #ffd700; margin-top: 0; }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+    li { background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px; font-size: 13px; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>All Indexed URLs (${urls.length})</h1>
+    <p>Raw XML format for Google Search Console is available at <a href="/sitemap.xml">/sitemap.xml</a>.</p>
+    <ul>
+      ${urls.map((u) => `<li><a href="${u}" target="_blank">${u.replace("https://www.rummybonusapps.com", "") || "/"}</a></li>`).join("")}
+    </ul>
+  </div>
+</body>
+</html>`;
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.status(200).send(html);
+    } catch {
+      res.redirect("/sitemap.xml");
     }
   });
 

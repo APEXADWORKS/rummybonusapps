@@ -5,6 +5,7 @@ import {
   createApp,
   updateApp,
   deleteApp,
+  updateAllAppsDownloadLink,
   seedDatabaseFromData,
   getDbStatus,
   getAllColourGames,
@@ -155,6 +156,27 @@ apiRouter.delete("/apps/:id", async (req: Request, res: Response) => {
     res.json({ success: true, message: `App '${req.params.id}' deleted successfully` });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/apps/update-all-links - 1-Click bulk update all 83+ apps download link
+apiRouter.post("/apps/update-all-links", async (req: Request, res: Response) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const { downloadLink } = req.body;
+    if (!downloadLink || typeof downloadLink !== "string") {
+      res.status(400).json({ error: "downloadLink is required" });
+      return;
+    }
+    const result = await updateAllAppsDownloadLink(downloadLink.trim());
+    res.json({
+      success: true,
+      message: `Successfully updated download link for all ${result.count} apps`,
+      count: result.count,
+      apps: result.apps,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Failed to bulk update links" });
   }
 });
 

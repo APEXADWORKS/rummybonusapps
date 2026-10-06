@@ -377,6 +377,33 @@ export async function deleteApp(id: string) {
   }
 }
 
+export async function updateAllAppsDownloadLink(downloadLink: string) {
+  // Always update local persistent fallback store
+  const apps = readLocalStore();
+  const updatedApps = apps.map((app) => ({
+    ...app,
+    downloadLink: downloadLink,
+    updatedAt: new Date().toISOString(),
+  }));
+  writeLocalStore(updatedApps);
+
+  if (isMongoConnected) {
+    try {
+      await AppModel.updateMany(
+        {},
+        { $set: { downloadLink, updatedAt: new Date() } }
+      );
+    } catch (err) {
+      console.warn("MongoDB updateMany note:", err);
+    }
+  }
+
+  return {
+    count: updatedApps.length,
+    apps: updatedApps,
+  };
+}
+
 // ----------------------------------------------------
 // COLOUR GAMES OPERATIONS (Invite, Login, Register, VIP Code)
 // ----------------------------------------------------

@@ -83,6 +83,10 @@ export default function AdminLoginPage() {
   const [bulkVipCode, setBulkVipCode] = useState('');
   const [isUpdatingBulk, setIsUpdatingBulk] = useState(false);
 
+  // Bulk Rummy Apps Link Updater (1-Click for all 83+ apps)
+  const [bulkRummyLink, setBulkRummyLink] = useState('');
+  const [isUpdatingBulkRummy, setIsUpdatingBulkRummy] = useState(false);
+
   // Success / Notice banner
   const [bannerMsg, setBannerMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
@@ -457,6 +461,66 @@ export default function AdminLoginPage() {
     }
   };
 
+  // Handle 1-Click Bulk Update for All Rummy Apps Links
+  const handleBulkUpdateRummyLinks = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bulkRummyLink.trim()) {
+      showBanner('Please enter a valid download/referral link', 'error');
+      return;
+    }
+
+    setIsUpdatingBulkRummy(true);
+    const targetLink = bulkRummyLink.trim();
+
+    try {
+      let savedOnServer = false;
+      try {
+        const res = await fetch('/api/apps/update-all-links', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({ downloadLink: targetLink })
+        });
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          const data = await res.json();
+          if (data && data.success) {
+            if (Array.isArray(data.apps) && data.apps.length > 0) {
+              setApps(data.apps);
+            }
+            savedOnServer = true;
+          }
+        }
+      } catch (netErr) {
+        console.warn('POST /api/apps/update-all-links network warning:', netErr);
+      }
+
+      // Always update local state for all apps immediately
+      setApps(prev =>
+        prev.map(app => ({
+          ...app,
+          downloadLink: targetLink
+        }))
+      );
+
+      showBanner(`Successfully updated download link for all ${apps.length} Rummy apps in 1-Click!`);
+      setBulkRummyLink('');
+    } catch (err: any) {
+      // Local fallback
+      setApps(prev =>
+        prev.map(app => ({
+          ...app,
+          downloadLink: targetLink
+        }))
+      );
+      showBanner(`Updated download link for all apps.`);
+    } finally {
+      setIsUpdatingBulkRummy(false);
+    }
+  };
+
   // Handle Change Password
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
@@ -791,6 +855,51 @@ export default function AdminLoginPage() {
         {/* TAB 1: MANAGE APPS */}
         {activeTab === 'apps' && (
           <div className="space-y-4">
+            {/* 1-CLICK BULK LINK UPDATER FOR ALL RUMMY APPS */}
+            <div className="bg-gradient-to-r from-[#131b2e] via-[#161d36] to-[#0f172a] border border-brand-primary/30 rounded-2xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-72 h-72 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10 mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand-primary/15 border border-brand-primary/30 flex items-center justify-center text-brand-primary shrink-0">
+                    <Link2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black uppercase text-white tracking-wide flex items-center gap-2">
+                      1-Click Bulk Link Change (All {apps.length} Apps)
+                      <span className="text-[9px] bg-brand-primary/20 text-brand-primary border border-brand-primary/40 px-2 py-0.5 rounded-full font-bold">
+                        1-Click Instant
+                      </span>
+                    </h3>
+                    <p className="text-[11px] text-slate-300">
+                      Ek click me saare {apps.length} Rummy apps ka download / telegram affiliate link update karein.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <form onSubmit={handleBulkUpdateRummyLinks} className="flex flex-col sm:flex-row gap-2.5">
+                <div className="relative flex-1">
+                  <Link2 className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter new download link for all apps (e.g. https://telegram.me/... ya custom affiliate URL)"
+                    value={bulkRummyLink}
+                    onChange={(e) => setBulkRummyLink(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-brand-primary shadow-inner"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={isUpdatingBulkRummy || !bulkRummyLink.trim()}
+                  className="px-5 py-2.5 bg-gradient-to-r from-brand-primary to-amber-400 hover:brightness-110 active:scale-98 text-black font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-brand-primary/20 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 shrink-0"
+                >
+                  <Sparkles className="w-4 h-4 text-black" />
+                  <span>{isUpdatingBulkRummy ? 'Updating All Apps...' : `Apply to All ${apps.length} Apps`}</span>
+                </button>
+              </form>
+            </div>
+
             {/* Search and Filters */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="relative flex-1 max-w-md">

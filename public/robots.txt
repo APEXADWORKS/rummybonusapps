@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin-login
+Disallow: /admin
 
 Sitemap: https://www.rummybonusapps.com/sitemap.xml

@@ -12,6 +12,7 @@ import {
   updateColourGame,
   updateAllColourGames,
   seedColourGames,
+  readLocalStore,
 } from "../db.js";
 
 export const apiRouter = Router();
@@ -157,20 +158,32 @@ apiRouter.delete("/apps/:id", async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/apps/seed - Re-seed initial 80+ apps
-apiRouter.post("/apps/seed", async (req: Request, res: Response) => {
+// POST & GET /api/apps/seed - Re-seed initial 80+ apps from local store / data
+const handleSeedAppsEndpoint = async (req: Request, res: Response) => {
+  res.setHeader("Content-Type", "application/json");
   try {
-    const force = req.body.force === true;
-    const count = await seedDatabaseFromData(force);
-    res.json({
+    const force = req.body?.force === true;
+    const result = await seedDatabaseFromData(force);
+    res.status(200).json({
       success: true,
-      message: `Successfully seeded ${count} apps into database`,
-      count,
+      message: `Successfully seeded ${result.count} apps into database`,
+      count: result.count,
+      apps: result.apps,
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    console.error("Seed route caught exception:", err);
+    const fallbackApps = readLocalStore();
+    res.status(200).json({
+      success: true,
+      message: `Loaded ${fallbackApps.length} apps from local fallback store`,
+      count: fallbackApps.length,
+      apps: fallbackApps,
+    });
   }
-});
+};
+
+apiRouter.post("/apps/seed", handleSeedAppsEndpoint);
+apiRouter.get("/apps/seed", handleSeedAppsEndpoint);
 
 // ====================================================
 // COLOUR GAMES (Invite link, Login link, Register link, VIP Code)

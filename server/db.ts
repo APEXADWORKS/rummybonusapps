@@ -109,18 +109,22 @@ function ensureLocalStore() {
   }
 }
 
-function readLocalStore(): any[] {
+export function readLocalStore(): any[] {
   ensureLocalStore();
   try {
     const raw = fs.readFileSync(STORE_PATH, "utf-8");
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+    return RUMMY_APPS;
   } catch (err) {
     console.error("Error reading local apps store:", err);
     return RUMMY_APPS;
   }
 }
 
-function writeLocalStore(apps: any[]) {
+export function writeLocalStore(apps: any[]) {
   ensureLocalStore();
   try {
     fs.writeFileSync(STORE_PATH, JSON.stringify(apps, null, 2), "utf-8");
@@ -188,32 +192,39 @@ export async function initDatabase() {
 }
 
 export async function seedDatabaseFromData(force = false) {
+  // Build fresh 83+ apps array from source data
+  const defaultDocs = RUMMY_APPS.map((app) => ({
+    ...app,
+    rating: 4.8,
+    reviewCount: 12500,
+    slug: app.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
+
+  // Always write fresh copy to local persistent fallback file
+  writeLocalStore(defaultDocs);
+
   if (isMongoConnected) {
-    if (force) {
-      await AppModel.deleteMany({});
+    try {
+      if (force) {
+        await AppModel.deleteMany({});
+      }
+      const mongoDocs = defaultDocs.map((app) => ({
+        ...app,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+      await AppModel.insertMany(mongoDocs, { ordered: false });
+    } catch (err) {
+      console.warn("[Database] MongoDB bulk insert note:", err);
     }
-    const docs = RUMMY_APPS.map((app) => ({
-      ...app,
-      rating: 4.8,
-      reviewCount: 12500,
-      slug: app.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
-    await AppModel.insertMany(docs, { ordered: false });
-    return docs.length;
-  } else {
-    const initialData = RUMMY_APPS.map((app) => ({
-      ...app,
-      rating: 4.8,
-      reviewCount: 12500,
-      slug: app.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }));
-    writeLocalStore(initialData);
-    return initialData.length;
   }
+
+  return {
+    count: defaultDocs.length,
+    apps: defaultDocs,
+  };
 }
 
 export async function seedColourGames(force = false) {

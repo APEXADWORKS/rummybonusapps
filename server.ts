@@ -28,7 +28,7 @@ async function startServer() {
     try {
       const xml = await generateSitemapXml();
       res.type("application/xml");
-      res.setHeader("Content-Type", "application/xml; charset=utf-8");
+      res.setHeader("Content-Type", "text/xml; charset=utf-8");
       res.setHeader("Cache-Control", "public, max-age=300, s-maxage=600");
       res.status(200).send(xml);
     } catch (err) {

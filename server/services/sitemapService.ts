@@ -344,14 +344,21 @@ export async function generateSitemapXml(): Promise<string> {
     .join("\n");
 
   const fullXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${xmlItems}
 </urlset>`;
 
-  // Also sync public/sitemap.xml file on disk for static fallbacks
+  // Also sync public/sitemap.xml and dist/sitemap.xml files on disk
   try {
     const publicSitemapPath = path.resolve(process.cwd(), "public/sitemap.xml");
     fs.writeFileSync(publicSitemapPath, fullXml, "utf-8");
+  } catch {}
+  try {
+    const distSitemapPath = path.resolve(process.cwd(), "dist/sitemap.xml");
+    if (fs.existsSync(path.dirname(distSitemapPath))) {
+      fs.writeFileSync(distSitemapPath, fullXml, "utf-8");
+    }
   } catch {}
 
   return fullXml;

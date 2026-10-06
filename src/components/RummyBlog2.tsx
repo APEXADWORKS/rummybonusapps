@@ -20,10 +20,10 @@ const RummyBlog2 = () => {
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
-        <title>New Rummy App Today 2026 - Latest Rummy All App List May Update</title>
+        <title>New Rummy App Today 2026 - Download Latest APK | RBA</title>
         <meta name="description" content="Looking for a new rummy app today? Check our daily extensive updated list of All Rummy Apps launched in May 2026. Get free signup bonus and fast withdrawals." />
         <meta name="keywords" content="new rummy app today, latest rummy app, all rummy app list 2026, rummy bonus today, new rummy bonus apk, best rummy apps may 2026" />
-        <link rel="canonical" href="https://allrummybonus.com/rummyblog2" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/rummyblog2" />
       </Helmet>
 
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">

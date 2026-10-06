@@ -23,7 +23,7 @@ export default function Rummy51BonusPage() {
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black pb-20">
       <Helmet>
-        <title>Rummy 51 Bonus Apps List 2026 - Claim ₹51 Free SignUp Rewards</title>
+        <title>Rummy 51 Bonus App List 2026 - Get ₹51 Free Bonus | RBA</title>
         <meta name="description" content="Looking for Rummy 51 Bonus Apps? Get the active curated list of all rummy apps providing ₹51 signup incentives. Double check guides and secure instant mobile cashouts." />
         <meta name="keywords" content="Rummy 51 Bonus, Rummy 51 Bonus Apps, ₹51 Free Rummy bonus, Teen Patti 51 bonus games, All Rummy 51 bonus list" />
         <link rel="canonical" href="https://www.rummybonusapps.com/rummy-51-bonus" />

@@ -1,5 +1,4 @@
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { 
   Download, 
@@ -11,6 +10,7 @@ import {
   Star
 } from 'lucide-react';
 import { RUMMY_APPS } from '../data';
+import { SEOHead } from './SEOHead';
 
 export default function AppDetailPage({ 
   appNameOverride,
@@ -51,35 +51,18 @@ export default function AppDetailPage({
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">
-      <Helmet>
-        <title>{`${app.name} Download APK - Get ${app.bonus} Signup Bonus | All Rummy Apps 2026`}</title>
-        <meta name="description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}. Part of our All Rummy App List with live withdrawal proof.`} />
-        <meta name="keywords" content={`${app.name} download, ${app.name} apk, All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list, rummy game download, live withdrawal proof rummy, download all rummy downloads, trending rummy games`} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content={`${app.name} Download APK - Get ${app.bonus} Signup Bonus | All Rummy Apps 2026`} />
-        <meta property="og:description" content={`Download ${app.name} APK officially. Get ${app.bonus} bonus on signup. Min withdrawal ${app.minWithdrawal}.`} />
-        <meta property="og:url" content={canonicalUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": app.name,
-            "url": canonicalUrl,
-            "operatingSystem": "Android, iOS",
-            "applicationCategory": "GameApplication",
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": app.name === "Rummy Gold" ? "4.7" : "4.8",
-              "ratingCount": app.name === "Rummy Gold" ? "18450" : (app.downloads.replace(/[^0-9]/g, '') || "18450")
-            },
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "INR"
-            }
-          })}
-        </script>
-      </Helmet>
+      <SEOHead 
+        app={{
+          id: app.id,
+          name: app.name,
+          bonus: app.bonus,
+          minCashout: app.minWithdrawal,
+          downloads: app.downloads,
+          logo: app.iconUrl,
+        }}
+        canonicalUrl={canonicalUrl}
+        siteName="RBA"
+      />
       {/* Header */}
       <header className="bg-[#1e293b] border-b border-white/5 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">

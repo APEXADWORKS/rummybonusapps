@@ -20,10 +20,10 @@ const RummyBlog3 = () => {
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
-        <title>Top 10 Rummy Apps with ₹51 Bonus - Instant Withdrawal Guide 2026</title>
+        <title>Top 10 Rummy Apps with ₹51 Bonus - Withdrawal Guide | RBA</title>
         <meta name="description" content="Discover the best Rummy Apps offering ₹51 signup bonus. Learn how to withdraw your winnings instantly to UPI or Bank. Complete Rummy All App List 2026 guide." />
         <meta name="keywords" content="rummy 51 bonus, rummy withdrawal, best rummy apps, rummy with 100 withdrawal, rummy real cash, rummy app list" />
-        <link rel="canonical" href="https://allrummybonus.com/rummyblog3" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/rummyblog3" />
       </Helmet>
 
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">

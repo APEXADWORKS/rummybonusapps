@@ -104,10 +104,10 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
-        <title>Rummy Bonus Apps - Top 10 Recommended Rummy All Apk List 2026</title>
-        <meta name="description" content="Welcome to RummyBonusApps.com, the premier structured Rummy Silo Hub. Download the Top 10 Recommended Rummy All Apk, check out our 100+ master directory list, or claim ₹51 rewards." />
+        <title>All Rummy App List 51 Bonus 2026 - Download APK | RBA</title>
+        <meta name="description" content="Welcome to RummyBonusApps.com. Download the Top 10 Recommended Rummy All Apk, check out our master directory list, or claim ₹51 signup rewards." />
         <meta name="keywords" content="Rummy Bonus Apps, Top 10 Rummy apps, Rummy All Apk download, Best Rummy bonuses 2026, ₹51 bonus rummy links, complete master rummy directory" />
-        <link rel="canonical" href="https://rummybonusapps.com/" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/" />
       </Helmet>
       {/* Sticky Header with two bars */}
       <header className="sticky top-0 z-50 shadow-2xl">

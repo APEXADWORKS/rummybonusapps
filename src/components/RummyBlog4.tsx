@@ -23,7 +23,7 @@ const RummyBlog4 = () => {
         <title>Dragon vs Tiger Strategy - Win Big in All Rummy Apps 2026</title>
         <meta name="description" content="Master Dragon vs Tiger with our secret winning strategies. Learn the extensive 3x investment rule and how to read patterns. Master the Rummy All Apk games." />
         <meta name="keywords" content="dragon vs tiger trick, dragon vs tiger strategy, rummy tricks, win money in rummy, dragon tiger pattern, all rummy app games" />
-        <link rel="canonical" href="https://allrummybonus.com/rummyblog4" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/rummyblog4" />
       </Helmet>
 
       <header className="bg-bg-secondary border-b border-brand-primary/30 py-4">

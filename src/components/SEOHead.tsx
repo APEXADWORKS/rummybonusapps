@@ -26,7 +26,7 @@ export interface SEOHeadProps {
    */
   canonicalUrl?: string;
   /**
-   * Optional custom site name (defaults to 'RummyBonusApps.com')
+   * Optional custom site name (defaults to 'RBA')
    */
   siteName?: string;
   /**
@@ -37,10 +37,40 @@ export interface SEOHeadProps {
 
 const DEFAULT_BASE_URL = 'https://www.rummybonusapps.com';
 
+/**
+ * Generates an SEO page title guaranteed to stay strictly under 60 characters:
+ * e.g., `${appName} APK Download - Get ₹51 Bonus | ${siteName}`
+ */
+export function generateSEOTitle(
+  appName: string,
+  bonus: string = '₹51',
+  siteName: string = 'RBA'
+): string {
+  const cleanBonus = bonus.replace(/^Rs\.?/i, '₹').trim() || '₹51';
+  let candidate = `${appName} APK Download - Get ${cleanBonus} Bonus | ${siteName}`;
+  if (candidate.length <= 60) return candidate;
+
+  candidate = `${appName} APK Download - ${cleanBonus} Bonus | ${siteName}`;
+  if (candidate.length <= 60) return candidate;
+
+  candidate = `${appName} APK Download | ${siteName}`;
+  if (candidate.length <= 60) return candidate;
+
+  const maxLen = Math.max(10, 60 - ` APK Download | ${siteName}`.length);
+  return `${appName.slice(0, maxLen).trim()} APK Download | ${siteName}`;
+}
+
+export function clampTitle(title: string, maxLength: number = 60): string {
+  if (!title) return 'All Rummy App List 51 Bonus 2026 - Download APK | RBA';
+  const trimmed = title.trim();
+  if (trimmed.length <= maxLength) return trimmed;
+  return trimmed.slice(0, maxLength).trim();
+}
+
 const DEFAULT_APP_DATA: AppSEOData = {
   id: 'all-rummy-apps',
   name: 'All Rummy Apps',
-  title: 'All Rummy App List 51 Bonus 2026: Download New Rummy APK',
+  title: 'All Rummy App List 51 Bonus 2026 - Download APK | RBA',
   description: 'Download latest Rummy Bonus apps with ₹51 & ₹41 signup bonus. Instant UPI withdrawal, 100% verified APK download links, and 24/7 safe real cash games.',
   keywords: 'all rummy app list, rummy bonus 51, new rummy app today, teen patti bonus app, rummy apk download, yono rummy app, instant withdrawal rummy',
   bonus: 'Rs.51',
@@ -53,7 +83,7 @@ const DEFAULT_APP_DATA: AppSEOData = {
 export const SEOHead: React.FC<SEOHeadProps> = ({
   app,
   canonicalUrl,
-  siteName = 'RummyBonusApps.com',
+  siteName = 'RBA',
   robots = 'index, follow',
 }) => {
   // Resolve App SEO Data from appsData.json master list or direct prop
@@ -68,7 +98,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         (item) => item.id.toLowerCase() === slug || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug
       );
 
-      if (matched) return matched;
+      if (matched) {
+        return {
+          ...matched,
+          title: clampTitle(matched.title || generateSEOTitle(matched.name, matched.bonus, siteName), 60),
+        };
+      }
 
       // Dynamic fallback for string slug
       const formattedName = slug
@@ -79,7 +114,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       return {
         id: slug,
         name: formattedName,
-        title: `${formattedName} APK Download: Get Rs.51 Free Bonus 2026`,
+        title: generateSEOTitle(formattedName, '₹51', siteName),
         description: `Download ${formattedName} APK with instant Rs.51 signup bonus. 100% verified safe download link, fast ₹100 UPI cashout, and 24/7 support in 2026.`,
         keywords: `${slug} apk, ${slug} download, ${slug} rummy bonus, ${slug} login, all rummy app 2026`,
         bonus: 'Rs.51',
@@ -91,23 +126,27 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     }
 
     // Object passed: merge with defaults
+    const name = app.name || DEFAULT_APP_DATA.name;
+    const bonus = app.bonus || DEFAULT_APP_DATA.bonus;
+    const computedTitle = app.title || generateSEOTitle(name, bonus, siteName);
+
     return {
       id: app.id || DEFAULT_APP_DATA.id,
-      name: app.name || DEFAULT_APP_DATA.name,
-      title: app.title || `${app.name || 'Rummy'} APK Download: Get ${app.bonus || 'Rs.51'} Bonus 2026`,
+      name,
+      title: clampTitle(computedTitle, 60),
       description:
         app.description ||
-        `Download ${app.name || 'Rummy'} APK with instant ${app.bonus || 'Rs.51'} signup bonus. 100% verified download link, fast ${app.minCashout || '₹100'} UPI cashout.`,
+        `Download ${name} APK with instant ${bonus} signup bonus. 100% verified download link, fast ${app.minCashout || '₹100'} UPI cashout.`,
       keywords:
         app.keywords ||
-        `${app.name?.toLowerCase()} apk, ${app.name?.toLowerCase()} download, ${app.name?.toLowerCase()} bonus, all rummy app 2026`,
-      bonus: app.bonus || DEFAULT_APP_DATA.bonus,
+        `${name.toLowerCase()} apk, ${name.toLowerCase()} download, ${name.toLowerCase()} bonus, all rummy app 2026`,
+      bonus,
       minCashout: app.minCashout || DEFAULT_APP_DATA.minCashout,
       rating: app.rating || DEFAULT_APP_DATA.rating,
       downloads: app.downloads || DEFAULT_APP_DATA.downloads,
       logo: app.logo || DEFAULT_APP_DATA.logo,
     };
-  }, [app]);
+  }, [app, siteName]);
 
   // Compute absolute URLs for canonical, og:url, og:image
   const fullUrl = useMemo(() => {
@@ -168,9 +207,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
   return (
     <Helmet>
-      {/* 1. Primary HTML Meta Tags */}
+      {/* 1. Primary HTML Meta Tags (Strictly ONE <title> tag, NO <meta name="title">) */}
       <title>{appData.title}</title>
-      <meta name="title" content={appData.title} />
       <meta name="description" content={appData.description} />
       <meta name="keywords" content={appData.keywords} />
       <meta name="robots" content={robots} />
@@ -195,7 +233,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="twitter:image:alt" content={`${appData.name} APK Logo`} />
 
       {/* 4. JSON-LD Schema Markup (SoftwareApplication / GameApplication) */}
-      <script type="application/ld+json">
+      <script type="application/ld+json" id={`schema-${appData.id}`}>
         {JSON.stringify(jsonLdSchema)}
       </script>
     </Helmet>

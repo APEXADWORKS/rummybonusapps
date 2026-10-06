@@ -19,10 +19,10 @@ const RummyBlogPage = () => {
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
       <Helmet>
-        <title>All Rummy App List 2026 - Download Best Rummy All Apk & Get Bonus</title>
+        <title>All Rummy App List 2026 - Download Best Rummy APK | RBA</title>
         <meta name="description" content="Ultimate extensive guide to All Rummy Apps 2026. Get the complete Rummy All Apk download list. Learn how to get Rummy 51 bonus, new rummy app today updates and more." />
         <meta name="keywords" content="All Rummy Apps, Rummy All Apps, Rummy All Apk Download, rummy bonus apps, rummy 51 bonus, new rummy app today, Teen Patti Game, Yono Rummy All Games, free signup bonus rummy, new rummy app 2026, all rummy app list" />
-        <link rel="canonical" href="https://allrummybonus.com/rummyblog1" />
+        <link rel="canonical" href="https://www.rummybonusapps.com/rummyblog1" />
       </Helmet>
 
       {/* Header */}

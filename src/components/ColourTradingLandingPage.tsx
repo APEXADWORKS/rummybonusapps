@@ -227,7 +227,7 @@ export default function ColourTradingLandingPage({ gameId = '91-club' }: { gameI
   return (
     <div className="min-h-screen bg-[#090d16] text-white selection:bg-rose-500 selection:text-white">
       <Helmet>
-        <title>{`${game.name} Login & Official Portal | Colour Trading Game India 2026`}</title>
+        <title>{`${game.name} Login - Official Portal & Bonus | RBA`}</title>
         <meta 
           name="description" 
           content={`${game.name} Login Official Website - Instant Login to ${game.name} Colour Trading App. Play Win Go 1 Min Colour Prediction, claim ₹500 first deposit welcome bonus, and enjoy 24/7 instant ₹110 UPI withdrawals.`} 
@@ -236,10 +236,10 @@ export default function ColourTradingLandingPage({ gameId = '91-club' }: { gameI
           name="keywords" 
           content={`${game.name} login, ${game.name} app login, ${game.name} colour trading login, ${game.name} register, ${game.name} invite code 1538, win go colour game`} 
         />
-        <link rel="canonical" href={`https://rummybonusapps.com/${game.loginSlug}`} />
+        <link rel="canonical" href={`https://www.rummybonusapps.com/${game.loginSlug}`} />
 
         {/* OpenGraph Tags */}
-        <meta property="og:title" content={`${game.name} Login - Official Colour Trading App India`} />
+        <meta property="og:title" content={`${game.name} Login - Official Portal & Bonus | RBA`} />
         <meta property="og:description" content={`Instant ${game.name} Login & Registration. Play Win Go 1 Min, claim ₹500 welcome bonus, and withdraw via UPI in under 5 minutes.`} />
         <meta property="og:image" content={`https://rummybonusapps.com${game.logo}`} />
         <meta property="og:url" content={`https://rummybonusapps.com/${game.loginSlug}`} />

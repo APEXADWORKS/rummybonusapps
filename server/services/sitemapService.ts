@@ -1,12 +1,14 @@
-import { getAllApps } from "../db.js";
+import fs from "fs";
+import path from "path";
+import { getAllApps, readLocalStore } from "../db.js";
 
 const BASE_URL = "https://www.rummybonusapps.com";
 
 interface SitemapUrl {
   loc: string;
-  lastmod: string;
-  changefreq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   priority: string;
+  changefreq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+  lastmod?: string;
 }
 
 export async function generateSitemapXml(): Promise<string> {
@@ -16,264 +18,288 @@ export async function generateSitemapXml(): Promise<string> {
   const staticUrls: SitemapUrl[] = [
     {
       loc: `${BASE_URL}/`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "1.0",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/all-rummy-apps`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.95",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummy-51-bonus`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.95",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/colour-trading-games`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
 
     // Colour Game Login Hubs & Aliases
     {
       loc: `${BASE_URL}/91-club-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/91-club`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/91club`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/91-clubs`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/tiranga-game-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/tiranga-game`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/82-lottery-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/82-lottery`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/goa-game-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/goa-game`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/veer-game-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/veer-game`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/ok-win-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/ok-win`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/maan-win-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/maan-win`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/diu-win-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.9",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/du-win-login`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/diu-win`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/du-win`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.85",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
 
     // Campaign & Special Landing Pages
     {
       loc: `${BASE_URL}/apex1`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/apex2`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/apex3`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/apex4`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/apex5`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/uttam1`,
-      lastmod: currentDate,
-      changefreq: "daily",
       priority: "0.8",
+      changefreq: "daily",
+      lastmod: currentDate,
     },
 
     // SEO Strategy Blog Guides
     {
       loc: `${BASE_URL}/rummyblog1`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummyblog2`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummyblog3`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummyblog4`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummyblog5`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/rummyblog6`,
-      lastmod: currentDate,
-      changefreq: "weekly",
       priority: "0.8",
+      changefreq: "weekly",
+      lastmod: currentDate,
     },
 
     // Policy & Legal Pages
     {
       loc: `${BASE_URL}/about-us`,
-      lastmod: currentDate,
-      changefreq: "monthly",
       priority: "0.5",
+      changefreq: "monthly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/contact-us`,
-      lastmod: currentDate,
-      changefreq: "monthly",
       priority: "0.5",
+      changefreq: "monthly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/privacy-policy`,
-      lastmod: currentDate,
-      changefreq: "monthly",
       priority: "0.5",
+      changefreq: "monthly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/disclaimer`,
-      lastmod: currentDate,
-      changefreq: "monthly",
       priority: "0.5",
+      changefreq: "monthly",
+      lastmod: currentDate,
     },
     {
       loc: `${BASE_URL}/terms-and-conditions`,
-      lastmod: currentDate,
-      changefreq: "monthly",
       priority: "0.5",
+      changefreq: "monthly",
+      lastmod: currentDate,
     },
   ];
 
-  // 2. Fetch all apps dynamically from MongoDB / Database
-  const { apps } = await getAllApps({ limit: 1000 });
+  // 2. Fetch all apps dynamically from MongoDB or apps-store.json local fallback
+  let apps: any[] = [];
+  try {
+    const res = await getAllApps({ limit: 1000 });
+    if (res && Array.isArray(res.apps) && res.apps.length > 0) {
+      apps = res.apps;
+    }
+  } catch (err) {
+    console.warn("[Sitemap] getAllApps notice:", err);
+  }
 
-  const appUrls: SitemapUrl[] = apps.map((app) => {
+  // Ensure fallback reads from apps-store.json directly
+  if (!apps || apps.length === 0) {
+    try {
+      apps = readLocalStore();
+    } catch {
+      try {
+        const storePath = path.resolve(process.cwd(), "server/data/apps-store.json");
+        if (fs.existsSync(storePath)) {
+          apps = JSON.parse(fs.readFileSync(storePath, "utf-8"));
+        }
+      } catch (e) {
+        console.warn("[Sitemap] File fallback error:", e);
+      }
+    }
+  }
+
+  const appUrls: SitemapUrl[] = (apps || []).map((app) => {
     let appPath = `/${encodeURIComponent(app.name.replace(/\s+/g, "-"))}`;
     if (app.id === "91-club") appPath = "/91-club-login";
     else if (app.id === "veer-game") appPath = "/veer-game-login";
@@ -291,9 +317,9 @@ export async function generateSitemapXml(): Promise<string> {
 
     return {
       loc: `${BASE_URL}${appPath}`,
-      lastmod: lastModDate,
+      priority: app.isTrending ? "0.85" : "0.8",
       changefreq: app.isTrending ? "daily" : "weekly",
-      priority: app.isTrending ? "0.85" : "0.7",
+      lastmod: lastModDate,
     };
   });
 
@@ -305,22 +331,30 @@ export async function generateSitemapXml(): Promise<string> {
 
   const uniqueUrls = Array.from(allUrlsMap.values());
 
-  // Build clean XML string
+  // Build clean, standard XML string with <loc>, <priority>, <changefreq>, <lastmod>
   const xmlItems = uniqueUrls
     .map(
       (item) => `  <url>
     <loc>${escapeXml(item.loc)}</loc>
-    <lastmod>${item.lastmod}</lastmod>
-    <changefreq>${item.changefreq}</changefreq>
     <priority>${item.priority}</priority>
+    <changefreq>${item.changefreq}</changefreq>
+    <lastmod>${item.lastmod || currentDate}</lastmod>
   </url>`
     )
     .join("\n");
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  const fullXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${xmlItems}
 </urlset>`;
+
+  // Also sync public/sitemap.xml file on disk for static fallbacks
+  try {
+    const publicSitemapPath = path.resolve(process.cwd(), "public/sitemap.xml");
+    fs.writeFileSync(publicSitemapPath, fullXml, "utf-8");
+  } catch {}
+
+  return fullXml;
 }
 
 function escapeXml(unsafe: string): string {

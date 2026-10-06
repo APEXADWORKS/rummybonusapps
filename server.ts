@@ -27,12 +27,13 @@ async function startServer() {
   app.get("/sitemap.xml", async (req, res) => {
     try {
       const xml = await generateSitemapXml();
-      res.header("Content-Type", "application/xml; charset=utf-8");
-      res.header("Cache-Control", "public, max-age=300, s-maxage=600");
+      res.type("application/xml");
+      res.setHeader("Content-Type", "application/xml; charset=utf-8");
+      res.setHeader("Cache-Control", "public, max-age=300, s-maxage=600");
       res.status(200).send(xml);
     } catch (err) {
       console.error("Error generating dynamic sitemap:", err);
-      res.status(500).send("Error generating dynamic sitemap");
+      res.status(500).type("text/plain").send("Error generating dynamic sitemap");
     }
   });
 

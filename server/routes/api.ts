@@ -10,6 +10,8 @@ import {
   getDbStatus,
   getAllColourGames,
   getColourGameById,
+  createColourGame,
+  deleteColourGame,
   updateColourGame,
   updateAllColourGames,
   seedColourGames,
@@ -235,16 +237,67 @@ apiRouter.get("/colour-games/:id", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/colour-games - Add a new colour trading game
+apiRouter.post("/colour-games", async (req: Request, res: Response) => {
+  try {
+    const { name, id, inviteLink, loginLink, registerLink, vipCode, iconUrl, bonus, downloads, minWithdrawal } = req.body;
+    if (!name || typeof name !== "string" || !name.trim()) {
+      res.status(400).json({ error: "Game name is required" });
+      return;
+    }
+
+    const newGame = await createColourGame({
+      name: name.trim(),
+      id: id ? id.trim() : undefined,
+      inviteLink: inviteLink ? inviteLink.trim() : undefined,
+      loginLink: loginLink ? loginLink.trim() : undefined,
+      registerLink: registerLink ? registerLink.trim() : undefined,
+      vipCode: vipCode ? vipCode.trim() : undefined,
+      iconUrl: iconUrl ? iconUrl.trim() : undefined,
+      bonus: bonus ? bonus.trim() : undefined,
+      downloads: downloads ? downloads.trim() : undefined,
+      minWithdrawal: minWithdrawal ? minWithdrawal.trim() : undefined,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Colour game "${newGame.name}" created successfully`,
+      game: newGame,
+    });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message || "Failed to create colour game" });
+  }
+});
+
+// DELETE /api/colour-games/:id - Delete a colour trading game
+apiRouter.delete("/colour-games/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await deleteColourGame(id);
+    res.json({
+      success: true,
+      message: `Colour game with ID "${id}" deleted successfully`,
+      id,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Failed to delete colour game" });
+  }
+});
+
 // PUT /api/colour-games/:id - Update inviteLink, loginLink, registerLink, vipCode
 apiRouter.put("/colour-games/:id", async (req: Request, res: Response) => {
   try {
-    const { inviteLink, loginLink, registerLink, vipCode, name } = req.body;
+    const { inviteLink, loginLink, registerLink, vipCode, name, iconUrl, bonus, downloads, minWithdrawal } = req.body;
     const updated = await updateColourGame(req.params.id, {
       name,
       inviteLink,
       loginLink,
       registerLink,
       vipCode,
+      iconUrl,
+      bonus,
+      downloads,
+      minWithdrawal,
     });
     res.json({ success: true, game: updated });
   } catch (err: any) {

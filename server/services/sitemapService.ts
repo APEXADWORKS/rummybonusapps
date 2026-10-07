@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getAllApps, readLocalStore } from "../db.js";
+import { getAllApps, readLocalStore, getAllColourGames } from "../db.js";
 
 const BASE_URL = "https://www.rummybonusapps.com";
 
@@ -327,6 +327,33 @@ export async function generateSitemapXml(): Promise<string> {
   const allUrlsMap = new Map<string, SitemapUrl>();
   for (const item of [...staticUrls, ...appUrls]) {
     allUrlsMap.set(item.loc, item);
+  }
+
+  // Include all dynamically created colour games
+  try {
+    const colourGames = await getAllColourGames();
+    if (Array.isArray(colourGames)) {
+      for (const cg of colourGames) {
+        const lastModDate = (cg as any).updatedAt
+          ? new Date((cg as any).updatedAt).toISOString().split("T")[0]
+          : currentDate;
+        const slug = cg.id || cg.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        allUrlsMap.set(`${BASE_URL}/${slug}-login`, {
+          loc: `${BASE_URL}/${slug}-login`,
+          priority: "0.9",
+          changefreq: "daily",
+          lastmod: lastModDate,
+        });
+        allUrlsMap.set(`${BASE_URL}/${slug}`, {
+          loc: `${BASE_URL}/${slug}`,
+          priority: "0.85",
+          changefreq: "daily",
+          lastmod: lastModDate,
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("[Sitemap] Failed to load colour games for sitemap:", err);
   }
 
   const uniqueUrls = Array.from(allUrlsMap.values());

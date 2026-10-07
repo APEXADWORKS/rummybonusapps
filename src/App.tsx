@@ -53,12 +53,21 @@ export const getAppLink = (app: RummyApp) => {
   if (app.id === 'tiranga-game') return '/tiranga-game-login';
   if (app.id === 'goa-game') return '/goa-game-login';
   if (app.id === 'rummy-apple') return '/uttam1';
+  if (app.id && isColourGame(app.id)) return `/${app.id}-login`;
   return `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
 };
 
-export const isColourGame = (id: string) => [
+const KNOWN_COLOUR_IDS = new Set([
   '91-club', 'veer-game', '82-lottery', 'maan-win', 'ok-win', 'diu-win', 'du-win', 'tiranga-game', 'goa-game'
-].includes(id);
+]);
+
+export const isColourGame = (id: string) => {
+  if (!id) return false;
+  const clean = id.toLowerCase().trim();
+  if (KNOWN_COLOUR_IDS.has(clean)) return true;
+  if (clean.includes('club') || clean.includes('lottery') || clean.includes('colour') || clean.includes('color') || clean.endsWith('-game')) return true;
+  return false;
+};
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,6 +76,7 @@ function HomePage() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [appsList, setAppsList] = useState<RummyApp[]>(RUMMY_APPS);
+  const [colourAppsList, setColourAppsList] = useState<RummyApp[]>(COLOUR_APPS);
 
   // Fetch real-time apps from Node.js (Express) & MongoDB API
   useEffect(() => {
@@ -75,6 +85,27 @@ function HomePage() {
       .then(data => {
         if (data && data.success && Array.isArray(data.apps) && data.apps.length > 0) {
           setAppsList(data.apps);
+        }
+      })
+      .catch(() => {});
+
+    // Fetch real-time colour trading games
+    fetch('/api/colour-games')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.success && Array.isArray(data.games) && data.games.length > 0) {
+          const mapped: RummyApp[] = data.games.map((g: any) => ({
+            id: g.id,
+            name: g.name,
+            bonus: g.bonus || '₹500',
+            downloads: g.downloads || '1.2M+',
+            minWithdrawal: g.minWithdrawal || '₹110',
+            downloadLink: g.inviteLink || g.loginLink || 'https://www.junglehaan.vip/share/6IOe3xy=1538',
+            iconUrl: g.iconUrl || `/images/${g.id.replace(/-/g, '_')}_logo.jpg`,
+            category: 'Top',
+            isTrending: true,
+          }));
+          setColourAppsList(mapped);
         }
       })
       .catch(() => {});
@@ -94,12 +125,12 @@ function HomePage() {
     } else if (activeTab === 'new') {
       list = newGamesList;
     } else if (activeTab === 'colour') {
-      list = COLOUR_APPS;
+      list = colourAppsList;
     }
 
     if (!searchQuery) return list;
     return list.filter(app => app.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  }, [activeTab, searchQuery, appsList, newGamesList]);
+  }, [activeTab, searchQuery, appsList, newGamesList, colourAppsList]);
 
   return (
     <div className="min-h-screen bg-bg-dark text-white selection:bg-brand-primary selection:text-black">
@@ -222,7 +253,7 @@ function HomePage() {
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
                   activeTab === 'colour' ? 'bg-white/20 text-white' : 'bg-white/10 text-rose-400'
                 }`}>
-                  {COLOUR_APPS.length}
+                  {colourAppsList.length}
                 </span>
               </button>
 
@@ -281,7 +312,7 @@ function HomePage() {
 
                 {/* Quick Chips for all Colour Games */}
                 <div className="flex flex-wrap gap-2 justify-center">
-                  {COLOUR_APPS.map((game) => (
+                  {colourAppsList.map((game) => (
                     <Link
                       key={game.id}
                       to={getAppLink(game)}
@@ -900,6 +931,17 @@ function AppRouteHandler() {
     const idVal = parseInt(idStr, 10);
     if (!isNaN(idVal) && idVal >= 1001 && idVal <= 1100) {
       return <ApexdinLandingPage idOverride={idStr} />;
+    }
+  }
+
+  if (appName) {
+    const clean = appName.toLowerCase();
+    if (clean.endsWith('-login')) {
+      const gameId = clean.replace(/-login$/, '');
+      return <ColourTradingLandingPage gameId={gameId} />;
+    }
+    if (isColourGame(clean)) {
+      return <ColourTradingLandingPage gameId={clean} />;
     }
   }
   

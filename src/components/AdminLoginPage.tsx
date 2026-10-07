@@ -76,6 +76,23 @@ export default function AdminLoginPage() {
   const [editingColourGame, setEditingColourGame] = useState<any | null>(null);
   const [isUpdatingColour, setIsUpdatingColour] = useState(false);
 
+  // Add App Type Switcher ('rummy' | 'colour')
+  const [addAppType, setAddAppType] = useState<'rummy' | 'colour'>('rummy');
+
+  // Add New Colour Game State
+  const [isAddingColourGame, setIsAddingColourGame] = useState(false);
+  const [newColourName, setNewColourName] = useState('');
+  const [newColourSlug, setNewColourSlug] = useState('');
+  const [newColourInviteLink, setNewColourInviteLink] = useState('https://www.junglehaan.vip/share/6IOe3xy=1538');
+  const [newColourLoginLink, setNewColourLoginLink] = useState('');
+  const [newColourRegisterLink, setNewColourRegisterLink] = useState('');
+  const [newColourVipCode, setNewColourVipCode] = useState('1538');
+  const [newColourBonus, setNewColourBonus] = useState('₹500');
+  const [newColourMinWithdrawal, setNewColourMinWithdrawal] = useState('₹110');
+  const [newColourDownloads, setNewColourDownloads] = useState('1.2M+');
+  const [newColourIconUrl, setNewColourIconUrl] = useState('/images/91_club_logo.jpg');
+  const [isCreatingColourGame, setIsCreatingColourGame] = useState(false);
+
   // Bulk Colour Games Updater
   const [bulkInviteLink, setBulkInviteLink] = useState('');
   const [bulkLoginLink, setBulkLoginLink] = useState('');
@@ -378,6 +395,10 @@ export default function AdminLoginPage() {
             loginLink: editingColourGame.loginLink,
             registerLink: editingColourGame.registerLink,
             vipCode: editingColourGame.vipCode,
+            bonus: editingColourGame.bonus,
+            minWithdrawal: editingColourGame.minWithdrawal,
+            downloads: editingColourGame.downloads,
+            iconUrl: editingColourGame.iconUrl,
           })
         });
         const contentType = res.headers.get('content-type') || '';
@@ -399,6 +420,99 @@ export default function AdminLoginPage() {
       setEditingColourGame(null);
     } finally {
       setIsUpdatingColour(false);
+    }
+  };
+
+  // Handle Create New Colour Game
+  const handleCreateColourGame = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newColourName.trim()) {
+      showBanner('Please provide a Colour Game Name', 'error');
+      return;
+    }
+
+    setIsCreatingColourGame(true);
+    const cleanName = newColourName.trim();
+    const finalSlug = (newColourSlug.trim() || cleanName)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    const gamePayload = {
+      name: cleanName,
+      id: finalSlug,
+      inviteLink: newColourInviteLink.trim() || 'https://www.junglehaan.vip/share/6IOe3xy=1538',
+      loginLink: newColourLoginLink.trim() || newColourInviteLink.trim() || 'https://www.junglehaan.vip/share/6IOe3xy=1538',
+      registerLink: newColourRegisterLink.trim() || newColourInviteLink.trim() || 'https://www.junglehaan.vip/share/6IOe3xy=1538',
+      vipCode: newColourVipCode.trim() || '1538',
+      bonus: newColourBonus.trim() || '₹500',
+      minWithdrawal: newColourMinWithdrawal.trim() || '₹110',
+      downloads: newColourDownloads.trim() || '1.2M+',
+      iconUrl: newColourIconUrl.trim() || '/images/91_club_logo.jpg',
+    };
+
+    try {
+      let createdOnServer = false;
+      try {
+        const res = await fetch('/api/colour-games', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(gamePayload),
+        });
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          const data = await res.json();
+          if (data && data.success && data.game) {
+            setColourGames(prev => [data.game, ...prev.filter(g => g.id !== data.game.id)]);
+            createdOnServer = true;
+          }
+        }
+      } catch (netErr) {
+        console.warn('POST /api/colour-games net warning, adding locally:', netErr);
+      }
+
+      if (!createdOnServer) {
+        setColourGames(prev => [{ ...gamePayload, createdAt: new Date().toISOString() }, ...prev.filter(g => g.id !== gamePayload.id)]);
+      }
+
+      showBanner(`Colour Game "${cleanName}" created successfully! Available at /${finalSlug} and /${finalSlug}-login`);
+      setIsAddingColourGame(false);
+      setNewColourName('');
+      setNewColourSlug('');
+      setNewColourInviteLink('https://www.junglehaan.vip/share/6IOe3xy=1538');
+      setNewColourLoginLink('');
+      setNewColourRegisterLink('');
+      setNewColourVipCode('1538');
+      setNewColourBonus('₹500');
+      setNewColourMinWithdrawal('₹110');
+      setNewColourDownloads('1.2M+');
+      setNewColourIconUrl('/images/91_club_logo.jpg');
+    } catch (err: any) {
+      showBanner(err.message || 'Failed to create Colour Game', 'error');
+    } finally {
+      setIsCreatingColourGame(false);
+    }
+  };
+
+  // Handle Delete Colour Game
+  const handleDeleteColourGame = async (id: string, name: string) => {
+    try {
+      try {
+        await fetch(`/api/colour-games/${id}`, {
+          method: 'DELETE',
+          headers: { Accept: 'application/json' },
+        });
+      } catch (netErr) {
+        console.warn('DELETE /api/colour-games net error:', netErr);
+      }
+      setColourGames(prev => prev.filter(g => g.id !== id));
+      showBanner(`Colour Game "${name}" deleted successfully.`);
+    } catch (err: any) {
+      setColourGames(prev => prev.filter(g => g.id !== id));
+      showBanner(`Removed "${name}" from colour games.`);
     }
   };
 
@@ -742,16 +856,37 @@ export default function AdminLoginPage() {
         )}
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           <div className="bg-[#121929] border border-white/10 p-4 rounded-2xl">
             <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center justify-between">
-              <span>Total Apps</span>
+              <span>Total Rummy Apps</span>
               <Layers className="w-3.5 h-3.5 text-brand-primary" />
             </div>
             <div className="text-2xl font-black text-white mt-1">
               {apps.length}
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">80+ managed in DB</div>
+            <div className="text-[10px] text-slate-500 mt-0.5">80+ in Database</div>
+          </div>
+
+          <div className="bg-[#121929] border border-rose-500/30 p-4 rounded-2xl relative overflow-hidden group">
+            <div className="text-[10px] uppercase font-bold text-rose-300 flex items-center justify-between">
+              <span>Colour Games</span>
+              <Palette className="w-3.5 h-3.5 text-amber-300" />
+            </div>
+            <div className="text-2xl font-black text-rose-400 mt-1 flex items-center justify-between">
+              <span>{colourGames.length}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('add');
+                  setAddAppType('colour');
+                }}
+                className="text-[10px] font-bold bg-rose-500/20 hover:bg-rose-500 text-rose-200 hover:text-white px-2 py-0.5 rounded-lg border border-rose-500/40 transition-colors cursor-pointer"
+              >
+                + Add
+              </button>
+            </div>
+            <div className="text-[10px] text-slate-400 mt-0.5">Win Go &amp; 91 Club</div>
           </div>
 
           <div className="bg-[#121929] border border-white/10 p-4 rounded-2xl">
@@ -760,7 +895,7 @@ export default function AdminLoginPage() {
               <FileText className="w-3.5 h-3.5 text-blue-400" />
             </div>
             <div className="text-2xl font-black text-blue-400 mt-1">
-              {apps.length + 15}
+              {apps.length + colourGames.length * 2 + 15}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">Active indexed URLs</div>
           </div>
@@ -777,7 +912,7 @@ export default function AdminLoginPage() {
             <div className="text-[10px] text-slate-500 mt-0.5">Auto-synced</div>
           </div>
 
-          <div className="bg-[#121929] border border-white/10 p-4 rounded-2xl">
+          <div className="bg-[#121929] border border-white/10 p-4 rounded-2xl col-span-2 sm:col-span-1">
             <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center justify-between">
               <span>Trending Games</span>
               <Flame className="w-3.5 h-3.5 text-rose-500" />
@@ -812,19 +947,37 @@ export default function AdminLoginPage() {
             }`}
           >
             <Palette className="w-3.5 h-3.5 text-amber-300" />
-            <span>Colour Games Links ({colourGames.length})</span>
+            <span>Colour Games ({colourGames.length})</span>
           </button>
 
           <button
-            onClick={() => setActiveTab('add')}
+            onClick={() => {
+              setActiveTab('add');
+              setAddAppType('rummy');
+            }}
             className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'add'
+              activeTab === 'add' && addAppType === 'rummy'
                 ? 'bg-brand-primary text-black shadow-lg shadow-brand-primary/20'
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Add New App</span>
+            <span>+ Add Rummy App</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('add');
+              setAddAppType('colour');
+            }}
+            className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'add' && addAppType === 'colour'
+                ? 'bg-gradient-to-r from-rose-600 via-red-600 to-amber-600 text-white shadow-lg shadow-rose-600/30 ring-2 ring-amber-400/50'
+                : 'bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>+ Add Colour Trading App</span>
           </button>
 
           <button
@@ -1046,6 +1199,37 @@ export default function AdminLoginPage() {
         {/* TAB: COLOUR GAMES (WIN GO / PREDICTION APPS) */}
         {activeTab === 'colour' && (
           <div className="space-y-6">
+            {/* Top Quick Action Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-[#121929] border border-rose-500/30 rounded-2xl shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center text-white shadow-md">
+                  <Palette className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black uppercase text-white tracking-wide">
+                    Colour Trading &amp; Win Go Platforms ({colourGames.length})
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Live dynamic routing, official mirror portals &amp; instant VIP codes.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('add');
+                    setAddAppType('colour');
+                  }}
+                  className="px-4 py-2.5 bg-gradient-to-r from-rose-600 via-red-600 to-amber-600 hover:brightness-110 active:scale-95 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/30 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4 text-amber-200" />
+                  <span>+ Add New Colour Trading App</span>
+                </button>
+              </div>
+            </div>
+
             {/* Global Bulk Links & VIP Code Updater */}
             <div className="bg-gradient-to-r from-[#18233a] via-[#1a1c2e] to-[#141b2d] border border-amber-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -1055,11 +1239,11 @@ export default function AdminLoginPage() {
                 </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-black uppercase text-white flex items-center gap-2">
-                    Bulk Update All 8 Colour Games
+                    Bulk Update All {colourGames.length} Colour Games
                     <span className="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full font-sans not-italic font-bold">1-Click</span>
                   </h2>
                   <p className="text-xs text-slate-300">
-                    Apply the same invite link, login link, register link, or VIP code across all 8 Colour Games at once.
+                    Apply the same invite link, login link, register link, or VIP code across all {colourGames.length} Colour Games at once.
                   </p>
                 </div>
               </div>
@@ -1130,7 +1314,7 @@ export default function AdminLoginPage() {
                     className="px-6 py-3 bg-gradient-to-r from-amber-500 via-rose-500 to-red-600 hover:brightness-110 active:scale-95 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/25 transition-all cursor-pointer flex items-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>{isUpdatingBulk ? 'Applying to All 8 Games...' : '🚀 Apply to All 8 Colour Games'}</span>
+                    <span>{isUpdatingBulk ? 'Applying to All Games...' : `🚀 Apply to All ${colourGames.length} Colour Games`}</span>
                   </button>
                 </div>
               </form>
@@ -1138,7 +1322,7 @@ export default function AdminLoginPage() {
 
             {/* Individual Colour Games Cards */}
             <div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
                   <h3 className="text-sm font-black uppercase text-white tracking-wide flex items-center gap-2">
                     <Palette className="w-4 h-4 text-rose-500" />
@@ -1148,6 +1332,15 @@ export default function AdminLoginPage() {
                     Customize the invite link, login URL, register URL and VIP code for each specific platform.
                   </p>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsAddingColourGame(true)}
+                  className="px-4 py-2.5 bg-gradient-to-r from-rose-600 to-amber-600 hover:brightness-110 active:scale-95 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/25 transition-all cursor-pointer flex items-center gap-2 shrink-0 self-start sm:self-auto"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>+ Add New Colour Game</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1184,13 +1377,22 @@ export default function AdminLoginPage() {
                         </div>
                       </div>
 
-                      <button
-                        onClick={() => setEditingColourGame({ ...game })}
-                        className="px-3.5 py-1.5 bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-black font-black text-xs uppercase tracking-wider rounded-xl border border-amber-400/30 transition-all cursor-pointer flex items-center gap-1.5"
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                        <span>Edit</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setEditingColourGame({ ...game })}
+                          className="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-black font-black text-xs uppercase tracking-wider rounded-xl border border-amber-400/30 transition-all cursor-pointer flex items-center gap-1.5"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteColourGame(game.id, game.name)}
+                          className="p-1.5 bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white rounded-xl border border-red-500/20 transition-all cursor-pointer"
+                          title={`Delete ${game.name}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-2 text-xs">
@@ -1239,150 +1441,380 @@ export default function AdminLoginPage() {
           </div>
         )}
 
-        {/* TAB 2: ADD NEW APP */}
+        {/* TAB 2: ADD NEW APP (RUMMY & COLOUR TRADING APPS) */}
         {activeTab === 'add' && (
-          <div className="bg-[#121929] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-2xl shadow-xl">
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-              <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary">
-                <Plus className="w-6 h-6" />
-              </div>
-              <div>
-                <h2 className="text-lg font-black uppercase italic text-white">
-                  Add New App to Database
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Instantly stores into MongoDB and regenerates /sitemap.xml
-                </p>
-              </div>
-            </div>
-
-            <form onSubmit={handleCreateApp} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    App / Game Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Teen Patti Master"
-                    value={newAppName}
-                    onChange={(e) => setNewAppName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Sign-up Bonus *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Rs.51 or ₹500"
-                    value={newAppBonus}
-                    onChange={(e) => setNewAppBonus(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-primary"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                  Download / Referral Affiliate Link *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="https://... (affiliate invite URL)"
-                  value={newAppDownloadLink}
-                  onChange={(e) => setNewAppDownloadLink(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-brand-primary"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Category
-                  </label>
-                  <select
-                    value={newAppCategory}
-                    onChange={(e) => setNewAppCategory(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
-                  >
-                    <option value="Top">Top Rummy</option>
-                    <option value="New">New Games</option>
-                    <option value="High Bonus">High Bonus</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Min Withdrawal
-                  </label>
-                  <input
-                    type="text"
-                    value={newAppMinWithdrawal}
-                    onChange={(e) => setNewAppMinWithdrawal(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Downloads Count
-                  </label>
-                  <input
-                    type="text"
-                    value={newAppDownloads}
-                    onChange={(e) => setNewAppDownloads(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Logo / Icon Path or URL
-                  </label>
-                  <input
-                    type="text"
-                    value={newAppIconUrl}
-                    onChange={(e) => setNewAppIconUrl(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-brand-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
-                    Mark as Trending?
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setNewAppTrending(!newAppTrending)}
-                    className={`w-full py-2.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
-                      newAppTrending
-                        ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
-                        : 'bg-[#0a0f1d] border-white/10 text-slate-400'
-                    }`}
-                  >
-                    <Flame className={`w-4 h-4 ${newAppTrending ? 'text-rose-500' : 'text-slate-500'}`} />
-                    <span>{newAppTrending ? '🔥 Yes (Promote on Homepage)' : 'Normal Game'}</span>
-                  </button>
-                </div>
-              </div>
+          <div className="space-y-6">
+            {/* App Type Switcher */}
+            <div className="flex p-1.5 bg-[#0a0f1d] border border-white/10 rounded-2xl max-w-md shadow-lg">
+              <button
+                type="button"
+                onClick={() => setAddAppType('rummy')}
+                className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  addAppType === 'rummy'
+                    ? 'bg-brand-primary text-black shadow-lg shadow-brand-primary/20'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>🂡 Rummy App</span>
+              </button>
 
               <button
-                type="submit"
-                disabled={isSubmittingNew || !newAppName.trim()}
-                className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 active:scale-98 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 mt-4"
+                type="button"
+                onClick={() => setAddAppType('colour')}
+                className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  addAppType === 'colour'
+                    ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white shadow-lg shadow-rose-600/30 ring-2 ring-amber-400/40'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
               >
-                <Save className="w-4 h-4" />
-                <span>{isSubmittingNew ? 'Saving App to Database...' : 'Save App & Update Sitemap'}</span>
+                <Palette className="w-3.5 h-3.5 text-amber-300" />
+                <span>🎨 Colour Trading App</span>
               </button>
-            </form>
+            </div>
+
+            {/* FORM 1: ADD RUMMY APP */}
+            {addAppType === 'rummy' && (
+              <div className="bg-[#121929] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-2xl shadow-xl animate-fade-in">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                  <div className="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary">
+                    <Plus className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-black uppercase italic text-white">
+                      Add New Rummy App to Database
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      Instantly stores into MongoDB, generates route /{'{slug}'} &amp; updates /sitemap.xml
+                    </p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleCreateApp} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        App / Game Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Teen Patti Master"
+                        value={newAppName}
+                        onChange={(e) => setNewAppName(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Sign-up Bonus *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Rs.51 or ₹500"
+                        value={newAppBonus}
+                        onChange={(e) => setNewAppBonus(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                      Download / Referral Affiliate Link *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="https://... (affiliate invite URL)"
+                      value={newAppDownloadLink}
+                      onChange={(e) => setNewAppDownloadLink(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-brand-primary"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Category
+                      </label>
+                      <select
+                        value={newAppCategory}
+                        onChange={(e) => setNewAppCategory(e.target.value as any)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
+                      >
+                        <option value="Top">Top Rummy</option>
+                        <option value="New">New Games</option>
+                        <option value="High Bonus">High Bonus</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Min Withdrawal
+                      </label>
+                      <input
+                        type="text"
+                        value={newAppMinWithdrawal}
+                        onChange={(e) => setNewAppMinWithdrawal(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Downloads Count
+                      </label>
+                      <input
+                        type="text"
+                        value={newAppDownloads}
+                        onChange={(e) => setNewAppDownloads(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-brand-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Logo / Icon Path or URL
+                      </label>
+                      <input
+                        type="text"
+                        value={newAppIconUrl}
+                        onChange={(e) => setNewAppIconUrl(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-brand-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-400 block mb-1">
+                        Mark as Trending?
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setNewAppTrending(!newAppTrending)}
+                        className={`w-full py-2.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
+                          newAppTrending
+                            ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                            : 'bg-[#0a0f1d] border-white/10 text-slate-400'
+                        }`}
+                      >
+                        <Flame className={`w-4 h-4 ${newAppTrending ? 'text-rose-500' : 'text-slate-500'}`} />
+                        <span>{newAppTrending ? '🔥 Yes (Promote on Homepage)' : 'Normal Game'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmittingNew || !newAppName.trim()}
+                    className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 active:scale-98 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 mt-4"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{isSubmittingNew ? 'Saving App to Database...' : 'Save App & Update Sitemap'}</span>
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* FORM 2: ADD COLOUR TRADING APP */}
+            {addAppType === 'colour' && (
+              <div className="bg-[#121929] border border-rose-500/30 rounded-2xl p-6 sm:p-8 max-w-2xl shadow-2xl relative overflow-hidden animate-fade-in">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                  <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400">
+                    <Palette className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-black uppercase text-white flex items-center gap-2">
+                      Add New Colour Trading App
+                      <span className="text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2.5 py-0.5 rounded-full font-sans font-bold">
+                        Win Go &bull; 91 Club
+                      </span>
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      Instantly generates official login portal, VIP code, and live routes at /{'{slug}'} &amp; /{'{slug}'}-login
+                    </p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleCreateColourGame} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Colour Game / Platform Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. BDG Game, Big Daddy Game, TC Lottery, Daman Game"
+                        value={newColourName}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setNewColourName(val);
+                          if (!newColourSlug || newColourSlug === newColourName.toLowerCase().replace(/[^a-z0-9]+/g, '-')) {
+                            setNewColourSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+                          }
+                        }}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Route Slug / App ID *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. bdg-game, big-daddy-game, tc-lottery"
+                        value={newColourSlug}
+                        onChange={(e) => setNewColourSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Live Route URL Preview */}
+                  <div className="p-3 bg-[#0a0f1d] border border-rose-500/20 rounded-xl space-y-1">
+                    <span className="text-[10px] font-bold uppercase text-amber-400 block">
+                      Live Route URLs Generated:
+                    </span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-xs font-mono text-slate-300">
+                      <span className="text-blue-400">/{newColourSlug || 'slug'}-login</span>
+                      <span className="text-slate-500 hidden sm:inline">&bull;</span>
+                      <span className="text-rose-400">/{newColourSlug || 'slug'}</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-amber-300 block mb-1 flex items-center gap-1.5">
+                        <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+                        VIP Code (Invite Code) *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 1538"
+                        value={newColourVipCode}
+                        onChange={(e) => setNewColourVipCode(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-amber-500/40 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Sign-up / 1st Recharge Bonus
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. ₹500 on 1st Recharge"
+                        value={newColourBonus}
+                        onChange={(e) => setNewColourBonus(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs uppercase font-bold text-slate-300 block mb-1 flex items-center gap-1.5">
+                      <Link2 className="w-3.5 h-3.5 text-rose-400" />
+                      Main Invite / Referral Link *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="https://www.junglehaan.vip/share/6IOe3xy=1538"
+                      value={newColourInviteLink}
+                      onChange={(e) => setNewColourInviteLink(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Direct Login Link (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Same as invite link"
+                        value={newColourLoginLink}
+                        onChange={(e) => setNewColourLoginLink(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Direct Register Link (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Same as invite link"
+                        value={newColourRegisterLink}
+                        onChange={(e) => setNewColourRegisterLink(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Min. Withdrawal
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. ₹110"
+                        value={newColourMinWithdrawal}
+                        onChange={(e) => setNewColourMinWithdrawal(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Downloads Count
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1.2M+"
+                        value={newColourDownloads}
+                        onChange={(e) => setNewColourDownloads(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase font-bold text-slate-300 block mb-1">
+                        Logo / Icon Image
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="/images/91_club_logo.jpg"
+                        value={newColourIconUrl}
+                        onChange={(e) => setNewColourIconUrl(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-rose-400"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isCreatingColourGame || !newColourName.trim()}
+                    className="w-full py-4 bg-gradient-to-r from-rose-600 via-red-600 to-amber-600 hover:brightness-110 active:scale-98 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-xl shadow-rose-600/30 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 mt-4"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>{isCreatingColourGame ? 'Deploying Colour Game...' : '🚀 Create & Deploy Colour Trading App'}</span>
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         )}
 
@@ -1781,6 +2213,62 @@ export default function AdminLoginPage() {
                 />
               </div>
 
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-400 block mb-1">
+                    Bonus Reward
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹500 on 1st Recharge"
+                    value={editingColourGame.bonus || ''}
+                    onChange={(e) => setEditingColourGame({ ...editingColourGame, bonus: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-lg text-xs text-white focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-400 block mb-1">
+                    Min Withdrawal
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹110"
+                    value={editingColourGame.minWithdrawal || ''}
+                    onChange={(e) => setEditingColourGame({ ...editingColourGame, minWithdrawal: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-lg text-xs text-white focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-400 block mb-1">
+                    Downloads Count
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 1.2M+"
+                    value={editingColourGame.downloads || ''}
+                    onChange={(e) => setEditingColourGame({ ...editingColourGame, downloads: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-lg text-xs text-white focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-400 block mb-1">
+                    Icon / Logo URL
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="/images/91_club_logo.jpg"
+                    value={editingColourGame.iconUrl || ''}
+                    onChange={(e) => setEditingColourGame({ ...editingColourGame, iconUrl: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+              </div>
+
               <div className="flex gap-2.5 pt-3">
                 <button
                   type="submit"
@@ -1794,6 +2282,207 @@ export default function AdminLoginPage() {
                   type="button"
                   onClick={() => setEditingColourGame(null)}
                   className="px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase rounded-xl transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD NEW COLOUR GAME MODAL */}
+      {isAddingColourGame && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#121929] border border-rose-500/30 rounded-2xl p-6 sm:p-7 max-w-lg w-full shadow-2xl relative animate-fade-in max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3.5 border-b border-white/10 mb-5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400">
+                  <Palette className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black uppercase text-white tracking-wide">
+                    Add New Colour Trading App
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Create a Win Go / Colour Prediction platform with official portal
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddingColourGame(false)}
+                className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateColourGame} className="space-y-4">
+              <div>
+                <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                  Colour Game Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. BDG Game, Big Daddy Game, TC Lottery, Daman Game"
+                  value={newColourName}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setNewColourName(val);
+                    if (!newColourSlug || newColourSlug === newColourName.toLowerCase().replace(/[^a-z0-9]+/g, '-')) {
+                      setNewColourSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+                    }
+                  }}
+                  className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                  Route Slug / App ID *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. bdg-game, big-daddy-game, tc-lottery"
+                  value={newColourSlug}
+                  onChange={(e) => setNewColourSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                  className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                />
+                <span className="text-[10px] text-slate-400 mt-1 block font-mono">
+                  Live URLs: /{newColourSlug || 'slug'} and /{newColourSlug || 'slug'}-login
+                </span>
+              </div>
+
+              <div>
+                <label className="text-[11px] uppercase font-bold text-amber-300 block mb-1 flex items-center gap-1.5">
+                  <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+                  VIP Code (Invite Code)
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. 1538"
+                  value={newColourVipCode}
+                  onChange={(e) => setNewColourVipCode(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-amber-500/30 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-amber-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1 flex items-center gap-1.5">
+                  <Link2 className="w-3.5 h-3.5 text-rose-400" />
+                  Invite Link (Main Share URL) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="https://www.junglehaan.vip/share/6IOe3xy=1538"
+                  value={newColourInviteLink}
+                  onChange={(e) => setNewColourInviteLink(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-white/15 rounded-xl text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-rose-400"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Login Link (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Same as invite link"
+                    value={newColourLoginLink}
+                    onChange={(e) => setNewColourLoginLink(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Register Link (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Same as invite link"
+                    value={newColourRegisterLink}
+                    onChange={(e) => setNewColourRegisterLink(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Sign-up Bonus
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹500 on 1st Recharge"
+                    value={newColourBonus}
+                    onChange={(e) => setNewColourBonus(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Min Withdrawal
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹110"
+                    value={newColourMinWithdrawal}
+                    onChange={(e) => setNewColourMinWithdrawal(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Downloads Count
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 1.2M+"
+                    value={newColourDownloads}
+                    onChange={(e) => setNewColourDownloads(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold text-slate-300 block mb-1">
+                    Logo / Icon Image
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="/images/91_club_logo.jpg"
+                    value={newColourIconUrl}
+                    onChange={(e) => setNewColourIconUrl(e.target.value)}
+                    className="w-full px-3 py-2 bg-[#0a0f1d] border border-white/10 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-rose-400"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2.5 pt-3">
+                <button
+                  type="submit"
+                  disabled={isCreatingColourGame}
+                  className="flex-1 py-3 bg-gradient-to-r from-rose-600 via-red-600 to-amber-600 hover:brightness-110 active:scale-98 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>{isCreatingColourGame ? 'Adding Colour Game...' : '🚀 Create Colour Game'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddingColourGame(false)}
+                  className="px-5 py-3 bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase rounded-xl transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

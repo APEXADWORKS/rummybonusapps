@@ -174,7 +174,36 @@ export const COLOUR_GAMES_DICT: Record<string, ColourGameData> = {
 };
 
 export default function ColourTradingLandingPage({ gameId = '91-club' }: { gameId?: string }) {
-  const game = COLOUR_GAMES_DICT[gameId] || COLOUR_GAMES_DICT['91-club'];
+  const game = React.useMemo<ColourGameData>(() => {
+    const cleanId = gameId.toLowerCase().replace(/-login$/, '');
+    if (COLOUR_GAMES_DICT[cleanId]) {
+      return COLOUR_GAMES_DICT[cleanId];
+    }
+    if (COLOUR_GAMES_DICT[gameId]) {
+      return COLOUR_GAMES_DICT[gameId];
+    }
+    const formattedName = cleanId
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+
+    return {
+      id: cleanId,
+      name: formattedName,
+      loginSlug: `${cleanId}-login`,
+      logo: '/images/91_club_logo.jpg',
+      badge: `${formattedName} Official Colour Trading Portal 2026`,
+      rating: '4.9',
+      ratingCount: '210500',
+      activePlayers: '850,000+',
+      minDeposit: '₹100',
+      minWithdrawal: '₹110',
+      bonus: '₹500 on 1st Recharge',
+      tagline: 'Colour Trading & Win Go App',
+      aboutText: `Official login portal for ${formattedName}. Log in with your mobile number and password to play 1-minute Win Go Colour Trading, predict Red, Green, or Violet, and enjoy instant ₹110 UPI withdrawals anytime.`
+    };
+  }, [gameId]);
+
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // Dynamic link states managed from Admin Panel

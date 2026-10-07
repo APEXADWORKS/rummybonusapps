@@ -20,6 +20,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/91_club_logo.jpg",
+    bonus: "₹500",
+    downloads: "1.2M+",
+    minWithdrawal: "₹110",
   },
   {
     id: "tiranga-game",
@@ -28,6 +32,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/tiranga_game_logo.jpg",
+    bonus: "₹500",
+    downloads: "1.5M+",
+    minWithdrawal: "₹110",
   },
   {
     id: "82-lottery",
@@ -36,6 +44,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/82_lottery_logo.jpg",
+    bonus: "₹500",
+    downloads: "920K+",
+    minWithdrawal: "₹110",
   },
   {
     id: "goa-game",
@@ -44,6 +56,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/goa_game_logo.jpg",
+    bonus: "₹500",
+    downloads: "1.1M+",
+    minWithdrawal: "₹110",
   },
   {
     id: "veer-game",
@@ -52,6 +68,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/veer_game_logo.jpg",
+    bonus: "₹500",
+    downloads: "850K+",
+    minWithdrawal: "₹110",
   },
   {
     id: "ok-win",
@@ -60,6 +80,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/ok_win_logo.jpg",
+    bonus: "₹500",
+    downloads: "780K+",
+    minWithdrawal: "₹110",
   },
   {
     id: "maan-win",
@@ -68,6 +92,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/maan_win_logo.jpg",
+    bonus: "₹500",
+    downloads: "640K+",
+    minWithdrawal: "₹110",
   },
   {
     id: "diu-win",
@@ -76,6 +104,10 @@ export const DEFAULT_COLOUR_GAMES = [
     loginLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     registerLink: "https://www.junglehaan.vip/share/6IOe3xy=1538",
     vipCode: "1538",
+    iconUrl: "/images/diu_win_logo.jpg",
+    bonus: "₹500",
+    downloads: "590K+",
+    minWithdrawal: "₹110",
   },
 ];
 
@@ -432,6 +464,68 @@ export async function getColourGameById(id: string) {
     const games = readColourStore();
     return games.find((g) => g.id === id) || null;
   }
+}
+
+export async function createColourGame(data: Partial<IColourGame> & { name: string }) {
+  const cleanName = data.name.trim();
+  const slug = (data.id || cleanName)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  if (!slug) {
+    throw new Error("Colour game name or ID is required");
+  }
+
+  const defaultLink = "https://www.junglehaan.vip/share/6IOe3xy=1538";
+  const gameDoc: any = {
+    id: slug,
+    name: cleanName,
+    inviteLink: (data.inviteLink && data.inviteLink.trim()) || defaultLink,
+    loginLink: (data.loginLink && data.loginLink.trim()) || (data.inviteLink && data.inviteLink.trim()) || defaultLink,
+    registerLink: (data.registerLink && data.registerLink.trim()) || (data.inviteLink && data.inviteLink.trim()) || defaultLink,
+    vipCode: (data.vipCode && data.vipCode.trim()) || "1538",
+    iconUrl: (data.iconUrl && data.iconUrl.trim()) || "/images/91_club_logo.jpg",
+    bonus: (data.bonus && data.bonus.trim()) || "₹500",
+    downloads: (data.downloads && data.downloads.trim()) || "1.2M+",
+    minWithdrawal: (data.minWithdrawal && data.minWithdrawal.trim()) || "₹110",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  if (isMongoConnected) {
+    const existing = await ColourGameModel.findOne({ id: slug });
+    if (existing) {
+      throw new Error(`Colour game with ID "${slug}" already exists`);
+    }
+    const created = await ColourGameModel.create(gameDoc);
+    const games = readColourStore();
+    if (!games.some((g) => g.id === slug)) {
+      games.push(gameDoc);
+      writeColourStore(games);
+    }
+    return created.toObject();
+  } else {
+    const games = readColourStore();
+    const existing = games.find((g) => g.id === slug);
+    if (existing) {
+      throw new Error(`Colour game with ID "${slug}" already exists`);
+    }
+    games.push(gameDoc);
+    writeColourStore(games);
+    return gameDoc;
+  }
+}
+
+export async function deleteColourGame(id: string) {
+  if (isMongoConnected) {
+    await ColourGameModel.findOneAndDelete({ id });
+  }
+  const games = readColourStore();
+  const filtered = games.filter((g) => g.id !== id);
+  writeColourStore(filtered);
+  return { success: true, id };
 }
 
 export async function updateColourGame(id: string, data: Partial<IColourGame>) {

@@ -101,7 +101,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       if (matched) {
         return {
           ...matched,
-          title: clampTitle(matched.title || generateSEOTitle(matched.name, matched.bonus, siteName), 60),
+          title: generateSEOTitle(matched.name, matched.bonus, siteName),
         };
       }
 
@@ -125,26 +125,33 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       };
     }
 
-    // Object passed: merge with defaults
-    const name = app.name || DEFAULT_APP_DATA.name;
-    const bonus = app.bonus || DEFAULT_APP_DATA.bonus;
+    // Object passed: lookup appsDataList by id or name
+    const appLookupId = (app.id || app.name || '').toLowerCase().trim();
+    const matched = (appsDataList as AppSEOData[]).find(
+      (item) => item.id.toLowerCase() === appLookupId || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === appLookupId
+    );
+
+    const name = app.name || matched?.name || DEFAULT_APP_DATA.name;
+    const bonus = app.bonus || matched?.bonus || DEFAULT_APP_DATA.bonus;
     const computedTitle = app.title || generateSEOTitle(name, bonus, siteName);
 
     return {
-      id: app.id || DEFAULT_APP_DATA.id,
+      id: app.id || matched?.id || DEFAULT_APP_DATA.id,
       name,
       title: clampTitle(computedTitle, 60),
       description:
         app.description ||
-        `Download ${name} APK with instant ${bonus} signup bonus. 100% verified download link, fast ${app.minCashout || '₹100'} UPI cashout.`,
+        matched?.description ||
+        `Download ${name} APK with instant ${bonus} signup bonus. 100% verified download link, fast ${app.minCashout || matched?.minCashout || '₹100'} UPI cashout.`,
       keywords:
         app.keywords ||
+        matched?.keywords ||
         `${name.toLowerCase()} apk, ${name.toLowerCase()} download, ${name.toLowerCase()} bonus, all rummy app 2026`,
       bonus,
-      minCashout: app.minCashout || DEFAULT_APP_DATA.minCashout,
-      rating: app.rating || DEFAULT_APP_DATA.rating,
-      downloads: app.downloads || DEFAULT_APP_DATA.downloads,
-      logo: app.logo || DEFAULT_APP_DATA.logo,
+      minCashout: app.minCashout || matched?.minCashout || DEFAULT_APP_DATA.minCashout,
+      rating: app.rating || matched?.rating || DEFAULT_APP_DATA.rating,
+      downloads: app.downloads || matched?.downloads || DEFAULT_APP_DATA.downloads,
+      logo: app.logo || matched?.logo || DEFAULT_APP_DATA.logo,
     };
   }, [app, siteName]);
 

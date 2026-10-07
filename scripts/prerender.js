@@ -90,7 +90,7 @@ async function runPrerender() {
 
       // Replace or inject specific title
       if (title) {
-        pageHtml = pageHtml.replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`);
+        pageHtml = pageHtml.replace(/<title[^>]*>[\s\S]*?<\/title>/i, `<title data-rh="true">${title}</title>`);
       }
 
       // Replace or inject specific canonical URL

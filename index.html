@@ -3,6 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // HMR is disabled in AI Studio: suppress and ignore WebSocket connection errors
+      window.addEventListener('error', function(e) {
+        if (e && e.message && e.message.toLowerCase().indexOf('websocket') !== -1) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function(e) {
+        var msg = (e && e.reason && (e.reason.message || String(e.reason))) || '';
+        if (msg.toLowerCase().indexOf('websocket') !== -1) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, true);
+    </script>
     
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" href="/images/all_rummy_1to1_logo_1779225745385.png" />

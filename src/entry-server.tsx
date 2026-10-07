@@ -28,7 +28,13 @@ export function render(url: string): RenderResult {
 
   // Extract <title>
   const titleMatch = rawHtml.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  const title = titleMatch ? titleMatch[1] : undefined;
+  let title = titleMatch ? titleMatch[1].trim() : undefined;
+  if (title) {
+    title = title.replace(/<[^>]*>/g, '').trim();
+    if (title.length > 60) {
+      title = title.slice(0, 60).trim();
+    }
+  }
 
   // Extract canonical <link rel="canonical" href="..." />
   const canonicalMatch = rawHtml.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*\/?>/i)
@@ -42,21 +48,26 @@ export function render(url: string): RenderResult {
   const jsonLdMatch = rawHtml.match(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/i);
   const jsonLd = jsonLdMatch ? jsonLdMatch[0] : undefined;
 
-  // Clean hoisted meta/title tags from body html
-  let cleanHtml = rawHtml
+  // Clean hoisted meta/title/link/script tags from body html completely
+  // This guarantees zero duplicate <meta> or <title> tags inside <div id="root"> or body
+  const cleanHtml = rawHtml
     .replace(/<title[^>]*>[\s\S]*?<\/title>/gi, '')
-    .replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/gi, '')
-    .replace(/<link\s+[^>]*href=["'][^"']*["'][^>]*rel=["']canonical["'][^>]*\/?>/gi, '')
+    .replace(/<meta\s+[^>]*\/?>/gi, '')
+    .replace(/<link\s+[^>]*\/?>/gi, '')
     .replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/gi, '');
 
   // Extract description if present
   const descMatch = rawHtml.match(/<meta\s+[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
   const description = descMatch ? descMatch[1] : undefined;
 
+  // Ensure meta tags have data-rh="true" and omit any accidental meta name="title"
+  const cleanMetaList = metaTagMatches
+    .filter(m => !/name=["']title["']/i.test(m))
+    .map(m => (m.includes('data-rh=') ? m : m.replace(/\/?>$/, ' data-rh="true" />')));
+
   const headTags = [
-    title ? `<title>${title}</title>` : '',
-    canonical ? `<link rel="canonical" href="${canonical}" />` : '',
-    ...metaTagMatches,
+    canonical ? `<link rel="canonical" href="${canonical}" data-rh="true" />` : '',
+    ...cleanMetaList,
     jsonLd || ''
   ].filter(Boolean).join('\n    ');
 
@@ -66,7 +77,7 @@ export function render(url: string): RenderResult {
     title,
     canonical,
     description,
-    metaTags: metaTagMatches,
+    metaTags: cleanMetaList,
     jsonLd
   };
 }

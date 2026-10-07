@@ -166,7 +166,10 @@ Sitemap: https://www.rummybonusapps.com/sitemap.xml
   let vite: ViteDevServer | undefined;
   if (!isProd) {
     vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: { 
+        middlewareMode: true,
+        hmr: false,
+      },
       appType: "custom",
     });
     app.use(vite.middlewares);
@@ -209,13 +212,37 @@ Sitemap: https://www.rummybonusapps.com/sitemap.xml
         }
       }
 
-      const { html: appHtml, headTags } = render(url);
+      const { html: appHtml, headTags, title } = render(url) as any;
 
       let fullHtml = template;
-      if (headTags) {
-        fullHtml = fullHtml.replace("</head>", `${headTags}\n</head>`);
+
+      // 1. Ensure the TOP <title> tag dynamically updates with the exact page item name
+      // (e.g., Jungle Haan APK Download - Get ₹51 Bonus | RBA) instead of generic site titles.
+      if (title) {
+        const cleanTitle = String(title).replace(/<[^>]*>/g, '').trim();
+        const finalTitle = cleanTitle.length > 60 ? cleanTitle.slice(0, 60).trim() : cleanTitle;
+        if (/<title[^>]*>[\s\S]*?<\/title>/i.test(fullHtml)) {
+          fullHtml = fullHtml.replace(/<title[^>]*>[\s\S]*?<\/title>/i, `<title data-rh="true">${finalTitle}</title>`);
+        } else {
+          fullHtml = fullHtml.replace("<head>", `<head>\n    <title data-rh="true">${finalTitle}</title>`);
+        }
       }
 
+      // 2. Remove default static tags with data-rh="true" from template so they don't duplicate
+      if (headTags) {
+        fullHtml = fullHtml.replace(/<meta\s+[^>]*data-rh=["']true["'][^>]*\/?>\s*/gi, "");
+        fullHtml = fullHtml.replace(/<link\s+[^>]*data-rh=["']true["'][^>]*\/?>\s*/gi, "");
+      }
+
+      // 3. Completely remove any accidental <meta name="title"> tags
+      fullHtml = fullHtml.replace(/<meta\s+[^>]*name=["']title["'][^>]*\/?>\s*/gi, "");
+
+      // 4. Inject dynamic head tags cleanly right before </head>
+      if (headTags) {
+        fullHtml = fullHtml.replace("</head>", `    ${headTags}\n  </head>`);
+      }
+
+      // 5. Inject clean body html inside #root (which is guaranteed to have NO meta or title tags)
       if (fullHtml.includes("<!--ssr-outlet-->")) {
         fullHtml = fullHtml.replace("<!--ssr-outlet-->", () => appHtml);
       } else if (fullHtml.includes('<div id="root"></div>')) {

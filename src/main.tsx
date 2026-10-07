@@ -6,12 +6,21 @@ import './index.css';
 const container = document.getElementById('root')!;
 
 if (container.hasChildNodes()) {
-  hydrateRoot(
-    container,
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
+  try {
+    hydrateRoot(
+      container,
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+  } catch (err) {
+    console.warn('Hydration fallback to client render:', err);
+    createRoot(container).render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+  }
 } else {
   createRoot(container).render(
     <StrictMode>

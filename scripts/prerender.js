@@ -60,15 +60,19 @@ async function runPrerender() {
     '/rummyblog6',
   ];
 
-  // 2. All 83+ Rummy App detail routes
+  // 2. All 83+ Rummy App detail routes (supporting id slug, raw slug, and lowercase slug)
   if (Array.isArray(RUMMY_APPS)) {
     for (const app of RUMMY_APPS) {
       if (app.id === 'rummy-apple') {
         continue; // maps to /uttam1
       }
-      const slug = `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
-      if (!routes.includes(slug)) {
-        routes.push(slug);
+      const rawSlug = `/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+      const idSlug = `/${app.id}`;
+      const lowerSlug = `/${app.name.toLowerCase().replace(/\s+/g, '-')}`;
+      for (const s of [rawSlug, idSlug, lowerSlug]) {
+        if (!routes.includes(s)) {
+          routes.push(s);
+        }
       }
     }
   }
@@ -95,10 +99,10 @@ async function runPrerender() {
 
       // Replace or inject specific canonical URL
       if (canonical) {
-        pageHtml = pageHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i, `<link rel="canonical" href="${canonical}" />`);
+        pageHtml = pageHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i, `<link rel="canonical" href="${canonical}" data-rh="true" />`);
       } else if (route !== '/') {
-        const fallbackCanonical = `https://www.rummybonusapps.com${route}`;
-        pageHtml = pageHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i, `<link rel="canonical" href="${fallbackCanonical}" />`);
+        const fallbackCanonical = `https://www.rummybonusapps.com${route.toLowerCase()}`;
+        pageHtml = pageHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i, `<link rel="canonical" href="${fallbackCanonical}" data-rh="true" />`);
       }
 
       // Replace or inject specific meta description

@@ -47,7 +47,8 @@ export default function AppDetailPage({
     effectiveDownloadLink = app.downloadLink === '#' ? 'https://www.junglehaan.vip/share/6IOe3xy=1538' : app.downloadLink;
   }
 
-  const canonicalUrl = `https://www.rummybonusapps.com/${encodeURIComponent(app.name.replace(/\s+/g, '-'))}`;
+  const canonicalSlug = (app.id || app.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')).toLowerCase();
+  const canonicalUrl = `https://www.rummybonusapps.com/${canonicalSlug}`;
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white pb-20">

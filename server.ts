@@ -212,12 +212,12 @@ Sitemap: https://www.rummybonusapps.com/sitemap.xml
         }
       }
 
-      const { html: appHtml, headTags, title } = render(url) as any;
+      const { html: appHtml, headTags, title, canonical } = render(url) as any;
 
       let fullHtml = template;
 
       // 1. Ensure the TOP <title> tag dynamically updates with the exact page item name
-      // (e.g., Jungle Haan APK Download - Get ₹51 Bonus | RBA) instead of generic site titles.
+      // (e.g., Jungle Haan APK Download - Get ₹51 Bonus | RBA) directly in initial static HTML
       if (title) {
         const cleanTitle = String(title).replace(/<[^>]*>/g, '').trim();
         const finalTitle = cleanTitle.length > 60 ? cleanTitle.slice(0, 60).trim() : cleanTitle;
@@ -228,21 +228,33 @@ Sitemap: https://www.rummybonusapps.com/sitemap.xml
         }
       }
 
-      // 2. Remove default static tags with data-rh="true" from template so they don't duplicate
+      // 2. Ensure the CANONICAL <link> tag directly updates with the exact route canonical URL
+      // (e.g., https://www.rummybonusapps.com/jungle-haan) directly in the initial static HTML
+      if (canonical) {
+        if (/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i.test(fullHtml)) {
+          fullHtml = fullHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/i, `<link rel="canonical" href="${canonical}" data-rh="true" />`);
+        } else {
+          fullHtml = fullHtml.replace("</head>", `    <link rel="canonical" href="${canonical}" data-rh="true" />\n  </head>`);
+        }
+      }
+
+      // 3. Remove default static tags with data-rh="true" from template so they don't duplicate
       if (headTags) {
         fullHtml = fullHtml.replace(/<meta\s+[^>]*data-rh=["']true["'][^>]*\/?>\s*/gi, "");
-        fullHtml = fullHtml.replace(/<link\s+[^>]*data-rh=["']true["'][^>]*\/?>\s*/gi, "");
       }
 
-      // 3. Completely remove any accidental <meta name="title"> tags
+      // 4. Completely remove any accidental <meta name="title"> tags
       fullHtml = fullHtml.replace(/<meta\s+[^>]*name=["']title["'][^>]*\/?>\s*/gi, "");
 
-      // 4. Inject dynamic head tags cleanly right before </head>
+      // 5. Inject other dynamic head tags cleanly right before </head> (omitting duplicate canonical)
       if (headTags) {
-        fullHtml = fullHtml.replace("</head>", `    ${headTags}\n  </head>`);
+        const otherHeadTags = headTags.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>\s*/gi, "").trim();
+        if (otherHeadTags) {
+          fullHtml = fullHtml.replace("</head>", `    ${otherHeadTags}\n  </head>`);
+        }
       }
 
-      // 5. Inject clean body html inside #root (which is guaranteed to have NO meta or title tags)
+      // 6. Inject clean body html inside #root (guaranteed to have NO meta or title tags)
       if (fullHtml.includes("<!--ssr-outlet-->")) {
         fullHtml = fullHtml.replace("<!--ssr-outlet-->", () => appHtml);
       } else if (fullHtml.includes('<div id="root"></div>')) {
